@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    overflow: hidden;
+}
+#container {
+    position: relative;
+  }
+#container canvas, #overlay {
+    position: absolute;
+}
+canvas {
+    background: linear-gradient(174deg, #1d1d1d , #000000);
+    /*background: #ffffff;*/
+    position: absolute;
+    top:0;
+    left:0;
+
+}
