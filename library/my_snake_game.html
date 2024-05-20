@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SnakeGame</title>
+  <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    body {
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    canvas {
+        border: 10px solid white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);   
+    }
+
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    .button2 {background-color: #008CBA;} /* Blue */
+    .button3 {background-color: #f44336;} /* Red */ 
+
+    #container {
+        width: 1000px;
+        
+    }
+
+    #leftblock {   
+        margin-left: 0%;
+        float: left;
+        height: 100px;
+        width: 3px;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    }
+
+    #rightBlock { 
+        margin-right: 0%;
+        float: right;
+        height: 100px;
+        width: 3px;
+    }
+
+    .text {
+        margin-left: 20%;
+        float: left;
+        top: 100px;
+        left: 3px;  
+    }
+
+  </style>
+</head>
+<body onload="Start()">
+<canvas width="400" height="400" id="game_canvas"></canvas>
+<script>
+var canvas = document.getElementById('game_canvas');
+var ctx = canvas.getContext('2d');
+
+var gridSize = 16;
+var gameScore = 0;
+var gameOver = true;
+
+//OBJECT - ORIENTED PROGRAMMING
+//a variable holding different parameters -> an 'object'
+var snake = {
+    x: 160,
+    y: 160,
+
+    xMove: gridSize,
+    yMove: 0,
+   
+    cells: [],
+    cell_count: 4
+};
+
+
+//FRUIT OPTIONS ======================
+// basic apple for tutorial purposes, adds 1 to snake
+var apple ={
+    name: "apple",
+    color: "red",
+    spawnCount: 1,
+    action: function(){
+        snake.cell_count++;
+        gameScore++;
+    }
+};
+
+//grape spawns multiple fruit at a time, adds 1 to snake
+var grape ={
+    name: "grape",
+    color: "purple",
+    spawnCount: 6,
+    action: function(){
+        snake.cell_count++;
+        gameScore++;
+    }
+}
+
+//blueberry cuts your snake size in half
+var blueberry = {
+    name: "blueberry",
+    color: "blue",
+    spawnCount: 1,
+    action: function(){
+
+        if (snake.cell_count > 4)
+        {
+
+        }
+
+        snake.cell_count = Math.floor(snake.cell_count / 2);
+        for (var i = 0; i < snake.cell_count; i++)
+        {
+            snake.cells.pop();
+        }
+    }
+}
+
+//pineapples add two cells to your snake and takes time off your timer
+var pineapple = {
+    name: "pineapple",
+    color: "yellow",
+    spawnCount: 3,
+    snake_cell_add: 2,
+    timer_reduce: 10,
+    action: function(){
+        gameTimer.value -= pineapple.timer_reduce;
+        snake.cell_count += pineapple.snake_cell_add;
+    }
+}
+
+//oranges add time to your timer
+var orange = {
+    name: "orange",
+    color: "orange",
+    spawnCount: 1,
+    timer_add: 20,
+    action: function(){
+        gameTimer.value += orange.timer_add;
+    }
+}
+
+//bombs kill you
+var bomb = {
+    name: "bomb",
+    color: "white",
+    spawnCount: 4,
+    action: function(){
+        //TODO: blow up
+        GameOver();
+    }
+}
+
+var fruitOptions = [apple, grape, blueberry, pineapple, orange]
+var fruit_on_board = []
+
+//FRUIT FUNCTIONS =============================
+function CreateNewFruit(fruitType)
+{
+    new_fruit = {
+        x: 0,
+        y: 0,
+        type: fruitType
+    };
+
+    var valid = true;
+
+    //put fruit in random position
+    new_fruit.x = gridSize * GetRandomInt(1, canvas.width / gridSize);
+    new_fruit.y = gridSize * GetRandomInt(1, canvas.width / gridSize);
+
+    //if fruit in same cell as snake, find new position
+    snake.cells.forEach(function(cell, index)
+    {
+        if (new_fruit.x == cell.x && new_fruit.y == cell.y)
+        {
+            valid = false;
+            console.log("in snake")
+        }
+    });
+
+    //if fruit is in same place as another
+    fruit_on_board.forEach(function(f, index)
+    {
+        if (new_fruit.x == f.x && new_fruit.y == f.y)
+        {
+            valid = false;
+            console.log("same place" + new_fruit.x + "/" + new_fruit.y)
+
+        }
+    });
+
+    if (valid){
+        ctx.fillStyle = new_fruit.type.color;
+        ctx.fillRect(new_fruit.x, new_fruit.y, gridSize-1, gridSize-1); //create fruit at specified position
+        fruit_on_board.push(new_fruit);
+    }
+    else{
+        CreateNewFruit(fruitType);
+    }
+}
+
+function SpawnNewFruit(type = null)
+{
+    var new_fruit = type;
+    if (new_fruit == null)
+    {
+        let randomIdx = Math.floor(Math.random() * fruitOptions.length);
+        new_fruit = fruitOptions[randomIdx]
+    }
+
+    //spawn fruit
+    ctx.fillStyle = new_fruit.color;
+    for (var i = 0; i < new_fruit.spawnCount; i++)
+    {
+        CreateNewFruit(new_fruit);
+    }
+
+}
+
+function FruitUpdate(){
+
+    //if no more fruit on board spawn new fruit
+    if (fruit_on_board.length == 0)
+    {
+        SpawnNewFruit();
+    }
+    else
+    {
+        //update fruit in display
+        fruit_on_board.forEach(function(f, index)
+        {
+            ctx.fillStyle = f.type.color;
+            ctx.fillRect(f.x, f.y, gridSize-1, gridSize-1); //create fruit at specified position
+        });
+    }
+}
+
+// GAME MANAGER ==========================================
+var gameManager = {
+    start: function()
+    {
+        setInterval(updateGameArea, 66.6666667); //15 frames a second -> 1000ms(1second)/15 = 66.66666667
+    },
+    clear: function(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+// TIMER ===================================================
+var gameTimer = {
+    value: 120,
+    timer_interval: null,
+    start: function()
+    {
+        timer_interval = setInterval(function(){gameTimer.update()},1000);
+    },
+    stop: function()
+    {
+        clearInterval(timer_interval);
+    },
+    update: function()
+    {
+        gameTimer.value--;
+        document.getElementById("timer").innerHTML = gameTimer.value;
+
+        if (gameTimer.value <= 0)
+        {
+            GameOver();
+        }
+    }
+}
+
+// GAME LOOP ===========================================
+function Start(){
+    NewGame();
+    gameManager.start();
+}
+
+function updateGameArea() {
+    gameManager.clear();
+    
+    KeyDownListener();
+
+    DrawGrid(); //draw grid first because we want it behind the moving elements
+
+    SnakeUpdate();
+    FruitUpdate();
+
+    //UPDATE SCORE
+    document.getElementById("score").innerHTML = "Score: " + gameScore;
+
+}
+
+function SnakeUpdate(){
+    //move snake by 'velocity'
+    snake.x += snake.xMove;
+    snake.y += snake.yMove;
+
+    // wrap snake position horizontally on edge of screen
+    if (snake.x < 0) {
+        snake.x = canvas.width - gridSize;
+    }
+    else if (snake.x >= canvas.width) {
+        snake.x = 0;
+    }
+    
+    // wrap snake position vertically on edge of screen
+    if (snake.y < 0) {
+        snake.y = canvas.height - gridSize; 
+    }
+    else if (snake.y >= canvas.height) {
+        snake.y = 0;
+    }
+
+    //DRAW SNAKE
+    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+    var snakeHeadPosition = {x: snake.x, y: snake.y};
+    //add cur snake head pos to beginning of array
+    snake.cells.unshift(snakeHeadPosition); 
+
+    //remove cells from array if they get too far away
+    if (snake.cells.length > snake.cell_count)
+    { 
+        snake.cells.pop();
+    }
+
+    //display snake on canvas
+    ctx.fillStyle = '#e42069';
+    snake.cells.forEach(function(cell, index)
+    {
+        ctx.fillRect(cell.x, cell.y, gridSize-1, gridSize-1); //create cell at specified position
+    });
+
+    //if snake eats fruit
+    fruit_on_board.forEach(function(fruit, index)
+    {
+        if (snakeHeadPosition.x == fruit.x && snakeHeadPosition.y == fruit.y)
+        {
+            fruit.type.action();
+            fruit_on_board.splice(index, 1); //remove fruit
+        }
+    });
+
+
+    //SNAKE COLLISION
+    snake.cells.forEach(function(cell, index){
+        //if collide with body part, reset (head is index 0)
+        if (snakeHeadPosition.x == cell.x && snakeHeadPosition.y == cell.y && index != 0)
+        {
+            GameOver();
+        }
+    });
+
+
+
+}
+
+
+
+//GENERAL FUNCTIONS ============================
+function KeyDownListener(){
+
+    //look for keys down
+    window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+            return; // Do nothing if the event was already processed
+        }
+ 
+        if (!gameOver)
+        {
+            //snake movement inputs
+            switch (event.key) {
+                case "ArrowDown" || "s":
+                    // code for "down arrow" key press.
+                    snake.xMove = 0;
+                    snake.yMove = gridSize;
+                    break;
+                case "ArrowUp" || "w":
+                    // code for "up arrow" key press.
+                    snake.xMove = 0;
+                    snake.yMove = -gridSize;
+                    break;
+                case "ArrowLeft" || "a":
+                    // code for "left arrow" key press.
+                    snake.xMove = -gridSize;
+                    snake.yMove = 0;
+                    break;
+                case "ArrowRight" || "d":
+                    // code for "right arrow" key press.
+                    snake.xMove = gridSize;
+                    snake.yMove = 0;
+                    break;
+                default:
+            }   
+        }
+        else
+        {
+            switch (event.key) {
+                case "Enter":
+                    NewGame();
+                    break;
+                default:
+            }   
+        }
+ 
+            return; // Quit when this doesn't handle the key event.
+ 
+        // Cancel the default action to avoid it being handled twice
+        event.preventDefault();
+    }, true);
+}
+
+function DrawGrid(){
+
+    for (var i = 0; i < canvas.width/gridSize; i++)
+    {
+
+        //messing with lines:
+        //https://instructobit.com/tutorial/89/HTML-canvas%3A-Modifying-the-width%2C-color-and-style-of-lines
+        ctx.strokeStyle = 'pink';
+        ctx.lineWidth = 0.2;
+
+        //columns
+        ctx.beginPath();
+        ctx.moveTo(i * gridSize, 0);
+        ctx.lineTo(i * gridSize, canvas.height);
+        ctx.stroke(); 
+
+        //rows
+        ctx.beginPath();
+        ctx.moveTo(0, i * gridSize);
+        ctx.lineTo(canvas.width, i * gridSize);
+        ctx.stroke(); 
+    }
+
+}
+
+function GetRandomInt(min, max){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function NewGame(){
+    snake.x = 160;
+    snake.y = 160;
+    snake.cells = [];
+    snake.cell_count = 4;
+    snake.xMove = gridSize;
+    snake.yMove = 0;
+    gameScore = 0;
+    gameTimer.value = 120;
+    gameOver = false;
+
+    document.getElementById("gameover").style.display = "none";
+    document.getElementById("resetbutton").style.display = "none";
+    document.getElementById("timer").innerHTML = "120";
+
+
+    fruit_on_board = []
+    SpawnNewFruit();
+    gameTimer.start();
+
+}
+
+function GameOver()
+{
+    snake.cell_count = 4;
+    gameTimer.stop();
+    gameTimer.value = 69;
+    gameOver = true;
+
+    document.getElementById("gameover").style.display = "block";
+    document.getElementById("resetbutton").style.display = "block";
+
+}
+</script>
+
+<div id="gameover" ; style= "color:red;
+                        position:absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);   
+                        font-size: 50px;">
+GAME OVER
+</div>
+
+
+
+<div style= "position:absolute;
+            top: 50%;
+            left: 50%;
+            width:400px;
+            height:500px;
+            transform: translate(-50%, -50%);   
+            font-size: 50px;">
+
+    <button id = "resetbutton" onclick="NewGame()" class="button"
+            style = "position:absolute;
+                    bottom:15%;
+                    left:27%">
+    
+    Start New Game</button>
+
+    <div id="leftblock">
+        <div id="score" ; style= "color:white;
+                position:absolute;
+                top:20px;
+                font-size: 20px;">
+                Score: 0
+        </div>
+    </div>
+    
+    <div id="rightBlock">
+        <div id="timer" ; style= "color:white;
+                position:absolute;
+                top:20px;
+                right:10px;
+                font-size: 20px;">
+        120
+        </div>
+    </div>
+    <div id="name" ; style= "color:white;
+            position:absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translate(-50%, -50%);   
+            font-size: 20px;">
+        @skythecreative
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

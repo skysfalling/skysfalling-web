@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        canvas {
+            border: 5px solid #d3d3d3;
+            background-color: #f1f1f1;
+
+            /* sets the canvas to center of window*/
+            position: absolute;
+            padding: 0;
+            margin: auto;
+            display: block;
+            top: 0px;
+            bottom: 200px;
+            left: 0;
+            right: 0;
+
+        }
+    </style>
+</head>
+
+<body onload="init()">
+    <script>
+        //GAMEPLAY ===================================================================
+        function init(){
+            player = new component(50, 50, "red", 100, 120, "player");
+            box = new component(100, 100, "green", 75, 300, "box1");
+            box2 = new component(75, 75, "pink", 400, 50, "box2");
+
+            
+
+
+            myGameArea.start();
+
+            allEnemies = [box, box2];
+        }
+
+        var gameStarted;
+        var deathCount = 0;
+
+        function startGame() {
+
+            player.isDead = false;
+
+            gameStarted = true;
+            document.getElementById("startGame").style.display = "none"; //disable start button
+
+            player.x = myGameArea.canvas.width / 2;
+            player.y = myGameArea.canvas.height / 2;
+
+
+            box.speedX = 2; //give box start speed
+            box.speedY = -2;
+
+            box2.speedX = 3;
+            box2.speedY = -3;
+
+            
+
+        }
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 650;
+                this.canvas.height = 400;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);
+
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y, name) {
+            this.color = color;
+
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.x = x;
+            this.y = y;
+
+            this.name = name;
+            this.isDead = false;
+
+            this.update = function () {
+                ctx = myGameArea.context;
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+
+                ctx.font = "10px Arial";
+
+                //corners of the squares
+                //needs to be in update function so that every frame the computer rechecks the values
+
+                //				  0       1
+                this.corner1 = [this.x, this.y];
+                //				       0                1
+                this.corner2 = [this.x + this.width, this.y];
+                //				 	   0			        1
+                this.corner3 = [this.x + this.width, this.y + this.height];
+                //				   0	       1
+                this.corner4 = [this.x, this.y + this.height];
+
+                //corner 1:  value         position x   position y				
+                //ctx.fillText(this.corner1, this.x - 40, this.y);
+                //corner 2:
+                //ctx.fillText(this.corner2, this.corner2[0] + 10, this.corner2[1]);
+                //corner 3:
+                //ctx.fillText(this.corner3, this.corner3[0] + 10, this.corner3[1] + 10);
+                //corner 4:
+                //ctx.fillText(this.corner4, this.corner4[0] - 40, this.corner4[1] + 10);
+
+                //					     0			   1			  2				3
+                this.allCorners = [this.corner1, this.corner2, this.corner3, this.corner4];
+
+
+                //ctx.fillText("speedX : " + this.speedX, this.corner3[0] - this.width, this.corner3[1] + 20); //shows x speed
+                //ctx.fillText("speedY : " + this.speedY, this.corner3[0] - this.width, this.corner3[1] + 30); //shows y speed
+
+
+                //ctx.fillText("isDead : " + this.isDead, this.corner3[0] - this.width, this.corner3[1] + 40); //shows y speed
+                if (!this.isDead) //if player isn't dead, allow movement
+                {
+                    this.color = color; 
+
+                }
+            }
+
+            this.newPos = function () {
+                this.x += this.speedX;
+                this.y += this.speedY;
+            }
+
+            numCollideCorners = 0; //set variable
+            this.checkCollideWithComponent = function (collisionBox) {
+
+                ctx = myGameArea.context;
+                ctx.fillStyle = this.color; //sets text to this component color
+                ctx.font = "15px Arial";
+
+                //check for connection to box (parameter)
+                //ctx.fillText(collisionBox.corner1, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
+
+                //how many corners collide?
+                numCollideCorners = 0;
+                //ctx.fillText(numCollideCorners, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
+
+                //for every corner in this.allCorners
+                for (i = 0; i < this.allCorners.length; i++) {
+                    //variable for current corner in loop
+                    corner = this.allCorners[i];
+
+                    //       if corner x > box C1 x		    AND   corner x < box C2 x			then....
+                    if (corner[0] > collisionBox.corner1[0] && corner[0] < collisionBox.corner2[0]) {
+                        //    if corner y > box C1 y		    AND    corner y < box C4 y		   then....
+                        if (corner[1] > collisionBox.corner1[1] && corner[1] < collisionBox.corner4[1]) {
+                            //this.color = "blue";
+                            numCollideCorners++;
+                        }
+                    }
+                }
+
+                if (numCollideCorners > 0) {
+                    this.isDead = true;
+                    this.color = "black";
+                    this.speedX = 0;
+                    this.speedY = 0;
+                }
+            }
+
+            this.checkCollideWithWall = function (canvas_width, canvas_height, bounceBackSpeed) {
+
+                ctx = myGameArea.context;
+                ctx.fillStyle = this.color; //sets text to this component color
+                ctx.font = "10px Arial";
+
+
+                //for every corner in this.allCorners
+                for (i = 0; i < this.allCorners.length; i++) {
+                    //variable for current corner in loop
+                    corner = this.allCorners[i];
+
+                    //X VALUES ============================================
+                    //LEFT SIDE
+                    //if corner x is less than or equal zero....
+                    if (corner[0] <= 0) {
+                        if (this.speedX < 0) //if speed is negative, make it positive
+                        {
+                            this.speedX = bounceBackSpeed; //move the component the opposite x direction
+                        }
+                    }
+
+                    //RIGHT SIDE
+                    //if corner x is greater than or equal to the width of the convas...
+                    if (corner[0] >= canvas_width) {
+                        if (this.speedX > 0) //if speed is positive, make it negative
+                        {
+                            this.speedX = -bounceBackSpeed; //move the component the opposite x direction
+                        }
+                    }
+
+                    //Y VALUES ==================================================
+                    //TOP
+                    //if corner y is less than or equal zero....
+                    if (corner[1] <= 0) {
+                        if (this.speedY < 0) //if speed is negative, make it positive
+                        {
+                            this.speedY = bounceBackSpeed; //move the component the opposite y direction
+                        }
+                    }
+
+                    //BOTTOM
+                    //if corner y is greater than or equal to the height of the canvas...
+                    if (corner[1] >= canvas_height) {
+                        if (this.speedY > 0) //if speed is positive, make it negative
+                        {
+                            this.speedY = -bounceBackSpeed; //move the component the opposite y direction
+                        }
+                    }
+
+                }
+
+
+
+
+            }
+        }
+
+        function KeyDownListener() {
+
+            window.addEventListener("keydown", function (event) {
+            if (event.defaultPrevented) {
+                return; // Do nothing if the event was already processed
+            }
+
+            if (event.key != " ") { document.getElementById("buttonPressed").innerHTML = event.key; }
+            else { document.getElementById("buttonPressed").innerHTML = "Spacebar"; }
+
+
+            switch (event.key) {
+                case "ArrowDown":
+                    // code for "down arrow" key press.
+                    movedown();
+                    break;
+                case "s":
+                    // code for "down arrow" key press.
+                    movedown();
+                    break;
+                case "ArrowUp":
+                    // code for "up arrow" key press.
+                    moveup();
+                    break;
+                case "w":
+                    // code for "down arrow" key press.
+                    moveup();
+                    break;
+                case "ArrowLeft":
+                    // code for "left arrow" key press.
+                    moveleft();
+                    break;
+                case "a":
+                    // code for "down arrow" key press.
+                    moveleft();
+                    break;
+                case "ArrowRight":
+                    // code for "right arrow" key press.
+                    moveright();
+                    break;
+                case "d":
+                    // code for "right arrow" key press.
+                    moveright();
+                    break;
+                case " ":
+                    // code for " " key press.
+                    slowDown();
+                    break;
+                case "Enter":
+                    startGame();
+                default:
+
+                    return; // Quit when this doesn't handle the key event.
+            }
+
+            // Cancel the default action to avoid it being handled twice
+            event.preventDefault();
+            }, true);
+
+        }
+
+        function playerDead()
+        {
+            if (gameStarted == true)
+            {
+                deathCount ++;
+                document.getElementById("deathcount").innerHTML = deathCount;
+            }
+            
+            player.speedX = 0; 
+            player.speedY = 0;
+            gameStarted = false;
+
+
+
+            score = 0;
+
+            document.getElementById("startGame").style.display = "block"; //display start button
+            
+            allEnemies.forEach(enemy => {
+                enemy.speedX = 0;
+                enemy.speedY = 0;
+            });
+
+            box.x = 75;
+            box.y = 300;
+
+            box2.x = 400;
+            box2.y = 50;
+        }
+
+        function updateGameArea() {
+            myGameArea.clear();
+
+            //keeps components updated
+            player.update();
+            box.update();
+            box2.update();
+
+            if (player.isDead) {
+                playerDead();
+            }
+            else{ KeyDownListener(); }
+
+            document.getElementById("test").innerHTML = gameStarted; //display start button
+
+
+            player.newPos();
+            player.checkCollideWithComponent(box); //checks if player collides with a component
+            player.checkCollideWithComponent(box2); //checks if player collides with a component
+            player.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, 2); //check if player collides with wall
+
+            box.newPos();
+            box.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, 2);
+
+            box2.newPos();
+            box2.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, 3);
+
+        }
+
+// CONTROLS ===================================================================
+        function moveup() {
+                    player.speedY -= 1;
+                }
+
+        function movedown() {
+            player.speedY += 1;
+        }
+
+        function moveleft() {
+            player.speedX -= 1;
+        }
+
+        function moveright() {
+            player.speedX += 1;
+        }
+
+        function slowDown() {
+            player.speedX = 0;
+            player.speedY = 0;
+        }
+
+
+//SCORE UPDATE ================================================================
+        var score = 0;
+        var highscore = 0;
+        //every second update score
+        setInterval(() => {
+            if (gameStarted)
+            {
+                score++;
+
+                if (score > highscore)
+                {
+                    highscore = score;
+                }
+            }
+
+            document.getElementById("score").innerHTML = score.toString();
+            document.getElementById("highscore").innerHTML = highscore.toString();
+        }, 1000);
+
+    </script>
+
+<!--TEXT DISPLAY ==================================================================-->
+
+    <!--Buttons-->
+    <div style="text-align:center; 
+                position: absolute;
+                margin: auto;
+                display: block;
+                top: 570px;
+                bottom: 0;
+                left: 0;
+                right: 0;">
+        <button onclick="moveup()">UP</button><br><br>
+        <button onclick="moveleft()">LEFT</button>
+        <button onclick="moveright()">RIGHT</button><br><br>
+        <button onclick="movedown()">DOWN</button>
+    </div>
+
+    <!--Start Game-->
+    <div id="startGame"; style="text-align:center; 
+                position: absolute;
+                margin: auto;
+                display:block;
+                top: 450px;
+                bottom: 0;
+                left: 0px;
+                right: 0;
+                transform: scale(2)">
+        <button onclick="startGame()">StartGame</button>
+    </div>
+
+    <div; style="position:absolute;
+                text-align:center;
+                margin: auto;
+                display: block;
+                top: 650px;
+                bottom: 0;
+                left: 0;
+                right: 0;">
+        &nbsp;
+        <p>If you click a button the red square will start moving. Click the same button many times, and it will move
+            faster and faster.</p>
+
+    </div>
+
+    <div id="buttonPressed" ; style="position:absolute;
+                                    text-align:center;
+                                    margin: auto;
+                                    display: block;
+                                    top: 0;
+                                    bottom: 300px;
+                                    left: 0;
+                                    right: 500px;">
+        buttonPressed
+    </div>
+
+    <div id="test" ; style="position:absolute;
+                                text-align:center;
+                                margin: auto;
+                                display: block;
+                                top: 0;
+                                bottom: 250px;
+                                left: 0;
+                                right: 500px;">
+        testDIV
+    </div>
+
+    <!--SCORE-->
+ 
+<h1 id = "score"; style = "position:absolute;
+                            text-align: center;  
+                            margin: auto;
+                            display: block; 
+                            top: 0x;
+                            bottom: 670px; 
+                            left: 750px;
+                            right: 0;">                      
+                        0
+    <h1 style = "position:absolute;
+                text-align: center;  
+                margin: auto;
+                display: block; 
+                top: 0px;
+                bottom: 1270px; 
+                left: 600px;
+                right: 0;"> 
+
+        Score:
+    </h1>
+</h1>
+
+
+
+    <!--HIGHSCORE-->
+    <h3 id="highscore" ; style="position:absolute;
+                                text-align:center;
+                                margin: auto;
+                                display: block;
+                                top: 140px;
+                                bottom: 1320px; 
+                                left: 750px;
+                                right: 0;">                        
+    0
+            <h3 style="position:absolute;
+            text-align:center;
+            margin: auto;
+            display: block;
+            top: 140px;
+            bottom: 1320px;
+            left: 600px;
+            right: 0;">
+        Highscore:
+        </h3>
+    </h3>
+
+        <!--DEATH COUNT-->
+    <h3 id="deathcount" ; style="position:absolute;
+                                text-align:center;
+                                margin: auto;
+                                display: block;
+                                top: 200px;
+                                bottom: 1320px; 
+                                left: 750px;
+                                right: 0;">                        
+        0
+            <h3 style="position:absolute;
+            text-align:center;
+            margin: auto;
+            display: block;
+            top: 200px;
+            bottom: 1320px;
+            left: 600px;
+            right: 0;">
+        Death Count:
+        </h3>
+</h3>
+
+
+</body>
+
+</html>
