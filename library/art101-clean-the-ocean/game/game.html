@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trash Survival</title>
+	<link rel="stylesheet" type="text/css" href="game.css">
+    <link rel="stylesheet" type="text/css" href="../site.css">
+
+    <script src="fact_info.json" defer></script>
+    <script src="game.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+</head>
+
+<body onload="initGame()">
+    <div class="header">
+        <!-- Center the Title of the page, but remove the top margin-->
+        <h1 id="title">Clean The Ocean</h1>
+        <div id="links">
+            <a href="/art101-clean-the-ocean/helpinghand.html"> How To Help </a>
+        </div>
+
+        <div class="info_box" id="how_to_play">
+            <h2>HOW TO PLAY</h2>
+            <div id="text">
+                Move your fish with 'WASD' or the arrow keys. <br>
+                Use SPACEBAR to slow down your fish. <br>
+                Pop the bubbles without getting caught in the trash!
+            </div>
+        </div>
+
+        <!----
+        <div class="info_box" id="debug">
+            <button onclick="debugToggle()">Game Debug</button>
+            <button onclick="lose()">Lose</button>
+            <button onclick="win()">Win</button>
+            <p id = "keyPressed">Key Pressed</p>
+            <p id = "menu">Menu: </p>
+        </div>
+        -->
+
+
+
+    </div>
+
+    <canvas id="gamecanvas"></canvas>
+    
+    <div class="info_box" id="stats">
+        <p id="level">Level 0</p>
+        <p id="death_count">Deaths: -1</p>
+    </div>
+
+    <div class="score">
+        <h2>Bubbles Popped</h2>
+        <div id="count">0/0</div>
+    </div>
+
+    <div class=fact_box id="lose">
+        <h2>header</h2>
+        <p>info</p>
+        <p1>tag</p1>
+        <h1>Enter or Spacebar to continue</h1>
+    </div>
+
+    <div class=fact_box id="win">
+        <h2>header</h2>
+        <a href="/art101-clean-the-ocean/helpinghand.html" style="font-size: 30px "> How To Help </a>
+        <p>info</p>
+
+        <button onclick="new_level()">Next Level -></button>
+    </div>
+
+
+    <!----
+        <div id="end_level_bubble" class="fixed">
+        <div>
+            <img src="img/bubble1.png" width=450>
+            <div class=bubble-info>
+                <h2 id="bubble-header"> Level 1: </h2>
+                <p> I know what you're thinking…
+                    “OMG I dont litter! I love the ocean!”
+                    But out of everything we throw away, less than 10% is actually
+                    recycled, and about 80% ends up in either landfills or the ocean!
+                    Fishes swim to survive, and avoid the trash!
+                </p>
+            </div>
+        </div>
+    </div>
+    -->
+
+
+
+</body>
+
+</html>

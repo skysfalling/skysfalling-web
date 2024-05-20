@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dynamic Storefront Grid</title>
+        <link rel="stylesheet" href="../../styles.css">
+        <link rel="stylesheet" href="../../css/storefront.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    </head>
+    <body>
+        <div class="innerbody">
+            <div class="storefront" id="storefront">
+                <!-- Product cards will be dynamically added here -->
+            </div>
+            <!-- Modal for displaying product versions -->
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id="modal-body"></div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../js/storefront.js"></script>
+    </body>
+</html>

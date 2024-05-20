@@ -1,0 +1,151 @@
+#gamecanvas {
+    /*border: 5px solid #000000;*/
+    background-color: transparent;
+
+    border: 5px solid black;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 95%;
+    transform: translate(-50%, 0%);
+}
+
+body
+{
+    /* removes the scroll bar */
+    overflow: hidden;
+}
+
+/* ======= SCORE ======== */
+
+.score
+{
+    color: white;
+    background-color: rgba(135, 255, 237, 0.502);
+    position: fixed;
+
+    bottom: 1%;
+    right: 1%;
+
+    width: 200px;
+    height: 150px;
+
+    border: 5px solid black;
+
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.score #count{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 100px;
+}
+
+.score h2{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 30px;
+
+    background-color: black;
+    width: 102%;
+    margin-left: -2px;
+    align-self: center;
+}
+
+/* ========== GAME INFO BOXES ============ */
+
+#how_to_play.info_box  {
+    width: 50%;
+    height: 180px;
+
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, 50%);
+}
+
+#how_to_play.info_box  #text{
+    font-size: 20px;
+}
+
+#stats.info_box  {
+    position: fixed;
+    width: 100px;
+    top: 70%;
+    left: 90%;
+}
+
+#stats.info_box p {
+    font-size: 20px;
+    margin: 0;
+}
+
+#debug.info_box  {
+    border-color: red;
+    background-color:rgba(65, 81, 96, 0.706);
+    position: fixed;
+    width: 100px;
+    top: 7%;
+    left: 5%;
+    margin: 2px;
+}
+
+#debug.info_box  button{
+    margin: 2px;
+}
+
+#debug.info_box  p{
+    margin: 2px;
+}
+
+
+
+/* ================= win / lose =============== */
+
+.fact_box {
+    word-wrap: break-word;
+    text-align: center;
+    width: 500px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+}
+
+.fact_box p{
+    color: white;
+    font-size: 25px;
+    margin: 5%;
+    margin-top: 2%;
+}
+
+.fact_box p1{
+    color: red;
+    font-size: 25px;
+    margin: 5%;
+    margin-top: 2%;
+}
+
+#lose.fact_box {
+    background-color: rgb(33, 50, 82);
+    border: 5px solid red;
+}
+
+#win.fact_box {
+    background-color: rgb(0, 159, 202);
+    border: 5px solid black;
+}
+
+#lose.fact_box h2{
+    color: rgb(255, 255, 255);
+    font-size: 45px;
+}
+
+.fact_box button{
+    font-size: 50px;
+    margin-bottom: 5%;;
+}
+

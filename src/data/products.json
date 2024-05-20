@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Mechanika",
+        "image": "../assets/mechanika_0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mechanika_0.png" },
+            { "version": "Version 1B", "image": "../assets/mechanika_1.png" },
+            { "version": "Version 1C", "image": "../assets/mechanika_2.png" }
+        ]
+    },
+    {
+        "name": "Mother's Touch",
+        "image": "../assets/mothers_touch0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mothers_touch0.png" },
+            { "version": "Version 1B", "image": "../assets/mothers_touch1.png" },
+            { "version": "Version 1C", "image": "../assets/mothers_touch2.png" }
+        ]
+    },
+        {
+        "name": "Mechanika",
+        "image": "../assets/mechanika_0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mechanika_0.png" },
+            { "version": "Version 1B", "image": "../assets/mechanika_1.png" },
+            { "version": "Version 1C", "image": "../assets/mechanika_2.png" }
+        ]
+    },
+    {
+        "name": "Mother's Touch",
+        "image": "../assets/mothers_touch0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mothers_touch0.png" },
+            { "version": "Version 1B", "image": "../assets/mothers_touch1.png" },
+            { "version": "Version 1C", "image": "../assets/mothers_touch2.png" }
+        ]
+    },
+        {
+        "name": "Mechanika",
+        "image": "../assets/mechanika_0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mechanika_0.png" },
+            { "version": "Version 1B", "image": "../assets/mechanika_1.png" },
+            { "version": "Version 1C", "image": "../assets/mechanika_2.png" }
+        ]
+    },
+    {
+        "name": "Mother's Touch",
+        "image": "../assets/mothers_touch0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mothers_touch0.png" },
+            { "version": "Version 1B", "image": "../assets/mothers_touch1.png" },
+            { "version": "Version 1C", "image": "../assets/mothers_touch2.png" }
+        ]
+    },
+        {
+        "name": "Mechanika",
+        "image": "../assets/mechanika_0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mechanika_0.png" },
+            { "version": "Version 1B", "image": "../assets/mechanika_1.png" },
+            { "version": "Version 1C", "image": "../assets/mechanika_2.png" }
+        ]
+    },
+    {
+        "name": "Mother's Touch",
+        "image": "../assets/mothers_touch0.png",
+        "versions": [
+            { "version": "Version 1A", "image": "../assets/mothers_touch0.png" },
+            { "version": "Version 1B", "image": "../assets/mothers_touch1.png" },
+            { "version": "Version 1C", "image": "../assets/mothers_touch2.png" }
+        ]
+    }
+]
