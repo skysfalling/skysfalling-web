@@ -1,0 +1,131 @@
+@import url('https://fonts.cdnfonts.com/css/ocean');
+@import url('https://fonts.cdnfonts.com/css/kg-when-oceans-rise');
+
+html {
+    background-image: url("img/waterbackground.png");
+    background-size: cover;
+    height: 100%;
+    /* font-family: 'OCEAN', sans-serif; */
+    font-family: 'KG When Oceans Rise', sans-serif;                     
+}
+
+.header{
+    position:absolute;
+    width: 100%;
+    height: 200px;
+    background-color: #39baff53;
+    margin-left: -10px;
+    margin-top: -10px;
+}
+
+.header #title{
+    color: white;
+    font-size: 100px;
+    text-align: center;
+    margin-bottom: 1%;
+    margin-top: 4%;
+}
+
+.header #links{
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    margin-top: -3%;
+}
+
+.header-overlay{
+    background-color: rgb(192, 136, 248);
+    z-index: 9;
+    margin: 20px;
+}
+
+/* ========== INFO BOX ============= */
+.info_box
+{
+    color: white;
+    background-color: rgba(0, 151, 185, 0.759);
+    border: 5px solid black;
+    border-radius: 25px;
+    position: absolute;
+    text-align: center;
+}
+
+.info_box h2 {
+    font-size: 50px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 20px;
+    background-color: rgb(0, 30, 48);
+}
+
+.info_box #text {
+    font-size: 28px;
+    font-style: normal;
+    margin-bottom: 5%;
+    margin: 10px;;
+}
+
+#game_intro.info_box{
+    background-color: rgba(12, 23, 51, 0.658);
+    top: 220px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 80%;
+    height: 500px;
+}
+
+.info_box #play_game{
+    font-size: 100px;
+    position: absolute;
+    width: 70%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#intro.info_box{
+    top: 220px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 80%;
+    height: 500px;
+}
+
+
+/* ===================== Positions around a div ======================== */
+
+/* Bottom left text */
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+/* Top left text */
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
