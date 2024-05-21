@@ -1,0 +1,181 @@
+:root {
+  --primary-color: #001f3f;
+  --secondary-color: #0074D9;
+  --accent-color: #FF4136;
+  --background-color: #111111;
+  --text-color: #F6F6F6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background: linear-gradient(30deg, var(--primary-color), var(--secondary-color));
+  color: var(--text-color);
+  height: 100vh;
+}
+
+p {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  color: var(--text-color);
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  font-style: normal;
+  line-height: 1;
+  color: var(--text-color);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  font-style: normal;
+  line-height: 1;
+  color: var(--text-color);
+}
+
+h3 {
+  font-size: 21px;
+  font-weight: bold;
+  font-style: normal;
+  line-height: 1;
+  color: var(--text-color);
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+#c {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.innerbody {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin: 15%;
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  border: 5px solid --primary-color;
+  border-radius: 20px;
+
+  background-color: --background-color;
+  box-shadow: 0 0 20px --secondary-color;
+}
+
+
+nav {
+  width: 100%;
+  height: 100px;
+  background-color: #e42069;
+}
+
+/*addresses entire menu*/
+ul {
+  margin-left: 0;
+  margin: 0 auto;
+}
+
+/*addresses links in menu*/
+ul li {
+  list-style: none;
+  display: inline-block;
+  float: left;
+  line-height: 100px;
+}
+
+/*addresses text in links*/
+ul li a {
+  display: block;
+  text-decoration: none;
+  font-size: 75%;
+  font-family: Arial;
+  color: black;
+  padding: 0 10px;
+
+}
+
+ul li a:hover {
+  color: white;
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 80%;
+
+}
+
+.videowrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 25%;
+  height: 0;
+}
+
+.videowrapper iframe {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+
+
+.css-button-sliding-to-left--black {
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  outline: none;
+  border-radius: 5px;
+  z-index: 1;
+  background: #fff;
+  overflow: hidden;
+  border: 2px solid #212529;
+  color: #212529;
+}
+
+.css-button-sliding-to-left--black:hover {
+  color: #fff;
+}
+
+.css-button-sliding-to-left--black:hover:after {
+  width: 100%;
+}
+
+.css-button-sliding-to-left--black:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  transition: all 0.3s ease;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background: #212529;
+}
