@@ -63,9 +63,18 @@ body {
   display: block;
 }
 
+canvas {
+  display: block;
+  margin: 0 auto;
+  z-index: 1;
+  position: absolute;
+}
+
 .innerbody {
+  position: absolute;
   display: flex;
   flex-wrap: wrap;
+  z-index: 2;
 
   margin: 15%;
 
