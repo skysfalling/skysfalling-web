@@ -44,7 +44,7 @@ h2 {
 }
 
 h3 {
-  font-size: 12px;
+  font-size: 21px;
   font-weight: bold;
   font-style: normal;
   line-height: 1;
@@ -52,10 +52,10 @@ h3 {
 }
 
 .innerbody {
-  margin: 25px;
-
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+
+  margin: 5% auto;
 
   justify-content: center;
   align-items: center;
