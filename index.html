@@ -9,19 +9,33 @@
 		<link rel="stylesheet" href="./src/css/styles.css">
 		<link rel="stylesheet" href="./src/css/canvas.css">
 		<link rel="stylesheet" href="./src/css/clash-display.css">
+
 	</head>
 	<body>
-		<h1>skysfalling.web</h1>
 
-		<div class="innerbody">
-			<a href="./src/pages/store.html">
-				<button
-					type="button"
-					class="css-button-sliding-to-left--black">
-					Storefront
-				</button>
-			</a>
+		<div id="header">
+			<h1>skysfalling.web</h1>
 		</div>
+
+		<div id="button-container" class="innerbody"></div>
+		<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('./src/data/pages.json')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('button-container');
+                    data.forEach(page => {
+                        const button = document.createElement('button');
+                        button.textContent = `Go to ${page.name}`;
+                        button.onclick = () => window.location.href = page.url;
+                        button.className = 'btn';
+                        container.appendChild(button);
+                    });
+                })
+                .catch(error => console.error('Error loading JSON:', error));
+        });
+    </script>
+
 		<canvas id="canvas" class="fullscreen"></canvas>
 		<script src="./library/particles/constellationparticles.js"></script>
 		<!---

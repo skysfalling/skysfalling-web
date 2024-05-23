@@ -16,56 +16,92 @@
   --stone-100: #f5f5f4;
 }
 
-html {
-  font-size: 16px;
-  font-family: ClashDisplay-Regular;
+* {
+  font-family: ClashDisplay-Regular, sans-serif;
   line-height: 1.5;
-  color: var(--stone-900);
+  color: var(--magenta-600);
+  background-color: var(--stone-900);
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  padding-left: 5%;
+
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 body {
-  background: var(--violet-900);
-  color: var(--magenta-600);
-  height: 100vh;
+  width: 100%;
+  margin-top: 10rem;
 }
 
 .innerbody {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  width: 100vh;
-  background-color: #1c1917;
+
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* for smooth scrolling on iOS */
+  white-space: nowrap;
+
+  /* Prevent line break inside flex container */
+  border: 2px solid var(--magenta-600);
+  border-radius: 25px 0px 25px 0px;
+
+  min-height: 50%;
+
+  margin: 5rem;
+  padding: 0.5rem;
 }
 
 
-.css-button-sliding-to-left--black {
-  min-width: 130px;
-  height: 40px;
-  color: #fff;
-  padding: 5px 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+button {
   position: relative;
   display: inline-block;
-  outline: none;
-  border-radius: 5px;
-  z-index: 1;
-  background: #fff;
-  overflow: hidden;
-  border: 2px solid #212529;
-  color: #212529;
+
+  padding: 1rem 3rem;
+  margin: 5px;
+
+  z-index: 5;
+
+  min-width: 400px;
+
+  font-size: x-large;
+
+  cursor: alias;
+  transition: all 0.3s ease;
+
+  border-radius: 25px;
+  border: 2px solid var(--magenta-600);
+
 }
 
-.css-button-sliding-to-left--black:hover {
-  color: #fff;
+button:hover {
+  color: var(--stone-900);
+  background-color: var(--magenta-600);
+  border-color: var(--stone-900);
+
+  top: 5px;
+  transition: all 0.5s ease;
 }
 
-.css-button-sliding-to-left--black:hover:after {
+button:hover:after {
   width: 100%;
 }
 
-.css-button-sliding-to-left--black:after {
+button:after {
   content: "";
   position: absolute;
   z-index: -1;
@@ -74,5 +110,4 @@ body {
   top: 0;
   width: 0;
   height: 100%;
-  background: #212529;
 }
