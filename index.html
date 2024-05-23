@@ -6,69 +6,52 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<title>skysfalling.web</title>
-		<link href="./src/css/bootstrap.min.css" rel="stylesheet">
-		<link href="./src/css/styles.css" rel="stylesheet">
-
+		<link rel="stylesheet" href="./src/css/styles.css">
+		<link rel="stylesheet" href="./src/css/canvas.css">
+		<link rel="stylesheet" href="./src/css/clash-display.css">
 	</head>
 	<body>
-		<canvas id="canvas"></canvas>
-		<script src="./library/particles/constellationparticles.js"></script>
+		<h1>skysfalling.web</h1>
 
 		<div class="innerbody">
-			<div class="col-md-4">
-				<h3 class="text-left">
-					Super Silver
-				</h3>
-				<a href="./src/pages/store.html">
-					<button type="button" class="btn btn-success btn-block">
-						Go to Storefront
-					</button>
-				</a>
-			</div>
-			<div class="col-md-4">
-				<h3 class="text-left">
-					Snake Game
-				</h3>
-				<a href="./src/pages/snake-game.html">
-					<button type="button" class="btn btn-success btn-block">
-						Go to Game
-					</button>
-				</a>
-			</div>
-			<div class="col-md-4">
-				<h3 class="text-left">
-					Dodge Game
-				</h3>
-				<a href="./library/art101-clean-the-ocean/game/game.html">
-					<button type="button" class="btn btn-success btn-block">
-						Go to Storefront
-					</button>
-				</a>
-			</div>
-			<div class="col-md-4">
-				<h3 class="text-left">
-					Three Js
-				</h3>
-				<a href="./src/pages/threejs-birds.html">
-					<button type="button" class="btn btn-success btn-block">
-						Go to Game
-					</button>
-				</a>
-			</div>
-			<div class="col-md-4">
-				<h3 class="text-left">
-					Particles
-				</h3>
-				<a href="./library/particles/constellationparticles.html">
-					<button type="button" class="btn btn-success btn-block">
-						Go to Game
-					</button>
-				</a>
-			</div>
+			<a href="./src/pages/store.html">
+				<button
+					type="button"
+					class="css-button-sliding-to-left--black">
+					Storefront
+				</button>
+			</a>
 		</div>
+		<canvas id="canvas" class="fullscreen"></canvas>
+		<script src="./library/particles/constellationparticles.js"></script>
+		<!---
 
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/scripts.js"></script>
+
+						<div class="col">
+				<h3>Snake Game</h3>
+				<a href="./src/pages/snake-game.html">
+					<button type="button" class="btn">Go to Game</button>
+				</a>
+			</div>
+			<div class="col">
+				<h3>Dodge Game</h3>
+				<a href="./library/art101-clean-the-ocean/game/game.html">
+					<button type="button" class="btn">Go to Game</button>
+				</a>
+			</div>
+			<div class="col">
+				<h3>Three Js</h3>
+				<a href="./src/pages/threejs-birds.html">
+					<button type="button" class="btn">Go to Game</button>
+				</a>
+			</div>
+			<div class="col">
+				<h3>Particles</h3>
+				<a href="./library/particles/constellationparticles.html">
+					<button type="button" class="btn">Go to Game</button>
+				</a>
+			</div>
+			-->
+
 	</body>
 </html>
