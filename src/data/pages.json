@@ -1,5 +1,5 @@
 [
-  {"name": "Snake Game", "url": "../pages/snake-game.html"},
+  {"name": "Snake Game", "url": "./src/pages/snake-game.html"},
   {"name": "Dodge Game", "url": "./library/art101-clean-the-ocean/game/game.html"},
   {"name": "Three Js", "url": "./src/pages/threejs-birds.html"},
   {"name": "Particles", "url": "./library/particles/constellationparticles.html"}

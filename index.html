@@ -12,21 +12,76 @@
 		<link rel="stylesheet" href="./src/css/mask.css">
 		<link rel="stylesheet" href="./src/css/clash-display.css">
 
+		<style>
+        #gameContainer {
+            display: none; /* Hide the game container initially */
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        #toggleButton {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+
 	</head>
 	<body>
+
+		<!--
+		<canvas id="canvas" class="full-screen-content"></canvas>
+		<script src="./library/particles/constellationparticles.js"></script>
+		-->
 
 		<div id="header">
 			<h1>skysfalling.web</h1>
 		</div>
 
-		<div class="center">
-			<div id="button-container" class="innerbody border0"></div>
-			<div class="innerbody centered-square border0"></div>
+		<div id="button-container" class="innerbody border0">
+			<button id="toggleButton" onclick="toggleGame()">Show Game</button>
 		</div>
 
-		<canvas id="canvas" class="full-screen-content"></canvas>
-		<script src="./library/particles/constellationparticles.js"></script>
+		<div class="center">
+			<div class="innerbody border0">
+				<div id="gameContainer">
+					<canvas id="snake-game-canvas"></canvas>
+					<script src="./src/js/snake-game.js"></script>
 
+					<div id="gameover" style="color:red; font-size: 50px; display: none;">GAME OVER</div>
+					<button id="resetbutton" onclick="NewGame()" style="display: none;">Start New Game</button>
+					<div id="score" style="color:white;">Score: 0</div>
+					<div id="timer" style="color:white;">120</div>
+					<div id="name" style="color:white;">@skythecreative</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+
+        function toggleGame() {
+            var gameContainer = document.getElementById('gameContainer');
+            var toggleButton = document.getElementById('toggleButton');
+
+            if (gameContainer.style.display === 'none' || gameContainer.style.display === '') {
+                gameContainer.style.display = 'block';
+                toggleButton.textContent = 'Hide Game';
+
+				Start();
+            } 
+			else {
+                gameContainer.style.display = 'none';
+                toggleButton.textContent = 'Show Game';
+            }
+
+        }
+    </script>
+
+		<div id="footer">
+			<p>© 2024 skysfalling.web</p>
+		</div>
+
+		<!-- Load Pages -->
+		<!--
 		<script>
 			document.addEventListener('DOMContentLoaded', () => {
 				fetch('./src/data/pages.json')
@@ -44,35 +99,6 @@
 					.catch(error => console.error('Error loading JSON:', error));
 			});
 		</script>
-
-		<!---
-
-
-						<div class="col">
-				<h3>Snake Game</h3>
-				<a href="./src/pages/snake-game.html">
-					<button type="button" class="btn">Go to Game</button>
-				</a>
-			</div>
-			<div class="col">
-				<h3>Dodge Game</h3>
-				<a href="./library/art101-clean-the-ocean/game/game.html">
-					<button type="button" class="btn">Go to Game</button>
-				</a>
-			</div>
-			<div class="col">
-				<h3>Three Js</h3>
-				<a href="./src/pages/threejs-birds.html">
-					<button type="button" class="btn">Go to Game</button>
-				</a>
-			</div>
-			<div class="col">
-				<h3>Particles</h3>
-				<a href="./library/particles/constellationparticles.html">
-					<button type="button" class="btn">Go to Game</button>
-				</a>
-			</div>
-			-->
-
+		-->
 	</body>
 </html>

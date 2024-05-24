@@ -6,7 +6,7 @@ button {
     margin: 5px;
 
     /* Make sure that the button is always clickable */
-    /*z-index: 1000;*/
+    z-index: 1000;
 
     font-size: 200%;
 
