@@ -15,14 +15,14 @@
 		<style>
         #gameContainer {
             display: none; /* Hide the game container initially */
-            text-align: center;
-            margin: 20px auto;
+
+			position: relative;
+			overflow-y: auto;
         }
 
-        #toggleButton {
-            display: block;
-            margin: 20px auto;
-        }
+		canvas {
+			width: 100%;
+		}
     </style>
 
 	</head>
@@ -46,12 +46,6 @@
 				<div id="gameContainer">
 					<canvas id="snake-game-canvas"></canvas>
 					<script src="./src/js/snake-game.js"></script>
-
-					<div id="gameover" style="color:red; font-size: 50px; display: none;">GAME OVER</div>
-					<button id="resetbutton" onclick="NewGame()" style="display: none;">Start New Game</button>
-					<div id="score" style="color:white;">Score: 0</div>
-					<div id="timer" style="color:white;">120</div>
-					<div id="name" style="color:white;">@skythecreative</div>
 				</div>
 			</div>
 		</div>

@@ -160,7 +160,7 @@ var gameTimer = {
     },
     update: function () {
         gameTimer.value--;
-        document.getElementById("timer").innerHTML = gameTimer.value;
+        //document.getElementById("timer").innerHTML = gameTimer.value;
 
         if (gameTimer.value <= 0) {
             GameOver();
@@ -179,7 +179,7 @@ function updateGameArea() {
     DrawGrid();
     SnakeUpdate();
     FruitUpdate();
-    document.getElementById("score").innerHTML = "Score: " + gameScore;
+    //document.getElementById("score").innerHTML = "Score: " + gameScore;
 }
 
 function SnakeUpdate() {
@@ -267,7 +267,7 @@ function KeyDownListener() {
 
 function DrawGrid() {
     for (var i = 0; i < canvas.width / gridSize; i++) {
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = 'white';
         ctx.lineWidth = 1;
 
         ctx.beginPath();
@@ -297,9 +297,9 @@ function NewGame() {
     gameTimer.value = 120;
     gameOver = false;
 
-    document.getElementById("gameover").style.display = "none";
-    document.getElementById("resetbutton").style.display = "none";
-    document.getElementById("timer").innerHTML = "120";
+    //document.getElementById("gameover").style.display = "none";
+    //document.getElementById("resetbutton").style.display = "none";
+    //document.getElementById("timer").innerHTML = "120";
 
     fruit_on_board = [];
     SpawnNewFruit();
