@@ -1,6 +1,4 @@
 [
-  {"name": "Storefront", "url": "./src/pages/store.html"},
-  {"name": "Font Viewer","url": "./src/pages/font-viewer.html"},
   {"name": "Snake Game", "url": "../pages/snake-game.html"},
   {"name": "Dodge Game", "url": "./library/art101-clean-the-ocean/game/game.html"},
   {"name": "Three Js", "url": "./src/pages/threejs-birds.html"},

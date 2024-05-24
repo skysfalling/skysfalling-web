@@ -24,7 +24,6 @@
 }
 
 #header {
-  position: fixed;
   top: 0;
   left: 0;
 
@@ -35,19 +34,13 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-body {
-  width: 100%;
-  margin-top: 10rem;
-}
-
 .innerbody {
   position: relative;
   display: flex;
-  flex-direction: column;
 
-  justify-content: center;
   align-items: center;
   justify-self: center;
+
 
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -60,54 +53,29 @@ body {
   border: 2px solid var(--magenta-600);
   border-radius: 25px 0px 25px 0px;
 
-  min-height: 50%;
+  padding: 5px;
 
-  margin: 5rem;
-  padding: 0.5rem;
-}
+  margin-left: 50px;
+  margin-right: 50px;
 
-
-button {
-  position: relative;
-  display: inline-block;
-
-  padding: 1rem 3rem;
-  margin: 5px;
-
-  z-index: 5;
-
-  min-width: 400px;
-
-  font-size: x-large;
-
-  cursor: alias;
-  transition: all 0.3s ease;
-
-  border-radius: 25px;
-  border: 2px solid var(--magenta-600);
-
-}
-
-button:hover {
-  color: var(--stone-900);
-  background-color: var(--magenta-600);
-  border-color: var(--stone-900);
-
-  top: 5px;
   transition: all 0.5s ease;
 }
 
-button:hover:after {
-  width: 100%;
+/* -- Desktop -- */
+@media (min-width: 500px) {
+  .innerbody {
+    justify-content: center;
+
+    transition: all 0.5s ease;
+  }
 }
 
-button:after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  transition: all 0.3s ease;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 100%;
+/* -- Mobile -- */
+@media (max-width: 499px) {
+  .innerbody {
+    justify-content: left;
+    flex-direction: column;
+
+    transition: all 0.5s ease;
+  }
 }

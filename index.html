@@ -8,6 +8,8 @@
 		<title>skysfalling.web</title>
 		<link rel="stylesheet" href="./src/css/styles.css">
 		<link rel="stylesheet" href="./src/css/canvas.css">
+		<link rel="stylesheet" href="./src/css/button.css">
+		<link rel="stylesheet" href="./src/css/mask.css">
 		<link rel="stylesheet" href="./src/css/clash-display.css">
 
 	</head>
@@ -17,27 +19,35 @@
 			<h1>skysfalling.web</h1>
 		</div>
 
-		<div id="button-container" class="innerbody"></div>
-		<script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('./src/data/pages.json')
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('button-container');
-                    data.forEach(page => {
-                        const button = document.createElement('button');
-                        button.textContent = `Go to ${page.name}`;
-                        button.onclick = () => window.location.href = page.url;
-                        button.className = 'btn';
-                        container.appendChild(button);
-                    });
-                })
-                .catch(error => console.error('Error loading JSON:', error));
-        });
-    </script>
+		<canvas id="canvas" class="full-screen-content"></canvas>
 
-		<canvas id="canvas" class="fullscreen"></canvas>
+		<div id="button-container" class="innerbody"></div>
+
+		<!-- Uncomment other divs to test different masking effects -->
+		<!-- <div class="mask semi-transparent-bg"></div> -->
+		<!-- <div class="mask blur-effect"></div> -->
+		<!-- <div class="mask gradient-bg"></div> -->
+		<!-- <div class="mask clip-path"></div> -->
+
 		<script src="./library/particles/constellationparticles.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				fetch('./src/data/pages.json')
+					.then(response => response.json())
+					.then(data => {
+						const container = document.getElementById('button-container');
+						data.forEach(page => {
+							const button = document.createElement('button');
+							button.textContent = `${page.name}`;
+							button.onclick = () => window.location.href = page.url;
+							button.className = 'btn';
+							container.appendChild(button);
+						});
+					})
+					.catch(error => console.error('Error loading JSON:', error));
+			});
+		</script>
+
 		<!---
 
 

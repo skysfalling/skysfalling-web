@@ -1,0 +1,45 @@
+button {
+    position: relative;
+    display: inline-block;
+
+    padding: 1rem;
+    margin: 5px;
+
+    /* Make sure that the button is always clickable */
+    /*z-index: 1000;*/
+
+    font-size: 200%;
+
+    cursor: alias;
+    transition: all 0.3s ease;
+
+    border-radius: 25px;
+    border: 2px solid var(--magenta-600);
+
+    width: 100%;
+    max-width: 300px;
+}
+
+button:hover {
+    color: var(--stone-900);
+    background-color: var(--magenta-600);
+    border-color: var(--stone-900);
+
+    top: 5px;
+    transition: all 0.5s ease;
+}
+
+button:hover:after {
+    width: 100%;
+}
+
+button:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+}
