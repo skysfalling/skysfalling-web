@@ -1,65 +1,105 @@
+
+@import url('button.css');
+@import url('canvas.css');
 @import url('clash-display.css');
 
 :root {
+  --violet-100: #eae6ff;
+  --violet-200: #c3bdf7;
+  --violet-300: #9a93ef;
+  --violet-400: #7d73e8;
   --violet-500: #7453ff;
   --violet-600: #6330f7;
+  --violet-700: #5525d6;
   --violet-800: #4718bf;
   --violet-900: #3b169c;
 
+  --magenta-100: #ffe6ff;
+  --magenta-200: #ffb3ff;
+  --magenta-300: #ff80ff;
+  --magenta-400: #ff4dff;
+  --magenta-500: #ff1aff;
   --magenta-600: #ff00ff;
+  --magenta-700: #cc00cc;
   --magenta-800: #a900a3;
+  --magenta-900: #870087;
 
-  --stone-900: #1c1917;
-  --stone-700: #44403c;
-  --stone-500: #78716c;
-  --stone-300: #d6d3d1;
   --stone-100: #f5f5f4;
+  --stone-200: #e7e5e4;
+  --stone-300: #d6d3d1;
+  --stone-400: #a8a29e;
+  --stone-500: #78716c;
+  --stone-600: #57534e;
+  --stone-700: #44403c;
+  --stone-800: #292524;
+  --stone-900: #1c1917;
 }
+
 
 * {
   font-family: ClashDisplay-Regular, sans-serif;
-  line-height: 1.5;
+  line-height: 0.5f;
   color: var(--magenta-600);
-  background-color: var(--stone-900);
 }
 
-#header {
-  position: relative;
+html{
+  overflow: hidden;
+
+  background-color: var(--stone-800);
+}
+
+a {
+  /* remove the underline of the link */
+  text-decoration: none;
+}
+
+h1 {
+  margin: 0;
+
+  font-size: 2.5rem;
+  color: var(--magenta-600);
+}
+
+#navbar {
+  position: fixed;
   top: 0;
   left: 0;
 
-  padding-left: 5%;
-
   z-index: 1000;
 
-  width: 100%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  width: 100vh;
+  background-color: var(--stone-900);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
 }
 
 #footer {
-  position: relative;
+  position: fixed;
   bottom: 0;
   left: 0;
 
-  padding-left: 5%;
-
-  z-index: 1000;
-
   width: 100%;
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+  height: 50px;
 
+  justify-content: top;
+  
+
+}
+
+body {
+  margin-top: 10vh;
 }
 
 .innerbody {
   position: relative;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   align-items: center;
   justify-self: center;
   justify-content: center;
 
-  overflow-y: auto;
+  overflow: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 
@@ -67,8 +107,6 @@
   white-space: nowrap;
 
   /* Prevent line break inside flex container */
-
-
   padding: 5px;
 
   margin-left: 50px;

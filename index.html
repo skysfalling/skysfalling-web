@@ -5,94 +5,27 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>skysfalling.web</title>
-		<link rel="stylesheet" href="./src/css/styles.css">
-		<link rel="stylesheet" href="./src/css/canvas.css">
-		<link rel="stylesheet" href="./src/css/button.css">
-		<link rel="stylesheet" href="./src/css/mask.css">
-		<link rel="stylesheet" href="./src/css/clash-display.css">
+		<title>skysfalling.dev</title>
+		<link rel="stylesheet" href="./src/css/main.css">
 
-		<style>
-        #gameContainer {
-            display: none; /* Hide the game container initially */
-
-			position: relative;
-			overflow-y: auto;
-        }
-
-		canvas {
-			width: 100%;
-		}
-    </style>
-
-	</head>
-	<body>
-
-		<!--
-		<canvas id="canvas" class="full-screen-content"></canvas>
-		<script src="./library/particles/constellationparticles.js"></script>
-		-->
-
-		<div id="header">
+		<div id="navbar">
 			<h1>skysfalling.web</h1>
 		</div>
-
-		<div id="button-container" class="innerbody border0">
-			<button id="toggleButton" onclick="toggleGame()">Show Game</button>
-		</div>
-
-		<div class="center">
-			<div class="innerbody border0">
-				<div id="gameContainer">
-					<canvas id="snake-game-canvas"></canvas>
-					<script src="./src/js/snake-game.js"></script>
-				</div>
-			</div>
-		</div>
-
-		<script>
-
-        function toggleGame() {
-            var gameContainer = document.getElementById('gameContainer');
-            var toggleButton = document.getElementById('toggleButton');
-
-            if (gameContainer.style.display === 'none' || gameContainer.style.display === '') {
-                gameContainer.style.display = 'block';
-                toggleButton.textContent = 'Hide Game';
-
-				Start();
-            } 
-			else {
-                gameContainer.style.display = 'none';
-                toggleButton.textContent = 'Show Game';
-            }
-
-        }
-    </script>
-
 		<div id="footer">
 			<p>© 2024 skysfalling.web</p>
 		</div>
+	</head>
 
-		<!-- Load Pages -->
-		<!--
-		<script>
-			document.addEventListener('DOMContentLoaded', () => {
-				fetch('./src/data/pages.json')
-					.then(response => response.json())
-					.then(data => {
-						const container = document.getElementById('button-container');
-						data.forEach(page => {
-							const button = document.createElement('button');
-							button.textContent = `${page.name}`;
-							button.onclick = () => window.location.href = page.url;
-							button.className = 'btn';
-							container.appendChild(button);
-						});
-					})
-					.catch(error => console.error('Error loading JSON:', error));
-			});
-		</script>
-		-->
+
+	<body>
+		<canvas id="canvas" class="full-screen-content"></canvas>
+		<script src="./library/particles/constellationparticles.js"></script>
+
+
+		<div id="button-container" class="innerbody border0">
+			<a href="./src/pages/threejs-birds.html" class="button">Enter</a>
+		</div>
+
+
 	</body>
 </html>

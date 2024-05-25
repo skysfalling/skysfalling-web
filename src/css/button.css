@@ -1,4 +1,4 @@
-button {
+.button {
     position: relative;
     display: inline-block;
 
@@ -20,7 +20,7 @@ button {
     max-width: 300px;
 }
 
-button:hover {
+.button:hover {
     color: var(--stone-900);
     background-color: var(--magenta-600);
     border-color: var(--stone-900);
@@ -29,11 +29,11 @@ button:hover {
     transition: all 0.5s ease;
 }
 
-button:hover:after {
+.button:hover:after {
     width: 100%;
 }
 
-button:after {
+.button:after {
     content: "";
     position: absolute;
     z-index: -1;
