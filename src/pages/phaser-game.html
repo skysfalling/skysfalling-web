@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser Game Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div id="gameContainer"></div>
+    <script>
+        // Game configuration
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            backgroundColor: '#2d2d2d',
+            parent: 'gameContainer',
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        // Create a new Phaser Game instance
+        const game = new Phaser.Game(config);
+
+        function preload() {
+            // Preload assets
+            this.load.image('ball', 'https://phaser.io/images/img.png'); // Placeholder image URL
+        }
+
+        function create() {
+            // Create the ball sprite and set its properties
+            this.ball = this.physics.add.sprite(400, 300, 'ball');
+            this.ball.setBounce(0.9);
+            this.ball.setCollideWorldBounds(true);
+
+            // Enable cursor keys for movement
+            this.cursors = this.input.keyboard.createCursorKeys();
+        }
+
+        function update() {
+            // Handle ball movement with arrow keys
+            if (this.cursors.left.isDown) {
+                this.ball.setVelocityX(-160);
+            } else if (this.cursors.right.isDown) {
+                this.ball.setVelocityX(160);
+            } else {
+                this.ball.setVelocityX(0);
+            }
+
+            if (this.cursors.up.isDown && this.ball.body.touching.down) {
+                this.ball.setVelocityY(-330);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -7,25 +7,45 @@
 
 		<title>skysfalling.dev</title>
 		<link rel="stylesheet" href="./src/css/main.css">
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.js"
+			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+			crossorigin="anonymous">
+		</script>
+		<script> 
+			$(function(){
+				$("#header").load("header.html"); 
+				$("#footer").load("footer.html"); 
+			});
 
-		<div id="navbar">
-			<h1>skysfalling.web</h1>
-		</div>
-		<div id="footer">
-			<p>© 2024 skysfalling.web</p>
-		</div>
+
+			$(document).ready(function() {
+            $('#particles-button').click(function() {
+                $('#particles-canvas').toggle();
+            });
+            
+            $('#snake-button').click(function() {
+                window.location.href = './src/pages/snake-game.html';
+            });
+            
+            $('#threejs-button').click(function() {
+                window.location.href = './src/pages/threejs.html';
+            });
+        });
+		</script>
+		<div id="header"></div>
+		<div id="footer"></div>
 	</head>
 
-
+	<!------------ BODY ---------------------->
 	<body>
-		<canvas id="canvas" class="full-screen-content"></canvas>
-		<script src="./library/particles/constellationparticles.js"></script>
-
-
-		<div id="button-container" class="innerbody border0">
-			<a href="./src/pages/threejs-birds.html" class="button">Enter</a>
+		<div class="innerbody border0">
+			<button id="particles-button" class="button">Particles</button>
+			<button id="snake-button" class="button">Snake</button>
+			<button id="threejs-button" class="button">ThreeJS</button>
 		</div>
 
-
+		<canvas id="particles-canvas"></canvas>
+		<script src="./library/particles/constellationparticles.js"></script>
 	</body>
 </html>
