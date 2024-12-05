@@ -1,5 +1,5 @@
 import express from "express";
-import mysql from "mysql";
+import mysql from 'mysql2';
 import cors from "cors";
 
 const BACKEND_PORT = 8800;
@@ -12,75 +12,31 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.listen(BACKEND_PORT, () => {
-  console.log(`Connected to backend on port ${BACKEND_PORT}`);
-});
-
-const db = mysql.createConnection({
+// Create the connection pool instead of a single connection
+const db = mysql.createPool({
   host: MYSQL_HOST,
   user: MYSQL_USER,
   password: MYSQL_PASSWORD,
   database: MYSQL_DATABASE,
-});
+}).promise(); // Add .promise() for better async handling
 
+// Get the homepage, (request, response)
 app.get("/", (req, res) => {
-  res.json("hello");
+  res.json("Hello World");
 });
 
-app.get("/books", (req, res) => {
-  const q = "SELECT * FROM books";
-  db.query(q, (err, data) => {
-    if (err) {
-      console.log(err);
-      return res.json(err);
-    }
-    return res.json(data);
-  });
+// Get all the users from the database
+app.get("/users", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM users");
+    console.log(rows);
+    return res.json(rows);
+  } catch (err) {
+    console.error(err);
+    return res.json(err);
+  }
 });
 
-app.post("/books", (req, res) => {
-  const q = "INSERT INTO books(`title`, `desc`, `price`, `cover`) VALUES (?)";
-
-  const values = [
-    req.body.title,
-    req.body.desc,
-    req.body.price,
-    req.body.cover,
-  ];
-
-  db.query(q, [values], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = " DELETE FROM books WHERE id = ? ";
-
-  db.query(q, [bookId], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.put("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = "UPDATE books SET `title`= ?, `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?";
-
-  const values = [
-    req.body.title,
-    req.body.desc,
-    req.body.price,
-    req.body.cover,
-  ];
-
-  db.query(q, [...values,bookId], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.listen(8800, () => {
-  console.log("Connected to backend.");
+app.listen(BACKEND_PORT, () => {
+  console.log(`Connected to backend on port ${BACKEND_PORT}`);
 });
