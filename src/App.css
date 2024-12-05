@@ -160,7 +160,7 @@ section.pentagon-down {
     height: 40px;
     margin: 20px auto;
     border: 3px solid #f3f3f3;
-    border-top: 3px solid #3498db;
+    border-top: 3px solid #24292e;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -173,4 +173,61 @@ section.pentagon-down {
 .loading-text {
     color: #666;
     margin: 20px 0;
+}
+
+.github-profile {
+    background: rgba(255, 255, 255, 0.95);
+    max-width: 500px;
+}
+
+.github-profile .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.github-link {
+    color: #0366d6;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.github-link:hover {
+    text-decoration: underline;
+}
+
+.github-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #24292e;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #586069;
+}
+
+.user-details {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.user-details p {
+    margin: 10px 0;
 }
