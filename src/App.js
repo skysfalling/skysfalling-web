@@ -7,7 +7,7 @@ import EmailForm from './components/EmailForm/EmailForm.tsx';
 import UserModel from './models/UserModel.tsx';
 
 function App() {
-    const defaultUser = UserModel.defaultUser();
+    const defaultUser = UserModel.DefaultUser();
 
     const handleSignIn = (user) => {
         console.log(user);

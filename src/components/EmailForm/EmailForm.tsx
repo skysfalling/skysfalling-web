@@ -13,6 +13,7 @@ function EmailForm({ onSignIn, onBack }: EmailFormProps) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
 
+  // ========= HANDLE SUBMISSION =========
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -36,7 +37,7 @@ function EmailForm({ onSignIn, onBack }: EmailFormProps) {
     }
 
     try {
-      const user = UserModel.fromEmailSignup(email);
+      const user = UserModel.FromEmailSignup(email);
       onSignIn(user);
     } catch (err) {
       setError("Failed to sign in. Please try again.");

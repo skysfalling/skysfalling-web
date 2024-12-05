@@ -1,9 +1,9 @@
 import React from "react";
-import { UserData } from "../../models/UserModel.tsx";
 
-import "./UserProfile.css";
+import "./UserProfileCard.css";
+import UserModel from "../../models/UserModel.tsx";
 
-function UserProfileCard({ user }: { user: UserData }) {
+function UserProfileCard({ user }: { user: UserModel }) {
   return (
     <div className="user-profile-card">
       <UserProfileAvatar image={user.image} />
@@ -27,10 +27,6 @@ function UserProfileDetails({ name, email }: { name: string; email: string }) {
       <p>{email || ""}</p>
     </div>
   );
-}
-
-function UserProfileSignInButton() {
-  return <button>Sign In</button>;
 }
 
 export default UserProfileCard;

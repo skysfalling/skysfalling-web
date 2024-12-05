@@ -49,12 +49,20 @@ export class UserModel implements UserData {
   }
 
   // ================ << METHODS >> ================
-  isValid(): boolean {
+  IsValid(): boolean {
     return this._id !== -1;
   }
 
+  Print(): string {
+    return `UserModel: 
+    \n\tID: ${this.id}
+    \n\tEmail: ${this.email}
+    \n\tName: ${this.name}
+    \n\tImage: ${this.image}`;
+  }
+
   // ================ << STATIC METHODS >> ================
-  static create(data: Partial<UserData>): UserModel {
+  static Create(data: Partial<UserData>): UserModel {
     return new UserModel(data);
   }
 
@@ -62,28 +70,28 @@ export class UserModel implements UserData {
     return email.split("@")[0];
   }
 
-  static fromGoogleCredential(credential: string): UserModel {
+  static FromGoogleCredential(credential: string): UserModel {
     const decoded = jwtDecode<{
       email?: string;
       name?: string;
       picture?: string;
     }>(credential);
 
-    return UserModel.create({
+    return UserModel.Create({
       email: decoded.email,
       name: decoded.name,
       image: decoded.picture,
     });
   }
 
-  static fromEmailSignup(email: string): UserModel {
-    return UserModel.create({
+  static FromEmailSignup(email: string): UserModel {
+    return UserModel.Create({
       email,
     });
   }
 
-  static defaultUser(): UserModel {
-    return UserModel.create(DEFAULT_USER);
+  static DefaultUser(): UserModel {
+    return UserModel.Create(DEFAULT_USER);
   }
 }
 

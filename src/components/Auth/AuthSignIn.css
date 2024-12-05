@@ -23,7 +23,7 @@
         padding: 20px 40px;
 }
 
-.email-auth-button {
+.auth-signin-button {
     width: 200px;
     padding: 10px;
     background-color: var(--pink-salmon-500);
@@ -35,7 +35,7 @@
     transition: background-color 0.3s ease;
 }
 
-.email-auth-button:hover {
+.auth-signin-button:hover {
     background-color: var(--pink-salmon-600);
 }
 
