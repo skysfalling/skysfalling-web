@@ -1,24 +1,30 @@
 @import "../../styles.css";
 
 .auth-signin-container {
+    position: relative;
+        width: 100%;
+        max-width: 400px;
+        min-height: 300px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    }
 
-    padding: 10px 20px;
+.auth-content {
+    width: 100%;
+    transition: transform 0.3s ease;
 }
 
 .auth-signin-options {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-
-    gap: 10px;
+    gap: 20px;
+        padding: 20px 40px;
 }
 
 .email-auth-button {
-    width: 100%;
+    width: 200px;
     padding: 10px;
     background-color: var(--pink-salmon-500);
     color: white;
@@ -30,11 +36,11 @@
 }
 
 .email-auth-button:hover {
-    background-color: #5a6268;
+    background-color: var(--pink-salmon-600);
 }
 
 .divider {
-    width: 100%;
+    width: 300px;
     text-align: center;
     margin: 10px 0;
     position: relative;
@@ -65,42 +71,14 @@
     font-size: 14px;
 }
 
-/* Email Form Styles */
-.email-form {
-    width: 100%;
+/* Email Form container */
+.show-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.email-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    transition: border-color 0.2s ease;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
-}
-
-.error-message {
-    color: #dc3545;
-    margin-bottom: 10px;
-    font-size: 14px;
-    text-align: center;
-}
+/* Remove duplicate email form styles since they're now in EmailForm.css */
 
 .submit-button {
     width: 100%;
