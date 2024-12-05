@@ -7,7 +7,7 @@ const UserPage = () => {
     useEffect(() => {
         const fetchAllUsers = async () => {
             try {
-                const res = await axios.get("http://localhost:8800/users");
+                const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users`);
                 setUsers(res.data);
                 console.log(res.data);
             } catch (err) {
@@ -20,7 +20,7 @@ const UserPage = () => {
 
     return <div>
         {users.map((user) => (
-            <div>
+            <div key={user.id}>
                 <p>{user.id}</p>
                 <p>{user.email}</p>
             </div>

@@ -12,10 +12,7 @@ interface AuthSignInProps {
   onSignIn: (user: UserModel) => void;
 }
 
-const GOOGLE_CLIENT_ID: string =
-  "537411566483-gcsvpnd96ok17rn6h5vlvukk0cgjactb.apps.googleusercontent.com";
-
-
+const GOOGLE_CLIENT_ID: string = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
 // ====================== << AUTH SIGN IN COMPONENT >> ======================
 function AuthSignIn({ onSignIn }: AuthSignInProps) {
   const [isEmailFormVisible, setEmailFormVisible] = useState(false);
