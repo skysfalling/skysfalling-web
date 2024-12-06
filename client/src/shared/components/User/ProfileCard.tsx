@@ -1,47 +1,37 @@
 import React from "react";
+import defaultAvatar from "../../assets/icons/user/default-user-0.svg";
 import "./ProfileCard.css";
-import { UserModel } from "../../classes/User";
 
-// Separate component interfaces
 interface ProfileCardProps {
-  user: UserModel;
-}
-
-interface AvatarProps {
-  image: any;
-}
-
-interface DetailsProps {
-  name: string;
   email: string;
+  name: string;
+  image: string;
 }
 
-// Main component
-export function ProfileCard({ user }: ProfileCardProps) {
+// ================ << MAIN COMPONENT >> ================
+export function ProfileCard({ email, name, image }: ProfileCardProps) {
+  // (( If No Image, Use Default )) -------- >>
+  if (!image) {
+    image = defaultAvatar;
+  }
+
+  // (( If No Name, Use Front of Email )) -------- >>
+  if (!name) {
+    name = email.split("@")[0];
+  }
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+
   return (
     <div className="user-profile-card">
-      <ProfileAvatar image={user.image} />
-      <ProfileDetails name={user.name} email={user.email} />
+      {/* -------- (( AVATAR )) -------- >> */}
+      <div className="user-profile-avatar">
+        <img src={image} alt="user avatar" />
+      </div>
+      {/* -------- (( DETAILS )) -------- >> */}
+      <div className="user-profile-details">
+        <h4>{name || ""}</h4>
+        <p>{email || ""}</p>
+      </div>
     </div>
   );
 }
-
-// Sub-components
-function ProfileAvatar({ image }: AvatarProps) {
-  return (
-    <div className="user-profile-avatar">
-      <img src={image} alt="user avatar" />
-    </div>
-  );
-}
-
-function ProfileDetails({ name, email }: DetailsProps) {
-  return (
-    <div className="user-profile-details">
-      <h2>{name || ""}</h2>
-      <p>{email || ""}</p>
-    </div>
-  );
-}
-
-export default ProfileCard;

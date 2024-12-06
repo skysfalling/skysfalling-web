@@ -14,7 +14,7 @@ const Users = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        username: {
+        name: {
             type: DataTypes.STRING,
             defaultValue: "default"
         },

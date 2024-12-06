@@ -1,0 +1,25 @@
+@import "../../../styles/main.css";
+
+.debug-panel {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    flex-direction: column;
+    flex: 1;
+    flex-grow: 1;
+
+    margin: var(--spacing-md);
+    padding: var(--spacing-md);
+    gap: 1rem;
+
+    background-color: var(--debug-background);
+    color: var(--debug-text);
+
+    border: 1px solid var(--debug-border);
+    border-radius: 5px;
+}
+
+.debug-panel p {
+    font-size: var(--font-size-xxs);
+}

@@ -1,9 +1,7 @@
-@import "../../styles.css";
-
 :root {
-    --user-profile-card-height: 100px;
-    --user-profile-text-color: var(--shark-950);
-    --user-profile-background: rgba(255, 255, 255, 0.05);
+    --card-height: 100px;
+    --card-width: 300px;
+    --avatar-size: 100px;
 }
 
 /* ================ USER PROFILE CARD ================ */
@@ -11,22 +9,19 @@
     position: relative;
     display: flex;
     flex-direction: row;
+
+    block-size: var(--card-height);
+    inline-size: var(--card-width);
+
     align-items: center;
-    justify-content: center;
+    gap: 10px;
 
-    max-height: var(--user-profile-card-height);
-
-    padding: 10px;
-    gap: 20px;
-    margin: 20px auto;
-
-    color: var(--user-profile-text-color);
-    background-color: var(--user-profile-background);
-    backdrop-filter: blur(10px);
+    color: var(--theme-text-primary);
+    background-color: var(--theme-background-base);
 
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--theme-shadow-lg);
 }
 
 .user-profile-card:hover {
@@ -35,54 +30,36 @@
     transition: all 0.3s ease;
 }
 
-.user-profile-card p {
-    color: var(--user-profile-text-color);
-    opacity: 1;
-}
-
-.user-profile-card h2 {
-    color: var(--user-profile-text-color);
-    opacity: 1;
-}
-
-/* Container for centering the card */
-.user-profile-card-container {
-    position: relative;
-    display: flex;
-    max-width: 240px;
-}
-
-.user-profile-card .separator {
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
 /* ================ USER AVATAR ================ */
 .user-profile-avatar {
-    position: relative;
+    aspect-ratio: 1 / 1;
+
+    margin: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .user-profile-avatar img {
-    max-height: var(--user-profile-card-height);
+    object-fit: cover;
+    padding: 10px;
 
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #f0f0f0;
+    border: 2px solid var(--theme-border-inverse);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* ================ USER PROFILE DETAILS ================ */
 .user-profile-details {
-    flex: 1;
-    justify-content: left;
+    flex-grow: 1;
 }
 
 .user-profile-details h2 {
-    margin: 0;
     font-size: 1rem;
+    color: var(--theme-text-primary);
 }
 
 .user-profile-details p {
-    margin: 0;
-    font-size: 0.9rem;
+    color: var(--theme-text-secondary);
 }
