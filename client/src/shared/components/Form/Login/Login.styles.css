@@ -1,31 +1,29 @@
 @import '../../../styles/main.css';
 /* ================ << Email Form >> ================ */
-.email-form {
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: 400px;
+
+    max-inline-size: 400px;
+    
     margin: 2rem auto;
     padding: 20px;
-    background-color: var(--surface-color);
-    color: var(--text-color);
+    
+    color: var(--theme-text-primary);
+    background-color: var(--theme-background-base);
+
     border-radius: 8px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
+    box-shadow: var(--theme-shadow-lg);
+    border: 1px solid var(--theme-border-default);
 }
 
-.email-form h2 {
-    margin-bottom: 20px;
-    color: var(--shark-900);
-}
-
-.email-form form {
+.form form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 15px;
-    width: 100%;
 }
 
 /* ================ << Form Group >> ================ */
@@ -53,15 +51,15 @@
 .error-message {
     color: var(--pink-salmon-600);
     font-size: 14px;
-    text-align: left;
+    text-align: start;
 }
 
 /* ================ << Submit Button >> ================ */
 .submit-button {
-    width: 100%;
+    inline-size: 100%;
     padding: 10px;
-    background-color: var(--primary-color);
-    color: var(--surface-color);
+    background-color: var(--theme-interactive-primary);
+    color: var(--theme-text-on-primary);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -70,24 +68,10 @@
 }
 
 .submit-button:hover:not(:disabled) {
-    background-color: var(--primary-hover);
+    background-color: var(--theme-interactive-primary-hover);
 }
 
 .submit-button:disabled {
-    background-color: var(--shark-200);
+    background-color: var(--theme-interactive-disabled);
     cursor: not-allowed;
-}
-
-.toggle-button {
-    background: none;
-    border: none;
-    color: var(--shark-600);
-    cursor: pointer;
-    font-size: 14px;
-    transition: color 0.2s ease;
-    margin-top: 10px;
-}
-
-.toggle-button:hover {
-    color: var(--pink-salmon-500);
 }

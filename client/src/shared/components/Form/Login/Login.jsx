@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import './Login.styles.css';
 
-const SERVER_URL = 'http://localhost:8800';
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Login = () => {
   const initialValues = {
@@ -23,7 +23,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const response = await axios.post(`${SERVER_URL}/auth/login`, values);
+      const response = await axios.post(`${SERVER_URL}/user`, values);
       console.log('Login successful:', response.data);
     } catch (error) {
       console.error('Login error:', error);
@@ -31,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="email-form">
+    <div className="form">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
