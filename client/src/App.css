@@ -1,18 +1,8 @@
+
+@import "./index.css";
 section {
-  min-height: 33vh;
-  width: 100%;
+  min-block-size: 33vh; /* height */
+  inline-size: 100%; /* width */
   background-size: 100% auto;
   background-repeat: no-repeat;
-}
-
-.components-grid {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  padding: 20px;
-}
-
-.grid-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

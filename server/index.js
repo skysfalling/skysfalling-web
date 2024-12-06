@@ -13,6 +13,9 @@ app.use(express.json());
 // ====================== << DATABASE CONNECTION >> ======================
 const db = require("./models");
 
+// ====================== << ROUTES >> ======================
+const userRouter = require("./routes/Users");
+app.use("/users", userRouter);
 
 // ====================== << SERVER LISTENERS >> ======================
 db.sequelize.sync().then(() => {

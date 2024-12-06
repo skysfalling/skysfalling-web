@@ -1,59 +1,27 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import BkgImage from './images/electricjellyfish.jpg';
-import UserProfileCard from './components/User/UserProfileCard.tsx';
-import AuthSignIn from './components/Auth/AuthSignIn.tsx';
-import EmailForm from './components/EmailForm/EmailForm.tsx';
-import UserModel from './models/UserModel.tsx';
-import UserPage from './pages/UserPage.jsx';
-import GamePage from './pages/GamePage.jsx';
-
-function NavigationButtons() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="navigation-buttons">
-      <button onClick={() => navigate('/user')}>Go to User Page</button>
-      <button onClick={() => navigate('/game')}>Go to Game Page</button>
-      <button onClick={() => navigate('/')}>Go to Home</button>
-    </div>
-  );
-}
+import Home from './pages/Home.js';
+import Games from './pages/Games.js';
+import Users from './pages/Users.js';
+import Login from './pages/Login.js';
+import './App.css';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
-    const defaultUser = UserModel.DefaultUser();
-
-    const handleSignIn = (user) => {
-        console.log(user);
-    }
-
     return (
         <div className="App">
-            <BrowserRouter>
+            <Router>
+                <Navbar />
                 <Section img_bg={BkgImage}>
                 </Section>
-
-                <NavigationButtons />
-
                 <Routes>
-                    <Route path="/" element={
-                        <div className="components-grid">
-                            <div className="grid-item">
-                                <UserProfileCard user={defaultUser} />
-                            </div>
-                            <div className="grid-item">
-                                <AuthSignIn onSignIn={handleSignIn} />
-                            </div>
-                            <div className="grid-item">
-                                <EmailForm />
-                            </div>
-                        </div>
-                    } />
-                    <Route path="/user" element={<UserPage />} />
-                    <Route path="/game" element={<GamePage />} />
+                    <Route path="/" exact element={<Home />} />
+                    <Route path="/user" element={<Users />} />
+                    <Route path="/game" element={<Games />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
-            </BrowserRouter>
+            </Router>
         </div>
     );
 }
@@ -65,5 +33,4 @@ const Section = ({ img_bg, children }) => {
         </section>
     );
 }
-
 export default App;
