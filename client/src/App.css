@@ -1,8 +1,0 @@
-
-@import "./index.css";
-section {
-  min-block-size: 33vh; /* height */
-  inline-size: 100%; /* width */
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-}
