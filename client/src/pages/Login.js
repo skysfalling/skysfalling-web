@@ -1,7 +1,13 @@
 import React from "react";
+import LoginForm from "../components/User/Forms.tsx";
 
 const Login = () => {
-    return <h1>Login</h1>;
+    return (
+        <div className="login-page">
+            <LoginForm />
+        </div>
+    )
+
 };
 
 export default Login;

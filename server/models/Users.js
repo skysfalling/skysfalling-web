@@ -16,7 +16,7 @@ const Users = (sequelize, DataTypes) => {
         },
         username: {
             type: DataTypes.STRING,
-            allowNull: false,
+            defaultValue: "default"
         },
     });
     return Users;

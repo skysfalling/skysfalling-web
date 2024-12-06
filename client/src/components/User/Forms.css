@@ -1,0 +1,90 @@
+@import "../../index.css";
+
+/* ================ << Email Form >> ================ */
+.email-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.email-form h2 {
+    margin-bottom: 20px;
+    color: var(--shark-900);
+}
+
+.email-form form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* ================ << Form Group >> ================ */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-input {
+    padding: 0.75rem;
+    border: 1px solid var(--shark-200);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--pink-salmon-400);
+    box-shadow: 0 0 0 2px var(--pink-salmon-100);
+}
+
+.error-message {
+    color: var(--pink-salmon-600);
+    font-size: 14px;
+    text-align: left;
+}
+
+/* ================ << Submit Button >> ================ */
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--pink-salmon-500);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+    background-color: var(--pink-salmon-600);
+}
+
+.submit-button:disabled {
+    background-color: var(--shark-200);
+    cursor: not-allowed;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: var(--shark-600);
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease;
+    margin-top: 10px;
+}
+
+.toggle-button:hover {
+    color: var(--pink-salmon-500);
+}
