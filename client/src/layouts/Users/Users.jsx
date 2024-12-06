@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./Users.styles.css";
 
 const Users = () => {
-
     const [users, setUsers] = useState([]);
+
     useEffect(() => {
         axios.get(process.env.REACT_APP_SERVER_URL + "/users")
             .then(res => {
@@ -12,17 +13,15 @@ const Users = () => {
     }, []);
 
     return (
-        <div>
+        <section className="users-page">
             <h1>Users</h1>
-
             <div className="users-list">
                 {users.map((value, key) => (
-                    <div key={key}>{value.username}</div>
+                    <div key={key} className="user-item">{value.username}</div>
                 ))}
             </div>
-        </div>
-
+        </section>
     );
 };
 
-export default Users;
+export default Users; 

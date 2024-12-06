@@ -1,6 +1,6 @@
 import React from "react";
 import "./ProfileCard.css";
-import { UserModel } from "./Model";
+import { UserModel } from "../../classes/User";
 
 // Separate component interfaces
 interface ProfileCardProps {

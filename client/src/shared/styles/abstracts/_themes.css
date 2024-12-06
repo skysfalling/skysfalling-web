@@ -1,0 +1,89 @@
+/* Base theme variables */
+:root {
+  /* Global tokens - foundational values that don't change between themes */
+  --font-family: 'Questrial-Regular', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --code-font-family: Consolas, monaco, monospace;
+  --default-border-radius: 8px;
+  --page-max-width: 1000px;
+
+  /* Global spacing tokens */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+}
+
+/*#region ================ << THEME_DEFINITIONS >> ================ */
+/* Light theme (default) */
+:root,
+[color-theme="light"] {
+  /* (( Background Hierarchy )) -------- >> */
+  --theme-background-base: var(--shark-50);
+  --theme-background-elevated: var(--shark-100);
+  --theme-background-sunken: var(--shark-200);
+
+  /* (( Text Hierarchy )) -------- >> */
+  --theme-text-primary: var(--shark-950);
+  --theme-text-secondary: var(--shark-700);
+  --theme-text-disabled: var(--shark-400);
+  --theme-text-inverse: var(--shark-50);
+
+  /* (( Interactive States )) -------- >> */
+  --theme-interactive-primary: var(--pink-salmon-500);
+  --theme-interactive-primary-hover: var(--pink-salmon-600);
+  --theme-interactive-primary-active: var(--pink-salmon-700);
+  --theme-interactive-primary-disabled: var(--pink-salmon-300);
+
+  /* (( Surface Treatments )) -------- >> */
+  --theme-surface-default: #ffffff;
+  --theme-surface-elevated: var(--shark-50);
+  --theme-surface-sunken: var(--shark-100);
+
+  /* (( Border Treatments )) -------- >> */
+  --theme-border-default: var(--shark-200);
+  --theme-border-inverse: var(--shark-900);
+  --theme-border-focus: var(--pink-salmon-500);
+  --theme-border-error: var(--red-500, #ef4444);
+
+  /* (( Shadow Hierarchy )) -------- >> */
+  --theme-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --theme-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --theme-shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme */
+[color-theme="dark"] {
+  /* (( Background Hierarchy )) -------- >> */
+  --theme-background-base: var(--shark-950);
+  --theme-background-elevated: var(--shark-900);
+  --theme-background-sunken: var(--shark-800);
+
+  /* (( Text Hierarchy )) -------- >> */
+  --theme-text-primary: var(--shark-50);
+  --theme-text-secondary: var(--shark-300);
+  --theme-text-disabled: var(--shark-600);
+  --theme-text-inverse: var(--shark-950);
+
+  /* (( Interactive States )) -------- >> */
+  --theme-interactive-primary: var(--pink-salmon-400);
+  --theme-interactive-primary-hover: var(--pink-salmon-500);
+  --theme-interactive-primary-active: var(--pink-salmon-600);
+  --theme-interactive-primary-disabled: var(--pink-salmon-300);
+
+  /* (( Surface Treatments )) -------- >> */
+  --theme-surface-default: var(--shark-900);
+  --theme-surface-inverse: var(--shark-50);
+  --theme-surface-elevated: var(--shark-800);
+  --theme-surface-sunken: var(--shark-950);
+
+  /* (( Border Treatments )) -------- >> */
+  --theme-border-default: var(--shark-800);
+  --theme-border-focus: var(--pink-salmon-400);
+  --theme-border-error: var(--red-400, #f87171);
+
+  /* (( Shadow Hierarchy )) -------- >> */
+  --theme-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --theme-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --theme-shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.4);
+}

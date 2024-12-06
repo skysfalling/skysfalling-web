@@ -5,7 +5,7 @@ export interface UserData {
   get id(): number;
   get email(): string;
   get name(): string;
-  get image(): any;
+  get image(): any | null;
 }
 
 // ================ << DEFAULT USER DATA >> ================
@@ -13,7 +13,7 @@ const DEFAULT_USER: UserData = {
   id: -1,
   email: "default_sligo@darklight.studio",
   name: "Default Sligo",
-  image: require("../images/sligo_favicon.png")
+  image: null
 };
 
 // ================ << USER CLASS >> ================
@@ -21,7 +21,7 @@ export class UserModel implements UserData {
   private _id: number = -1;
   private _email: string = DEFAULT_USER.email;
   private _name: string = DEFAULT_USER.name;
-  private _image: any = DEFAULT_USER.image;
+  private _image: any | null = DEFAULT_USER.image;
 
   // ================ << CONSTRUCTORS >> ================
   constructor(data: Partial<UserData>) {
