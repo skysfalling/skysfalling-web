@@ -13,8 +13,15 @@
   /* << FONT SIZES >> ====================================================== */
   /* Fluid font sizes using clamp() */
 
-  /* ( XXXSmall ) Resolves to 8px on mobile, 10px on desktop */
+  /* ( XXXXSmall ) Resolves to 6px on mobile, 8px on desktop */
   --font-size-xxxxs: clamp(
+    calc(var(--font-base-size) / var(--ratio-small) / var(--ratio-small) / var(--ratio-small) / var(--ratio-small)),
+    calc(0.375rem + 0.1vw),
+    calc(var(--font-base-size) / var(--ratio-large) / var(--ratio-large) / var(--ratio-large) / var(--ratio-large))
+  );
+
+  /* ( XXXSmall ) Resolves to 8px on mobile, 10px on desktop */
+  --font-size-xxxs: clamp(
     calc(var(--font-base-size) / var(--ratio-small) / var(--ratio-small) / var(--ratio-small)),
     calc(0.5rem + 0.1vw),
     calc(var(--font-base-size) / var(--ratio-large) / var(--ratio-large) / var(--ratio-large))

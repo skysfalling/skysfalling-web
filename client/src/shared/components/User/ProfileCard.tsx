@@ -29,7 +29,7 @@ export function ProfileCard({ email, name, image }: ProfileCardProps) {
       </div>
       {/* -------- (( DETAILS )) -------- >> */}
       <div className="user-profile-details">
-        <h4>{name || ""}</h4>
+        <h6>{name || ""}</h6>
         <p>{email || ""}</p>
       </div>
     </div>

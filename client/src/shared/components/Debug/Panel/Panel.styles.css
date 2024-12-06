@@ -2,12 +2,10 @@
 
 .debug-panel {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    inset-block-end: 0; /* Bottom */
+    inset-inline-end: 0; /* Right */
 
-    flex-direction: column;
-    flex: 1;
-    flex-grow: 1;
+    display: block;
 
     margin: var(--spacing-md);
     padding: var(--spacing-md);
@@ -18,8 +16,14 @@
 
     border: 1px solid var(--debug-border);
     border-radius: 5px;
+
+    z-index: 1000;
 }
 
 .debug-panel p {
+    font-size: var(--font-size-xxxs);
+}
+
+.debug-panel h6 {
     font-size: var(--font-size-xxs);
 }

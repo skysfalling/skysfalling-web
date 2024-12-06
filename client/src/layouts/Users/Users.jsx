@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ProfileCard } from "../../shared/components/User";
-import { Panel } from '../../shared/components/Debug';
+import { Panel as DebugPanel } from '../../shared/components/Debug';
+import { Grid } from '../../shared/components/Grid';
 import "./Users.styles.css";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -90,14 +91,15 @@ const Users = () => {
   return (
     <section className="users-page">
       <h1>Users</h1>
-      <Panel
+      <DebugPanel
         messages={[
             `Server URL: ${SERVER_URL}`,
             `Environment: ${process.env.NODE_ENV}`,
             `${users.length} users fetched`
         ]}
       />
-      <div className="users-list">
+
+      <Grid>
         {users.map((user, index) => (
           <ProfileCard
             email={user.email}
@@ -106,7 +108,7 @@ const Users = () => {
             key={index}
           />
         ))}
-      </div>
+      </Grid>
     </section>
   );
 };
