@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import type NavLink from './interfaces/NavLink'; // type from interface
+import { AuthContext } from './context/AuthContext';
 
 // ( Styles ) ----------------
 import './styles/main.css';
@@ -18,10 +19,11 @@ const navLinks: NavLink[] = [
 
 function App()
 {
-
+  const [authState, setAuthState] = useState<boolean>(false);
   return (
-    <Router>
-      <div className="App">
+    <AuthContext.Provider value={{ authState, setAuthState }}>
+      <Router>
+        <div className="App">
         <Navbar links={navLinks} />
         <main>
           <Routes>
@@ -30,8 +32,9 @@ function App()
             ))}
           </Routes>
         </main>
-      </div>
-    </Router>
+        </div>
+      </Router>
+    </AuthContext.Provider>
   );
 };
 
