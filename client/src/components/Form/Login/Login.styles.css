@@ -48,10 +48,24 @@
     box-shadow: 0 0 0 2px var(--pink-salmon-100);
 }
 
-.error-message {
-    color: var(--pink-salmon-600);
-    font-size: 14px;
-    text-align: start;
+/* ================ << Success Message >> ================ */
+.submit-result {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.submit-result-error {
+    color: #dc3545;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #f8d7da;
+}
+
+.submit-result-success {
+    color: #28a745;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #d4edda;
 }
 
 /* ================ << Submit Button >> ================ */
