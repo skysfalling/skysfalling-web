@@ -14,9 +14,8 @@ app.use(express.json());
 const db = require("./models");
 
 // ====================== << ROUTES >> ======================
-const userRouter = require("./routes/Users"); // << Required User SQL Table
-app.use("/users", userRouter); // << Set User Route
-app.use("/auth", userRouter); // << Set Authentication Route
+const userRouter = require("./routes/Users");
+app.use("/auth", userRouter);
 
 // ====================== << SERVER LISTENERS >> ======================
 db.sequelize.sync().then(() => {

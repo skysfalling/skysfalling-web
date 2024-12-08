@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { Login as LoginForm } from "../../../components/Form";
+import { Login as LoginForm, Register } from "../../../components/Form";
 import { User } from "../../../objects/Settings";
 import "./Login.styles.css";
 
@@ -19,8 +19,8 @@ const validationSchema = Yup.object().shape({
 function Login() {
   return (
     <section className="login-page">
-      <h1>Login</h1>
       <LoginForm/>
+      <Register/>
     </section>
   );
 }

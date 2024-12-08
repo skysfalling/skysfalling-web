@@ -1,11 +1,6 @@
-
 const Users = (sequelize, DataTypes) => {
     const Users = sequelize.define("Users", {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
+
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -14,11 +9,16 @@ const Users = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        username: {
+        name: {
             type: DataTypes.STRING,
-            defaultValue: "default"
+            allowNull: false
         },
-
+        id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
+            allowNull: false
+        },
     });
     return Users;
 };

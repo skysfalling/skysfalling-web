@@ -5,65 +5,45 @@ import axios from 'axios';
 
 import { Connection } from '../../../objects/Settings';
 
-import './Login.styles.css';
+import './Register.styles.css';
 
-const USER_DATABASE_URL = `${Connection.serverUrl}/auth/login`
+const USER_DATABASE_URL = `${Connection.serverUrl}/auth/register`
 
-function Login() {
-  const [loginError, setLoginError] = React.useState(null);
+function Register() {
+  const [registerError, setRegisterError] = React.useState(null);
 
   const initialValues = {
+    username: '',
     email: '',
     password: '',
+    confirmPassword: '',
   };
 
   const validationSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, 'Username must be at least 3 characters long')
+      .required('Username is required'),
     email: Yup.string()
       .email('Invalid email address')
       .required('Email is required'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters long')
       .required('Password is required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm password is required'),
   });
 
   const onSubmit = async (values, { setSubmitting }) => {
-    setLoginError(null);
+    setRegisterError(null);
     
-    let msg = "LOGIN : ";
-
     try {
       const response = await axios.post(USER_DATABASE_URL, values);
-      
-      if (response.data.error) {
-        setLoginError(response.data.error);
-      } else {
-        msg += 'SUCCESS\n\t' + response.data.message + '\n';
-        console.log(msg, response.data);
-      }
-    } 
-    catch (error) {
-      msg += 'ERROR\n\t' + error + '\n';
-
-      // Handle different types of errors
-      if (error.response) {
-        // Server responded with an error status
-        if (error.response.data.error) {
-          msg += "\tData error : " + error.response.data.error;
-        }
-        else
-        {
-          msg += '\tLogin failed.';
-        }
-      } else if (error.request) {
-        // Request was made but no response received
-        msg += '\tNo response from server. Please try again.';
-      } else {
-        // Something else went wrong
-        msg += '\tAn error occurred. Please try again.';
-      }
-
-      setLoginError(true);
-      console.error(msg, values);
+      console.log('Registration successful:', response.data);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 
+                          'An error occurred during registration. Please try again.';
+      setRegisterError(errorMessage);
     } finally {
       setSubmitting(false);
     }
@@ -71,7 +51,7 @@ function Login() {
 
   return (
     <div className="form">
-      <h2>Login</h2>
+        <h2> Register</h2>
 
       <Formik
         initialValues={initialValues}
@@ -80,6 +60,20 @@ function Login() {
       >
         {({ isSubmitting }) => (
           <Form>
+            <div className="form-group">
+              <Field
+                type="text"
+                name="username"
+                placeholder="Username"
+                className="form-input"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="error-message"
+              />
+            </div>
+
             <div className="form-group">
               <Field
                 type="email"
@@ -108,9 +102,23 @@ function Login() {
               />
             </div>
 
-            {loginError && (
+            <div className="form-group">
+              <Field
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                className="form-input"
+              />
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className="error-message"
+              />
+            </div>
+
+            {registerError && (
               <div className="form-group">
-                <div className="error-message">{loginError}</div>
+                <div className="error-message">{registerError}</div>
               </div>
             )}
 
@@ -119,7 +127,7 @@ function Login() {
               className="submit-button"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Logging in...' : 'Login'}
+              {isSubmitting ? 'Registering...' : 'Register'}
             </button>
           </Form>
         )}
@@ -128,4 +136,4 @@ function Login() {
   );
 };
 
-export default Login;
+export default Register; 

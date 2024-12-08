@@ -40,7 +40,7 @@ const Gallery = () => {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`${SERVER_URL}/users`);
+        const response = await axios.get(`${SERVER_URL}/auth/getAll`);
         setUsers(response.data);
       } catch (err) {
         const errorMessage = err.message || "Failed to fetch users";
