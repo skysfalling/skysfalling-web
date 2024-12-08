@@ -8,12 +8,11 @@ import './styles/main.css';
 
 // ( Pages ) ----------------
 import { Home } from './layouts';
-import { UserGallery, UserLogin, UserProfile } from './layouts';
+import { UserGallery, UserProfile } from './layouts';
 
 const navLinks: NavLink[] = [
   { to: '/', label: 'Home', component: Home },
   { to: '/gallery', label: 'Gallery', component: UserGallery },
-  { to: '/login', label: 'Login', component: UserLogin },
   { to: '/profile', label: 'Profile', component: UserProfile },
 ];
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const dummyUsers = require("../user-dummies.json");
+const { sign } = require('jsonwebtoken');
 
 // << GET : ALL USERS >> ===================================================
 router.get("/getAll", async (req, res) => {
@@ -17,7 +18,7 @@ router.get("/getAll", async (req, res) => {
 // << POST : REGISTER USER >> ==============================================
 router.post("/register", async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, name } = req.body;
 
         // Check if user already exists
         const existingUser = await Users.findOne({ where: { email: email } });
@@ -31,14 +32,16 @@ router.post("/register", async (req, res) => {
         // Create user
         const newUser = await Users.create({
             email: email,
-            password: hash
+            password: hash,
+            name: name
         });
 
         // Return success message
         return res.json({
             message: "REGISTER USER : SUCCESS",
-            user: email
+            user: newUser
         });
+
     } catch (error) {
         return res.status(500).json({
             error: "An error occurred during registration",
@@ -54,22 +57,27 @@ router.post("/login", async (req, res) => {
 
         // Attempt to find user by email
         const user = await Users.findOne({ where: { email: email } });
-
-        // If user doesn't exist, return error
         if (!user) {
+            // User doesn't exist
             return res.status(404).json({ error: "User doesn't exist" });
         }
 
         // Compare password with hashed password
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
+            // Wrong username and password combination
             return res.status(401).json({ error: "Wrong username and password combination" });
         }
+
+        // Generate JWT token
+        const accessToken = sign({ email: user.email, id: user.id }, process.env.JWT_SECRET);
+
 
         // If everything is correct, send success response
         return res.json({
             message: "LOGIN USER : SUCCESS",
-            user: email
+            user: email,
+            accessToken: accessToken
         });
     } catch (error) {
         return res.status(500).json({

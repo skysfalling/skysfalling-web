@@ -1,17 +1,43 @@
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import axios, { AxiosError } from "axios";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import axios from "axios";
 
 import { Connection } from "../../../objects/Settings";
 
 import "./Login.styles.css";
 
 const USER_DATABASE_URL = `${Connection.serverUrl}/auth/login`;
+const ACCESS_TOKEN_KEY = "accessToken";
 
-function Login() {
-  const [loginSuccess, setLoginSuccess] = React.useState(null);
-  const [loginError, setLoginError] = React.useState(null);
+type LoginProps = {
+  onSuccess: () => void;
+  onFail: () => void;
+  onError: () => void;
+};
+
+interface LoginResponse {
+  error?: string;
+  message?: string;
+  accessToken: string;
+}
+
+interface LoginValues {
+  email: string;
+  password: string;
+}
+
+interface ErrorResponse {
+  error?: string;
+  message?: string;
+}
+
+function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
+  const [loginSuccess, setLoginSuccess] = useState<boolean | null>(null);
+  const [loginError, setLoginError] = useState<boolean | null>(null);
+
+  const navigate = useNavigate();
 
   const initialValues = {
     email: "",
@@ -27,7 +53,7 @@ function Login() {
       .required("Password is required"),
   });
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values: any, { setSubmitting }: any) => {
     setLoginSuccess(null);
     setLoginError(null);
 
@@ -35,38 +61,59 @@ function Login() {
 
     try {
       const response = await axios.post(USER_DATABASE_URL, values);
-
-      if (response.data.error) {
-        setLoginError(response.data.error);
-      } else {
+      if (!response.data.error) {
         msg += "SUCCESS\n\t" + response.data.message + "\n";
         console.log(msg, response.data);
 
-        setLoginSuccess(true);
+        handleLoginSuccess(response.data);
       }
-    } catch (error) {
-      msg += "ERROR\n\t" + error + "\n";
+    } catch (error: unknown) {
+      handleLoginError(error, values);
+    }
+  };
+
+  const handleLoginSuccess = (data: LoginResponse) => {
+    const msg = "LOGIN : SUCCESS\n\t" + data.message + "\n";
+    console.log(msg, data);
+
+    // Save access token to local storage
+    localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+    
+    setLoginSuccess(true);
+    onSuccess();
+
+    // Redirect to profile page
+    navigate("/profile");
+  };
+
+  const handleLoginError = (error: unknown, values: LoginValues) => {
+    let msg = "ERROR\n\t";
+
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<ErrorResponse>;
 
       // Handle different types of errors
-      if (error.response) {
+      if (axiosError.response) {
         // Server responded with an error status
-        if (error.response.data.error) {
-          msg += "\tData error : " + error.response.data.error;
+        if (axiosError.response.data.error) {
+          msg += "\tData error: " + axiosError.response.data.error;
         } else {
           msg += "\tLogin failed.";
         }
-      } else if (error.request) {
+      } else if (axiosError.request) {
         // Request was made but no response received
         msg += "\tNo response from server. Please try again.";
       } else {
         // Something else went wrong
         msg += "\tAn error occurred. Please try again.";
       }
-
-      setLoginSuccess(false);
-      setLoginError(true);
-      console.error(msg, values);
+    } else {
+      msg += (error as Error).message || "An unexpected error occurred";
     }
+
+    console.error(msg, values);
+    setLoginError(true);
+    onError();
   };
 
   return (
