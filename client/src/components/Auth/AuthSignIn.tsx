@@ -4,8 +4,8 @@ import {
   GoogleOAuthProvider,
   CredentialResponse,
 } from "@react-oauth/google";
-import UserModel from "../../models/UserModel.tsx";
-import EmailForm from "../EmailForm/EmailForm.tsx";
+import UserModel from "../../classes/User";
+import { Login } from "../Form/Login";
 import "./AuthSignIn.css";
 
 interface AuthSignInProps {
@@ -44,11 +44,15 @@ function AuthSignIn({ onSignIn }: AuthSignInProps) {
     <div className="auth-signin-container">
       <div className={`auth-content ${isEmailFormVisible ? "show-form" : ""}`}>
         {isEmailFormVisible ? (
+          
+          <></>
+          /*
           // ----- Email Form -----
-          <EmailForm
+          <Login
             onSignIn={handleEmailSignIn}
             onBack={hideEmailForm}
           />
+          */
         ) : (
           <div className="auth-signin-options">
             {/* ----- Email Sign In Button ----- */}

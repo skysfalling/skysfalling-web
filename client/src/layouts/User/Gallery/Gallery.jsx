@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ProfileCard } from "../../shared/components/User";
-import { Panel as DebugPanel } from '../../shared/components/Debug';
-import { Grid } from '../../shared/components/Grid';
-import "./Users.styles.css";
+import { ProfileCard } from "../../../components/User";
+import { Panel as DebugPanel } from '../../../components/Debug';
+import { Grid } from '../../../components/Grid';
+
+// ( Styles ) ----------------
+import './Gallery.styles.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const Users = () => {
+
+
+const Gallery = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,7 +55,7 @@ const Users = () => {
   }, []);
 
   // ================ << RETURNING UI ELEMENTS >> ================
-  // (( LOADING )) -------- >>
+  // (( DRAW LOADING )) -------- >>
   if (loading) {
     return (
       <section className="users-page">
@@ -61,7 +65,7 @@ const Users = () => {
     );
   }
 
-  // (( ERROR )) -------- >>
+  // (( DRAW ERROR )) -------- >>
   if (error && users.length === 0) {
     return (
       <section className="users-page">
@@ -87,7 +91,7 @@ const Users = () => {
     );
   }
 
-  // (( USERS )) -------- >>
+  // (( DRAW USERS )) -------- >>
   return (
     <section className="users-page">
       <h1>Users</h1>
@@ -113,4 +117,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Gallery;

@@ -1,4 +1,4 @@
-@import '../../../shared/styles/main.css';
+@import '../../styles/main.css';
 
 .nav-bar {
     display: flex;
@@ -20,4 +20,14 @@
 .nav-button:hover {
     background-color: var(--primary-hover);
     color: var(--surface-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: inherit;
 } 

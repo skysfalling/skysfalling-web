@@ -14,10 +14,11 @@ const Users = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        name: {
+        username: {
             type: DataTypes.STRING,
             defaultValue: "default"
         },
+
     });
     return Users;
 };
