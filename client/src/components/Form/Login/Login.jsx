@@ -2,11 +2,14 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+
+import { Connection } from '../../../objects/Settings';
+
 import './Login.styles.css';
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const SERVER_URL = Connection.serverUrl;
 
-const Login = () => {
+function Login() {
   const initialValues = {
     email: '',
     password: '',
@@ -23,7 +26,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const response = await axios.post(`${SERVER_URL}/user`, values);
+      const response = await axios.post(`${SERVER_URL}/login`, values);
       console.log('Login successful:', response.data);
     } catch (error) {
       console.error('Login error:', error);

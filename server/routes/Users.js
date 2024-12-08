@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     });
     
     // Return success message
-    res.json("SUCCESS");
+    res.json({ message: "REGISTER USER : SUCCESS", user: `${email}` });
 });
 
 // << POST : LOGIN USER >> ==============================================
@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
         if (!match) res.json({ error: "Wrong username and password combination" });
     });
 
-    res.json("SUCCESS");
+    res.json({ message: "LOGIN USER : SUCCESS", user: `${email}` });
 }); 
 
 

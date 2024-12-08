@@ -1,3 +1,6 @@
-export { default as Home } from './Home';
-export { Gallery, Login, Profile } from './User';
-
+export { default as Home } from "./Home";
+export {
+  Gallery as UserGallery,
+  Login as UserLogin,
+  Profile as UserProfile,
+} from "./User";
