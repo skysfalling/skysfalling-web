@@ -4,6 +4,12 @@ const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const dummyUsers = require("../user-dummies.json");
 const { sign } = require('jsonwebtoken');
+const validateToken = require('../middlewares/AuthMiddleware');
+
+// << GET : AUTHENTICATE USER >> ==============================================
+router.get("/auth", validateToken, (req, res) => {
+    return res.json(req.user);
+});
 
 // << GET : ALL USERS >> ===================================================
 router.get("/getAll", async (req, res) => {

@@ -1,15 +1,15 @@
+import React, { useState, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-
-import { Connection } from "../../../objects/Settings";
+import { AuthContext } from "../../../context/AuthContext";
+import { Connection, User } from "../../../objects/Settings";
 
 import "./Login.styles.css";
 
 const USER_DATABASE_URL = `${Connection.serverUrl}/auth/login`;
-const ACCESS_TOKEN_KEY = "accessToken";
+const ACCESS_TOKEN_KEY = User.accessTokenKey;
 
 type LoginProps = {
   onSuccess: () => void;
@@ -34,6 +34,7 @@ interface ErrorResponse {
 }
 
 function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
+  const { setAuthState } = useContext(AuthContext);
   const [loginSuccess, setLoginSuccess] = useState<boolean | null>(null);
   const [loginError, setLoginError] = useState<boolean | null>(null);
 
@@ -80,6 +81,7 @@ function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
     localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
     
     setLoginSuccess(true);
+    setAuthState(true);
     onSuccess();
 
     // Redirect to profile page
@@ -113,6 +115,7 @@ function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
 
     console.error(msg, values);
     setLoginError(true);
+    setAuthState(false);
     onError();
   };
 

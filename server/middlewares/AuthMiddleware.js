@@ -6,12 +6,12 @@ const { verify } = require("jsonwebtoken");
 const validateToken = (req, res, next) => {
     // Get the token from the request headers
     // The token should be sent in the Authorization header
-    const token = req.headers.authorization;
+    const token = req.header("accessToken");
 
     // If no token is present, return a 403 Forbidden error
     // This means the user is trying to access a protected route without being logged in
     if (!token) {
-        return res.status(403).json({ error: "User is not logged in" });
+        return res.status(403).json({ error: "AuthMiddleware.js : User is not logged in" });
     }
 
     try {
