@@ -3,11 +3,10 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { Connection, User } from '../../../objects/Settings';
+import { NetworkSettings, UserSettings } from "../../../Settings";
+import '../User.styles.css';
 
-import './Register.styles.css';
-
-const USER_DATABASE_URL = `${Connection.serverUrl}/auth/register`;
+const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/auth/register`;
 
 function Register() {
   const [registerSuccess, setRegisterSuccess] = React.useState(null);
@@ -19,8 +18,8 @@ function Register() {
     confirmPassword: '',
   };
 
-  let password_minLength = User.password.minLength;
-  let password_maxLength = User.password.maxLength;
+  let password_minLength = UserSettings.password.minLength;
+  let password_maxLength = UserSettings.password.maxLength;
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -83,7 +82,7 @@ function Register() {
   };
 
   return (
-    <div className="form">
+    <div className="card-container">
         <h2> Register</h2>
 
       <Formik

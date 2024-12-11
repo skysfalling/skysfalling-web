@@ -1,41 +1,18 @@
-import React, { useState, useContext } from "react";
-import axios, { AxiosError } from "axios";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { AuthContext } from "../../../context/AuthContext";
-import { NetworkSettings, UserSettings } from "../../../Settings";
-import "../../User/User.styles.css";
+import axios from "axios";
 
-const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/auth/login`;
-const ACCESS_TOKEN_KEY = UserSettings.accessTokenKey;
+import { Connection } from "../../../Settings";
 
-type LoginProps = {
-  onSuccess: () => void;
-  onFail: () => void;
-  onError: () => void;
-};
+import "./Login.styles.css";
 
-interface LoginResponse {
-  error?: string;
-  message?: string;
-  accessToken: string;
-}
+const USER_DATABASE_URL = `${Connection.serverUrl}/auth/login`;
 
-interface LoginValues {
-  email: string;
-  password: string;
-}
-
-interface ErrorResponse {
-  error?: string;
-  message?: string;
-}
-
-function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
-  const { setAuthState } = useContext(AuthContext);
-  const [loginSuccess, setLoginSuccess] = useState<boolean | null>(null);
-  const [loginError, setLoginError] = useState<boolean | null>(null);
+function Login({ onSuccess }) {
+  const [loginSuccess, setLoginSuccess] = React.useState(null);
+  const [loginError, setLoginError] = React.useState(null);
 
   const navigate = useNavigate();
 
@@ -53,7 +30,7 @@ function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
       .required("Password is required"),
   });
 
-  const onSubmit = async (values: any, { setSubmitting }: any) => {
+  const onSubmit = async (values, { setSubmitting }) => {
     setLoginSuccess(null);
     setLoginError(null);
 
@@ -61,65 +38,51 @@ function Login({ onSuccess = () => {}, onError = () => {} }: LoginProps) {
 
     try {
       const response = await axios.post(USER_DATABASE_URL, values);
-      if (!response.data.error) {
+
+      if (response.data.error) {
+        setLoginError(response.data.error);
+      } else {
         msg += "SUCCESS\n\t" + response.data.message + "\n";
         console.log(msg, response.data);
 
-        handleLoginSuccess(response.data);
+        setLoginSuccess(true);
+
+        // Save access token to local storage
+        sessionStorage.setItem("accessToken", response.data.accessToken);
+
+        // Redirect to profile page
+        navigate("/profile");
+
+        // Call the onSuccess callback function
+        onSuccess();
       }
-    } catch (error: unknown) {
-      handleLoginError(error, values);
-    }
-  };
-
-  const handleLoginSuccess = (data: LoginResponse) => {
-    const msg = "LOGIN : SUCCESS\n\t" + data.message + "\n";
-    console.log(msg, data);
-
-    // Save access token to local storage
-    localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-    
-    setLoginSuccess(true);
-    setAuthState(true);
-    onSuccess();
-
-    // Redirect to profile page
-    navigate("/profile");
-  };
-
-  const handleLoginError = (error: unknown, values: LoginValues) => {
-    let msg = "ERROR\n\t";
-
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
+    } catch (error) {
+      msg += "ERROR\n\t" + error + "\n";
 
       // Handle different types of errors
-      if (axiosError.response) {
+      if (error.response) {
         // Server responded with an error status
-        if (axiosError.response.data.error) {
-          msg += "\tData error: " + axiosError.response.data.error;
+        if (error.response.data.error) {
+          msg += "\tData error : " + error.response.data.error;
         } else {
           msg += "\tLogin failed.";
         }
-      } else if (axiosError.request) {
+      } else if (error.request) {
         // Request was made but no response received
         msg += "\tNo response from server. Please try again.";
       } else {
         // Something else went wrong
         msg += "\tAn error occurred. Please try again.";
       }
-    } else {
-      msg += (error as Error).message || "An unexpected error occurred";
-    }
 
-    console.error(msg, values);
-    setLoginError(true);
-    setAuthState(false);
-    onError();
+      setLoginSuccess(false);
+      setLoginError(true);
+      console.error(msg, values);
+    }
   };
 
   return (
-    <div className="container">
+    <div className="form">
       <h2>Login</h2>
 
       <Formik

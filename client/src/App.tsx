@@ -3,21 +3,20 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import type NavLink from "./interfaces/NavLink"; // type from interface
 import { AuthContext } from "./context/AuthContext";
-import { Connection, User } from "./objects/Settings";
+import { NetworkSettings, UserSettings } from "./Settings";
 import axios from "axios";
 // ( Styles ) ----------------
 import "./styles/main.css";
 
 // ( Pages ) ----------------
 import { Home } from "./layouts";
-import { UserGallery, UserProfile } from "./layouts";
+import { Gallery, Profile } from "./layouts";
 
-const ACCESS_TOKEN_KEY = `${User.accessTokenKey}`;
-
+const ACCESS_TOKEN_KEY = `${UserSettings.accessTokenKey}`;
 const navLinks: NavLink[] = [
   { to: "/", label: "Home", component: Home },
-  { to: "/gallery", label: "Gallery", component: UserGallery },
-  { to: "/profile", label: "Profile", component: UserProfile },
+  { to: "/gallery", label: "Gallery", component: Gallery },
+  { to: "/profile", label: "Profile", component: Profile },
 ];
 
 function App() {
@@ -29,9 +28,9 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(`${Connection.serverUrl}/auth/auth`, {
+        const response = await axios.get(`${NetworkSettings.serverUrl}/auth/auth`, {
           headers: {
-            accessToken: localStorage.getItem("accessToken"),
+            accessToken: localStorage.getItem(ACCESS_TOKEN_KEY),
           },
         });
 

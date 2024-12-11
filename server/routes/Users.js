@@ -67,24 +67,21 @@ router.post("/login", async (req, res) => {
             // User doesn't exist
             return res.status(404).json({ error: "User doesn't exist" });
         }
-
         // Compare password with hashed password
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
             // Wrong username and password combination
             return res.status(401).json({ error: "Wrong username and password combination" });
         }
-
         // Generate JWT token
         const accessToken = sign({ email: user.email, id: user.id }, process.env.JWT_SECRET);
-
-
         // If everything is correct, send success response
         return res.json({
             message: "LOGIN USER : SUCCESS",
             user: email,
             accessToken: accessToken
         });
+
     } catch (error) {
         return res.status(500).json({
             error: "An error occurred during login",

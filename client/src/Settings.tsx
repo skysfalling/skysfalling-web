@@ -1,10 +1,10 @@
-const connectionSettings = {
+export const NetworkSettings = {
   clientUrl: process.env.REACT_APP_CLIENT_URL,
   serverUrl: process.env.REACT_APP_SERVER_URL,
   googleClientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
 };
 
-const userSettings = {
+export const UserSettings = {
   name: {
     minLength: 2,
     maxLength: 22,
@@ -15,5 +15,3 @@ const userSettings = {
   },
   accessTokenKey: "accessToken",
 };
-
-export { connectionSettings as Connection, userSettings as User };

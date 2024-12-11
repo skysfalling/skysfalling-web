@@ -5,7 +5,7 @@ import {
   CredentialResponse,
 } from "@react-oauth/google";
 import UserModel from "../../classes/User";
-import { Login } from "../Form/Login";
+import { Login } from "../User/Login";
 import "./AuthSignIn.css";
 
 interface AuthSignInProps {

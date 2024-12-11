@@ -1,5 +1,3 @@
 export { default as Home } from "./Home";
-export {
-  Gallery as UserGallery,
-  Profile as UserProfile,
-} from "./User";
+export { Gallery } from "./Gallery";
+export { Profile } from "./Profile";

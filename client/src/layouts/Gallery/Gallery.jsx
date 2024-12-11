@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ProfileCard } from "../../../components/User";
-import { Panel as DebugPanel } from '../../../components/Debug';
-import { Grid } from '../../../components/Grid';
+import { Profile } from "../../components/User";
+import { Panel as DebugPanel } from '../../components/Debug';
+import { Grid } from '../../components/Grid';
 
 // ( Styles ) ----------------
 import './Gallery.styles.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
-
-
-
 const Gallery = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -105,7 +102,7 @@ const Gallery = () => {
 
       <Grid>
         {users.map((user, index) => (
-          <ProfileCard
+          <Profile
             email={user.email}
             name={user.name}
             image={user.image}
