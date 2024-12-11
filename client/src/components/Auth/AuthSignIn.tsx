@@ -4,12 +4,11 @@ import {
   GoogleOAuthProvider,
   CredentialResponse,
 } from "@react-oauth/google";
-import UserModel from "../../classes/User";
-import { Login } from "../User/Login";
 import "./AuthSignIn.css";
+import { UserData } from "../../interfaces";
 
 interface AuthSignInProps {
-  onSignIn: (user: UserModel) => void;
+  onSignIn: (user: UserData) => void;
 }
 
 const GOOGLE_CLIENT_ID: string = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
@@ -22,22 +21,24 @@ function AuthSignIn({ onSignIn }: AuthSignInProps) {
   const hideEmailForm = () => setEmailFormVisible(false);
 
   // ----- Email Sign In Method -----
-  const handleEmailSignIn = (user: UserModel) => {
+  const handleEmailSignIn = (user: UserData) => {
     hideEmailForm();
     onSignIn(user);
-    AlertSignIn(user);
+    //AlertSignIn(user);
   };
 
+  /*
   // ----- Google Sign In Method -----
   const handleGoogleSignIn = (credentialResponse: CredentialResponse) => {
     if (credentialResponse.credential) {
-      const googleUser = UserModel.FromGoogleCredential(
+      const googleUser = UserData.FromGoogleCredential(
         credentialResponse.credential
       );
       onSignIn(googleUser);
       AlertSignIn(googleUser);
     }
   };
+  */
 
   // ----- Render -----
   return (
@@ -62,13 +63,15 @@ function AuthSignIn({ onSignIn }: AuthSignInProps) {
               }}
             />
 
-            {/* ----- Google Sign In Button ----- */}
+            {/*
+            // ----- Google Sign In Button -----
             <GoogleSignInButton
               onSuccess={handleGoogleSignIn}
               onError={() => {
                 console.log("Login Failed");
               }}
             />
+            */}
           </div>
         )}
       </div>
@@ -98,8 +101,10 @@ function GoogleSignInButton({
   );
 }
 
-function AlertSignIn(user: UserModel) {
+/*
+function AlertSignIn(user: UserData) {
   alert("Signing in with: " + user.Print());
 }
+*/
 
 export default AuthSignIn;

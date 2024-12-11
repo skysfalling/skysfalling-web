@@ -1,94 +1,42 @@
-import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React from 'react';
-import * as Yup from 'yup';
-
-import { NetworkSettings, UserSettings } from "../../../Settings";
+import { useContext, useState } from 'react';
+import { AuthService } from '../../../classes/AuthService';
+import { AuthContext, UserContext } from '../../../context';
+import { AuthResponse, AuthState } from '../../../interfaces/Auth';
 import '../User.styles.css';
 
-const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/auth/register`;
-
 function Register() {
-  const [registerSuccess, setRegisterSuccess] = React.useState(null);
-  const [registerError, setRegisterError] = React.useState(null);
+  const [registerError, setRegisterError] = useState<string | null>(null);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
 
+  const authContext = useContext(AuthContext);
+  const userContext = useContext(UserContext);
+  const service = new AuthService(authContext.setAuthState, userContext.setUserData);
   const initialValues = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-  };
-
-  let password_minLength = UserSettings.password.minLength;
-  let password_maxLength = UserSettings.password.maxLength;
-
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
-    password: Yup.string()
-      .min(password_minLength, `Password must be at least ${password_minLength} characters long`)
-      .max(password_maxLength, `Password must be at most ${password_maxLength} characters long`)
-      .required('Password is required'),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Confirm password is required'),
-  });
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    setRegisterSuccess(null);
-    setRegisterError(null);
-
-    let msg = "REGISTER : ";
-
-    try {
-      const response = await axios.post(USER_DATABASE_URL, values);
-
-      if (response.data.error) {
-        setRegisterError(response.data.error);
-      } else {
-        msg += "SUCCESS\n\t" + response.data.message + "\n";
-        console.log(msg, response.data);
-
-        setRegisterSuccess(true);
-      }
-    } catch (error) {
-      msg += "ERROR\n\t" + error + "\n";
-
-      // Handle different types of errors
-      if (error.response) {
-        // Server responded with an error status
-        if (error.response.data.error) {
-          msg += "\tData error : " + error.response.data.error;
-          setRegisterError(error.response.data.error);
-        } else {
-          msg += "\tRegistration failed.";
-          setRegisterError("Registration failed. Please try again.");
-        }
-      } else if (error.request) {
-        // Request was made but no response received
-        msg += "\tNo response from server. Please try again.";
-        setRegisterError("No response from server. Please try again.");
-      } else {
-        // Something else went wrong
-        msg += "\tAn error occurred. Please try again.";
-        setRegisterError("An error occurred. Please try again.");
-      }
-
-      setRegisterSuccess(false);
-      console.error(msg, values);
-    } finally {
-      setSubmitting(false);
-    }
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
   };
 
   return (
-    <div className="card-container">
+    <div>
         <h2> Register</h2>
-
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
+        validationSchema={service.AuthRegistrationValidationSchema}
+        onSubmit={async (request)=>{
+          const response : AuthResponse = await service.Register(request);
+          if (response.state === AuthState.LOGGED_IN) {
+            setRegisterSuccess(true);
+            setRegisterError(null);
+          }
+          else
+          {
+            setRegisterSuccess(false);
+            setRegisterError(response.message);
+          }
+        }}
       >
         {({ isSubmitting }) => (
           <Form>

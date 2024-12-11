@@ -15,7 +15,7 @@ const db = require("./models");
 
 // ====================== << ROUTES >> ======================
 const userRouter = require("./routes/Users");
-app.use("/auth", userRouter);
+app.use("/users", userRouter);
 
 // ====================== << SERVER LISTENERS >> ======================
 db.sequelize.sync().then(() => {

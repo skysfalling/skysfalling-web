@@ -1,11 +1,14 @@
-import { AuthContext, AuthService } from "../../../context/AuthContext";
+import { AuthContext, UserContext } from "../../../context";
+import { AuthService } from "../../../classes/AuthService";
 import { useContext } from "react";
 
 export function Logout() {
   const authContext = useContext(AuthContext);
-  return <div className="card-container">
+  const userContext = useContext(UserContext);
+
+  return <div>
     <button onClick={() => {
-      const authService = new AuthService(authContext.setAuthState);
+      const authService = new AuthService(authContext.setAuthState, userContext.setUserData);
       authService.Logout();
     }}>
       Logout

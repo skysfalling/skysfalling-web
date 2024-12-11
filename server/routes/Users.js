@@ -7,7 +7,7 @@ const { sign } = require('jsonwebtoken');
 const validateToken = require('../middlewares/AuthMiddleware');
 
 // << GET : AUTHENTICATE USER >> ==============================================
-router.get("/auth", validateToken, (req, res) => {
+router.get("/auth", validateToken, async (req, res) => {
     return res.json(req.user);
 });
 
@@ -21,6 +21,27 @@ router.get("/getAll", async (req, res) => {
     return res.json(users);
 });
 
+// << GET : USER BY EMAIL >> ===================================================
+router.get("/getByEmail", async (req, res) => {
+    const { email } = req.query;
+    const user = await Users.findOne({ where: { email: email } });
+    if (!user) {
+        let statusNumber = 404; 
+        return res.status(statusNumber).json({ error: "User not found", status: statusNumber });
+    }
+    return res.json(user);
+});
+
+// << GET : USER BY NAME >> ===================================================
+router.get("/getByName", async (req, res) => {
+    const { name } = req.body;
+    const user = await Users.findOne({ where: { name: name } });
+    if (!user) {
+        return res.status(404).json({ error: "User not found" });
+    }
+    return res.json(user);
+});
+
 // << POST : REGISTER USER >> ==============================================
 router.post("/register", async (req, res) => {
     try {
@@ -29,7 +50,7 @@ router.post("/register", async (req, res) => {
         // Check if user already exists
         const existingUser = await Users.findOne({ where: { email: email } });
         if (existingUser) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.json({ error: "User already exists" });
         }
 
         // Hash password
@@ -50,7 +71,7 @@ router.post("/register", async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            error: "An error occurred during registration",
+            message: "An error occurred during registration",
             details: error.message
         });
     }
@@ -78,7 +99,7 @@ router.post("/login", async (req, res) => {
         // If everything is correct, send success response
         return res.json({
             message: "LOGIN USER : SUCCESS",
-            user: email,
+            email: email,
             accessToken: accessToken
         });
 
@@ -95,7 +116,7 @@ router.post("/login", async (req, res) => {
 router.post("/dummies", async (req, res) => {
     try {
         const results = [];
-        
+
         // Process each dummy user
         for (const dummyUser of dummyUsers) {
             try {
