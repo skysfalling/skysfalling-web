@@ -1,22 +1,21 @@
 import React, { useContext } from "react";
-import { AuthContext, UserContext } from "../../context";
+import { AuthContext } from "../../context";
 import { Login, Register, Logout } from "../../components/User";
 
 function Profile() {
   const authContext = useContext(AuthContext);
-  const userContext = useContext(UserContext);
 
   return (
     <div>
       <h1>Profile</h1>
 
-      <p>AuthState : {authContext.authState ? "Logged In" : "Logged Out"}</p>
-      <div>User Data : {userContext.userData ? (
+      <p>AuthState : {authContext.status ? "Logged In" : "Logged Out"}</p>
+      <div>User Data : {authContext.user ? (
         <div style={{marginLeft: "20px"}}>
-          <p>Email : {userContext.userData.email}</p>
-          <p>Name : {userContext.userData.name}</p>
-          <p>Id : {userContext.userData.id}</p>
-          <p>Image : {userContext.userData.image}</p>
+          <p>Email : {authContext.user.email}</p>
+          <p>Name : {authContext.user.name}</p>
+          <p>Id : {authContext.user.id}</p>
+          <p>Image : {authContext.user.image}</p>
         </div>
       ) : "No User Data"}</div>
 

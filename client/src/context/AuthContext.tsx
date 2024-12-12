@@ -1,19 +1,18 @@
 import { createContext } from "react";
+import { IUser } from "@shared/types";
 
-/**
- * The properties for the authentication context
- */
-export interface AuthContextProps {
-  /** The authentication state */
-  authState: boolean;
-  /** The function to set the authentication state */
-  setAuthState: (setTo: boolean) => void;
+export type AuthContextValues = {
+  status: boolean,
+  user?: IUser,
 }
 
-/**
- * The context for the authentication state
- */
+interface AuthContextProps extends AuthContextValues {
+  setAuthContext: (values: AuthContextValues) => void
+}
+
 export const AuthContext = createContext<AuthContextProps>({
-  authState: false,
-  setAuthState: (setTo: boolean) => { },
+  status: false,
+  user: undefined,
+  setAuthContext: () => {}
 });
+

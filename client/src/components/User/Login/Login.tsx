@@ -1,10 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
-import { AuthContext, UserContext } from "../../../context";
+import { AuthContext } from "../../../context";
 import { AuthService } from "../../../classes/AuthService";
 
 import "../User.styles.css";
-import { AuthRequest, AuthResponse, AuthState } from "../../../interfaces/Auth";
+import { IAuthRequest, IAuthResponse } from "@shared/types";
 
 /**
  * Login component
@@ -16,12 +16,11 @@ export default function Login() {
 
   // Get auth context
   const authContext = useContext(AuthContext);
-  const userContext = useContext(UserContext);
-    
-  // Initialize service outside of render
-  const service = new AuthService(authContext.setAuthState, userContext.setUserData);
 
-  const initialValues: AuthRequest = {
+  // Initialize service outside of render
+  const service = new AuthService(authContext.setAuthContext);
+
+  const initialValues: IAuthRequest = {
     email: "astro@dummy.com",
     password: ""
   };
@@ -33,8 +32,8 @@ export default function Login() {
         initialValues={initialValues}
         validationSchema={service.AuthLoginValidationSchema}
         onSubmit={async (values) => {
-          const result: AuthResponse = await service.Login(values);
-          if (result.state === AuthState.LOGGED_IN) {
+          const result: IAuthResponse = await service.Login(values);
+          if (result.success) {
             setLoginSuccess(true);
             setLoginError(null);
           } else {

@@ -8,7 +8,7 @@ interface StatusProps {
 }
 
 const Status: React.FC<StatusProps> = ({ userId, className = '' }) => {
-  const { authState } = useContext(AuthContext);
+  const { status: authState } = useContext(AuthContext);
 
   return (
     <div className={`user-status ${className}`}>

@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import { AuthContext, UserContext } from "./context";
-import type NavLink from "./interfaces/NavLink"; // type from interface
-// ( Styles ) ----------------
-import "./styles/main.css";
-
-// ( Pages ) ----------------
-import { Gallery, Home, Profile } from "./layouts";
 import { AuthService } from "./classes/AuthService";
-import { UserData } from "./interfaces";
+import Navbar from "./components/Navbar";
+import { AuthContext, AuthContextValues } from "./context";
+import type NavLink from "./interfaces/NavLink";
+import { Gallery, Home, Profile } from "./layouts";
+import "./styles/main.css";
 
 const navLinks: NavLink[] = [
   { to: "/", label: "Home", component: Home },
@@ -18,35 +14,35 @@ const navLinks: NavLink[] = [
 ];
 
 function App() {
-  const [authState, setAuthState] = useState<boolean>(false);
-  const [userData, setUserData] = useState<UserData | undefined>(undefined);
+  // Define auth state and user state separately for better control
+  const [authContext, setAuthContext] = useState<AuthContextValues>({
+    status: false,
+    user: undefined,
+  });
   const [checkAuth, setCheckAuth] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!checkAuth)
-    {
-      const authService = new AuthService(setAuthState, setUserData);
+    if (!checkAuth) {
+      const authService = new AuthService(setAuthContext);
       authService.CheckAuth();
       setCheckAuth(true);
     }
-  }, [authState, checkAuth]);
+  }, [checkAuth, authContext]);
 
   return (
-    <AuthContext.Provider value={{authState, setAuthState}}>
-      <UserContext.Provider value={{userData, setUserData}}>
-        <Router>
-          <div className="App">
-            <Navbar links={navLinks} />
-            <main>
-              <Routes>
-                {navLinks.map(({ to, component: Component }) => (
-                  <Route key={to} path={to} element={<Component />} />
-                ))}
-              </Routes>
-            </main>
-          </div>
-        </Router>
-      </UserContext.Provider>
+    <AuthContext.Provider value={{ ...authContext, setAuthContext }}>
+      <Router>
+        <div className="App">
+          <Navbar links={navLinks} />
+          <main>
+            <Routes>
+              {navLinks.map(({ to, component: Component }) => (
+                <Route key={to} path={to} element={<Component />} />
+              ))}
+            </Routes>
+          </main>
+        </div>
+      </Router>
     </AuthContext.Provider>
   );
 }

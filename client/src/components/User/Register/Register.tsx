@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useContext, useState } from 'react';
 import { AuthService } from '../../../classes/AuthService';
-import { AuthContext, UserContext } from '../../../context';
-import { AuthResponse, AuthState } from '../../../interfaces/Auth';
+import { AuthContext } from '../../../context';
+import { IRegisterRequest, IRegisterResponse } from '@shared/types';
 import '../User.styles.css';
 
 function Register() {
@@ -10,8 +10,7 @@ function Register() {
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const authContext = useContext(AuthContext);
-  const userContext = useContext(UserContext);
-  const service = new AuthService(authContext.setAuthState, userContext.setUserData);
+  const service = new AuthService(authContext.setAuthContext);
   const initialValues = {
     name: "",
     email: "",
@@ -25,9 +24,14 @@ function Register() {
       <Formik
         initialValues={initialValues}
         validationSchema={service.AuthRegistrationValidationSchema}
-        onSubmit={async (request)=>{
-          const response : AuthResponse = await service.Register(request);
-          if (response.state === AuthState.LOGGED_IN) {
+        onSubmit={async (submissionValues)=>{
+          const request : IRegisterRequest = {
+            name: submissionValues.name,
+            email: submissionValues.email,
+            password: submissionValues.password,
+          };
+          const response : IRegisterResponse = await service.Register(request);
+          if (response.success) {
             setRegisterSuccess(true);
             setRegisterError(null);
           }
