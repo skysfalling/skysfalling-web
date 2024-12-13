@@ -1,8 +1,21 @@
 {
+  "name": "skysfalling-website",
+  "private": true,
+  "workspaces": [
+    "client/*",
+    "shared/*",
+    "server/*"
+  ],
+  "scripts": {
+    "start": "npm run start --workspace=client",
+    "start:client": "npm run start --workspace=client",
+    "start:server": "npm run start --workspace=server",
+    "dev": "concurrently \"npm run start:client\" \"npm run start:server\"",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces"
+  },
   "devDependencies": {
-    "@types/axios": "^0.14.4",
-    "@types/jest": "^29.5.14",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5"
+    "concurrently": "^8.0.0",
+    "typescript": "^5.0.0"
   }
 }

@@ -26,9 +26,9 @@
 
 .form-input {
     padding: 0.75rem;
-    background-color: var(var(--theme-surface-default));
-    color: var(var(--theme-text-inverse));
-    border: 1px solid var(--theme-border-brand);
+    background-color: var(--theme-surface-default);
+    color: var(--theme-text-primary);
+    border: 1px solid var(--theme-border-e);
     border-radius: 4px;
     font-size: 1rem;
 }

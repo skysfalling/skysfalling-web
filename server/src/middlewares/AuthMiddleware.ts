@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { IUser } from '@shared/types';
+import { IUserData } from '@shared/interfaces';
 import { JWTService } from '../services/JWTService';
 
 // Extend Express Request type to include user
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser;
+      user?: IUserData;
     }
   }
 }
@@ -46,7 +46,7 @@ export const validateToken: ValidateHandler = async (req, res, next) => {
     }
 
     try {
-        const user : IUser | null = JWTService.verifyUserAccessToken(accessToken);
+        const user : IUserData | null = JWTService.verifyUserAccessToken(accessToken);
         
         if (!user) {
             console.error(`${VALIDATE_TOKEN_PREFIX} Invalid token : `, accessToken);

@@ -4,6 +4,14 @@
     padding: 20px;
 }
 
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-4xl);
+}
+
 /* Error Container */
 .error-container {
     display: flex;
@@ -245,4 +253,24 @@
     background-color: var(--theme-background-base);
     border-radius: 8px;
     border: 1px solid var(--theme-border-default);
+}
+
+.edit-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--theme-border-default);
+    border-radius: 4px;
+    font-size: var(--font-size-xs);
+    background-color: var(--theme-background-base);
+    color: var(--theme-text-default);
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: var(--theme-border-focus);
+    box-shadow: 0 0 0 2px var(--theme-border-focus-shadow);
+}
+
+.button-secondary {
+    background-color: var(--theme-button-secondary);
 }

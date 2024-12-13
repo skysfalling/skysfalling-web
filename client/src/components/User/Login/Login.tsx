@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import AuthService from "../../../classes/services/AuthService";
 import "../User.styles.css";
-import { IAuthRequest, IAuthResponse } from "@shared/types";
+import { IUserAuthRequest, IUserAuthResponse } from "@shared/interfaces";
 import { AuthContext } from "src/context/AuthContext";
 
 /**
@@ -14,7 +14,7 @@ export default function Login() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
     
-  const initialValues: IAuthRequest = {
+  const initialValues: IUserAuthRequest = {
     email: "astro@dummy.com",
     password: ""
   };
@@ -26,13 +26,13 @@ export default function Login() {
         initialValues={initialValues}
         validationSchema={AuthService.AuthLoginValidationSchema}
         onSubmit={async (values) => {
-          const response: IAuthResponse = await AuthService.Login(values, setAuthContext);
+          const response: IUserAuthResponse = await AuthService.Login(values, setAuthContext);
           if (response.success) {
             setLoginSuccess(true);
             setLoginError(null);
           } else {
             setLoginSuccess(false);
-            setLoginError(response.message);
+            setLoginError(response.message ?? null);
           }
         }}
       >

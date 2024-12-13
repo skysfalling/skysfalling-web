@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useContext, useState } from 'react';
 import AuthService from '../../../classes/services/AuthService';
-import { IRegisterRequest, IRegisterResponse } from '@shared/types';
+import { IUserAuthRequest, IUserAuthResponse } from '@shared/interfaces';
 import '../User.styles.css';
 import { AuthContext } from 'src/context/AuthContext';
 
@@ -24,12 +24,12 @@ function Register() {
         initialValues={initialValues}
         validationSchema={AuthService.AuthRegistrationValidationSchema}
         onSubmit={async (submissionValues)=>{
-          const request : IRegisterRequest = {
+          const request : IUserAuthRequest = {
             name: submissionValues.name,
             email: submissionValues.email,
             password: submissionValues.password,
           };
-          const response : IRegisterResponse = await AuthService.Register(request, setAuthContext);
+          const response : IUserAuthResponse = await AuthService.Register(request, setAuthContext);
           if (response.success) {
             setRegisterSuccess(true);
             setRegisterError(null);
@@ -37,7 +37,7 @@ function Register() {
           else
           {
             setRegisterSuccess(false);
-            setRegisterError(response.message);
+            setRegisterError(response.message ?? "Unknown Error");
           }
         }}
       >

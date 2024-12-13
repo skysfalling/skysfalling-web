@@ -2,13 +2,13 @@ import bcrypt, { hash } from "bcrypt";
 import express, { Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
 import {
-  IAuthRequest,
-  IAuthResponse,
-  IRegisterRequest,
-  IUser,
-  IUserRequest,
-  IUserResponse,
-} from "../../../shared/types";
+  IUserAuthRequest,
+  IUserAuthResponse,
+  IUserData,
+  IUserDataResponse,
+  IUserDataRequest,
+  NullApiResponse
+} from "../../../shared/interfaces";
 import { validateToken } from "../middlewares/AuthMiddleware";
 import db from "../models";
 
@@ -18,184 +18,228 @@ const { Users } = db;
 /** Defines the RouteHandler type */
 type RouteHandler = (req: Request, res: Response) => Promise<any>;
 
-// #region ======== [[ GET ALL USERS ]] ========
-const getAllUsers: RouteHandler = async (req, res) => {
-  try {
-    const users = await Users.findAll();
-    res.json({
-      success: true,
-      message: "Users Fetched Successfully",
-      data: users,
-    } as IUserResponse);
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to Fetch Users",
-      error: (error as Error).message,
-    } as IUserResponse);
-  }
+// #region ======== [[ VALIDATE ]] ========
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validateName = (name: string): boolean => {
+  return name.length > 3;
+};
+
+const validatePassword = (password: string): boolean => {
+  return password.length > 0;
 };
 // #endregion
 
-// #region ======== [[ GET SINGLE USER ]] ========
+// #region ======== [[ GET ALL USERS ]] ========
+const getAllUsers: RouteHandler = async (req, res) => {
+  let response : IUserDataResponse = NullApiResponse;
+
+  try {
+    const users = await Users.findAll();
+    response = {
+      ...response,
+      success: true,
+      message: "Users Fetched Successfully",
+      data: users,
+      status: 200
+    } as IUserDataResponse;
+      
+  } catch (error) {
+    response = {
+      success: false,
+      message: "Failed to Fetch Users",
+      error: (error as Error).message,
+      status: 500
+    } as IUserDataResponse;
+  }
+  return res.status(response.status).json(response);
+};
+// #endregion
+
+// #region ======== [[ GET SINGLE USER ]] ========  
 const getUser: RouteHandler = async (req, res) => {
-  const userRequest: IUserRequest = {
-    id: req.query.id ? Number(req.query.id) : undefined,
+  const request: IUserDataRequest = {
+    id: req.query.id ? Number(req.query.id) : -1,
     email: req.query.email as string | undefined,
     name: req.query.name as string | undefined,
   };
+  let response : IUserDataResponse = NullApiResponse;
+  let user : IUserData | null = null;
 
   try {
-    // (( Get User by ID )) ----------------
-    if (userRequest.id) {
-      const user: IUser = await Users.findByPk(userRequest.id);
-      return res.json({
-        success: true,
-        message: "User Fetched Successfully",
-        data: user,
-      } as IUserResponse);
+    if (!user && request.id) {
+      user = await Users.findByPk(request.id);
+    }
+    if (!user && request.email) {
+      user = await Users.findOne({ where: { email: request.email } });
+    }
+    if (!user && request.name) {
+      user = await Users.findOne({ where: { name: request.name } });
     }
 
-    // (( Get User by Email )) ----------------
-    else if (userRequest.email) {
-      const user: IUser = await Users.findOne({
-        where: { email: userRequest.email },
-      });
-      return res.json({
+    // >> ---- SUCCESS ---- <<
+    if (user) {
+      response = {
         success: true,
+        status: 200,
         message: "User Fetched Successfully",
         data: user,
-      } as IUserResponse);
+      } as IUserDataResponse;
     }
-
-    // (( Get User by Name )) ----------------
-    else if (userRequest.name) {
-      const user: IUser = await Users.findOne({
-        where: { name: userRequest.name },
-      });
-      return res.json({
-        success: true,
-        message: "User Fetched Successfully",
-        data: user,
-      } as IUserResponse);
-    }
-
-    // (( Invalid Request )) ----------------
-    else {
-      return res.status(400).json({
+    // >> ---- NOT FOUND ---- <<
+    else
+    {
+      response = {
         success: false,
-        message: "Invalid request",
-        error: new Error("Invalid request"),
-      } as IUserResponse);
+        status: 404,
+        message: "User Not Found",
+        error: new Error("User Not Found"),
+      } as IUserDataResponse;
     }
+
   } catch (error) {
-    console.error("Error getting user:", error);
-    return res.status(500).json({
+    // >> ---- ERROR ---- <<
+    response = {
+      ...response,
       success: false,
-      message: (error as Error).message,
-      error: error,
-    } as IUserResponse);
+      status: 500,
+      message: "Failed to Fetch User",
+      error: (error as Error).message,
+    } as IUserDataResponse;
   }
+  return res.status(response.status).json(response);
 };
 // #endregion
 
 // #region ======== [[ GET AUTH STATUS ]] ========
 const getAuthStatus: RouteHandler = async (req, res) => {
+  let response : IUserAuthResponse = NullApiResponse;
   try {
     if (req.user) {
-      const user: IUser = {
+      const user: IUserData = {
         id: req.user.id,
         email: req.user.email,
         name: req.user.name,
       };
 
-      return res.json({
+      response = {
         success: true,
+        status: 200,
         message: "Authentication check successful",
         data: user,
-      } as IAuthResponse);
+      } as IUserAuthResponse;
     }
   } catch (error) {
-    return res.status(401).json({
+    response = {
       success: false,
+      status: 401,
       message: "Authentication check failed",
       error: new Error("Authentication check failed"),
-    } as IAuthResponse);
+    } as IUserAuthResponse;
   }
+  return res.status(response.status).json(response);
 };
 // #endregion
 
 // #region ======== [[ REGISTER NEW USER ]] ========
 const register: RouteHandler = async (req, res) => {
-  const registerRequest: IRegisterRequest = {
+  const request: IUserAuthRequest = {
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
   };
+  let response : IUserAuthResponse = NullApiResponse;
+
 
   try {
-    // << CHECK IF EMAIL EXISTS >>
-    if (registerRequest.email) {
-      const existingUser = await Users.findOne({
-        where: { email: registerRequest.email },
-      });
-      if (existingUser) {
-        return res.status(400).json({
+    if (!request.email || !request.password || !request.name) {
+      response = {
+        ...response,
+        success: false,
+        status: 400,
+        message: "Invalid request",
+        error: new Error("Invalid request"),
+      } as IUserAuthResponse;
+    }
+    else
+    {
+      let emailValid, emailExists, nameValid, nameExists, passwordValid : boolean = false;
+      emailValid = validateEmail(request.email);
+      emailExists = await Users.findOne({ where: { email: request.email } });
+      nameValid = validateName(request.name);
+      nameExists = await Users.findOne({ where: { name: request.name } });
+      passwordValid = validatePassword(request.password);
+
+      // >> ---- SUCCESS : ALL VALID ---- <<
+      if (emailValid && !emailExists && nameValid && !nameExists && passwordValid) {
+        const hashedPassword = await hash(request.password, 10);
+        const newUser = await Users.create({
+          email: request.email,
+          password: hashedPassword,
+          name: request.name,
+        });
+
+        response = {
+          ...response,
+          success: true,
+          status: 201,
+          message: "User Created & Registered Successfully",
+          data: newUser,
+        } as IUserDataResponse;
+      }
+      // >> ---- ERROR : EMAIL NOT VALID ---- <<
+      else if (!emailValid) {
+        response = {
+          ...response,
           success: false,
+          status: 400,
+          message: "Invalid email",
+          error: new Error("Invalid email"),
+        } as IUserAuthResponse;
+      }
+      // >> ---- ERROR : EMAIL EXISTS ---- <<
+      else if (emailExists) {
+        response = {
+          ...response,
+          success: false,
+          status: 400,
           message: "Email already exists",
           error: new Error("Email already exists"),
-        } as IAuthResponse);
+        } as IUserAuthResponse;
       }
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid email" + ` ${registerRequest.email}`,
-        error: new Error("Invalid email"),
-      } as IAuthResponse);
-    }
-
-    // << CHECK IF NAME EXISTS >>
-    if (registerRequest.name) {
-      const existingName = await Users.findOne({
-        where: { name: registerRequest.name },
-      });
-      if (existingName) {
-        return res.status(400).json({
+      // >> ---- ERROR : NAME NOT VALID ---- <<
+      else if (!nameValid) {
+        response = {
+          ...response,
           success: false,
+          status: 400,
+          message: "Invalid name",
+          error: new Error("Invalid name"),
+        } as IUserAuthResponse;
+      }
+      // >> ---- ERROR : NAME EXISTS ---- <<
+      else if (nameExists) {
+        response = {
+          ...response,
+          success: false,
+          status: 400,
           message: "Name already exists",
           error: new Error("Name already exists"),
-        } as IAuthResponse);
+        } as IUserAuthResponse;
       }
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid name",
-        error: new Error("Invalid name"),
-      } as IAuthResponse);
-    }
-
-    // Hash password
-    if (registerRequest.password) {
-      const hashedPassword = await hash(registerRequest.password, 10);
-
-      // Create new user
-      const newUser = await Users.create({
-        email: registerRequest.email,
-        password: hashedPassword,
-        name: registerRequest.name,
-      });
-
-      return res.json({
-        success: true,
-        message: "User Registered Successfully",
-        data: newUser,
-      } as IUserResponse);
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid password",
-        error: new Error("Invalid password"),
-      } as IAuthResponse);
+      // >> ---- ERROR : PASSWORD NOT VALID ---- <<
+      else if (!passwordValid) {
+        response = {
+          ...response,
+          success: false,
+          status: 400,
+          message: "Invalid password",
+          error: new Error("Invalid password"),
+        } as IUserAuthResponse;
+      }
     }
   } catch (error) {
     console.error("Registration error:", error);
@@ -203,7 +247,7 @@ const register: RouteHandler = async (req, res) => {
       success: false,
       message: "Registration failed",
       error: (error as Error).message,
-    } as IAuthResponse);
+    } as IUserAuthResponse);
   }
 };
 // #endregion
@@ -221,7 +265,7 @@ const login: RouteHandler = async (req, res) => {
         success: false,
         message: "Could not find email",
         error: new Error("Could not find email"),
-      } as IAuthResponse);
+      } as IUserAuthResponse);
     }
 
     // Check password
@@ -231,7 +275,7 @@ const login: RouteHandler = async (req, res) => {
         success: false,
         message: "Invalid email or password",
         error: new Error("Invalid email or password"),
-      } as IAuthResponse);
+      } as IUserAuthResponse);
     }
 
     // Generate JWT token
@@ -247,29 +291,63 @@ const login: RouteHandler = async (req, res) => {
       message: "Login Successful",
       user: user,
       accessToken: accessToken,
-    } as IAuthResponse);
+    } as IUserAuthResponse);
 
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Login failed",
       error: (error as Error).message,
-    } as IAuthResponse);
+    } as IUserAuthResponse);
   }
 };
 //#endregion
 
 // #region ======== [[ DELETE USER ]] ========
 const deleteUser: RouteHandler = async (req, res) => {
-  const userId = req.params.userId;
-  if (userId) {
+  try {
+    const userId = req.params.userId;
+    if (!userId) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Invalid user ID",
+        error: new Error("Invalid user ID")
+      } as IUserDataResponse);
+    }
+
+    const user = await Users.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "User not found",
+        error: new Error("User not found")
+      } as IUserDataResponse);
+    }
+
     await Users.destroy({ where: { id: userId } });
-    res.json({ success: true, message: "User deleted successfully" } as IUserResponse);
-  } else {
-    res.status(400).json({ success: false, message: "Invalid user ID" } as IUserResponse);
+    return res.json({ 
+      success: true, 
+      message: "User deleted successfully" 
+    } as IUserDataResponse);
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ 
+      success: false, 
+      message: "Failed to delete user",
+      error: (error as Error).message
+    } as IUserDataResponse);
   }
 };
 // #endregion
+
+//#region ======== [[ EDIT USER ]] ========
+const editUser: RouteHandler = async (req, res) => {
+  const userId = req.params.userId;
+  const updatedData = req.body;
+  await Users.update(updatedData, { where: { id: userId } });
+  res.json({ success: true, message: "User updated successfully" } as IUserDataResponse);
+};
+//#endregion
 
 // ============================================================================ 
 router.get("/", validateToken, getAuthStatus);
@@ -279,6 +357,8 @@ router.get("/get", getUser);
 
 router.post("/register", register);
 router.post("/login", login);
+
+router.put("/edit", validateToken, editUser);
 
 router.delete("/:userId", validateToken, deleteUser);
 

@@ -1,10 +1,10 @@
 import { createContext } from "react";
-import { IUser } from "@shared/types";
+import { IUserData } from "@shared/interfaces";
 
 /** Define the values of the AuthContext */
 export type AuthContextValues = {
   status: boolean,
-  user?: IUser,
+  user?: IUserData,
 }
 
 /** Define the props of the AuthContext constant */

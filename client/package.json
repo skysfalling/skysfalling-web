@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "shared": "file:../shared",
     "@auth0/auth0-react": "^2.2.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.2.0",
+    "@mui/material": "^6.2.0",
     "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -23,12 +28,13 @@
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.13",
     "web-vitals": "^2.1.4",
-    "yup": "^1.5.0"
+    "yup": "^1.5.0",
+    "@craco/craco": "^7.0.0-alpha.3"
   },
   "scripts": {
-    "start": "env-cmd -f .env react-scripts start",
-    "build": "env-cmd -f .env react-scripts build",
-    "test": "jest",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "eject": "react-scripts eject",
