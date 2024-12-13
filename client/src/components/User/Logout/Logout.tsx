@@ -1,11 +1,14 @@
-import { AuthContext } from "../../../context";
-import { AuthService } from "../../../classes/AuthService";
 import { useContext } from "react";
+import AuthService from "../../../classes/services/AuthService";
+import { AuthContext } from "src/context/AuthContext";
 
 export function Logout() {
-  const authContext = useContext(AuthContext);
-  const service = new AuthService(authContext.setAuthContext);
+  const { setAuthContext } = useContext(AuthContext);
   return <div>
-    <button onClick={service.Logout}>Logout</button>
+    <button onClick={
+      async () => {
+        await AuthService.Logout(setAuthContext);
+      }
+    }>Logout</button>
   </div>
 }

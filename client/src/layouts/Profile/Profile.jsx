@@ -6,7 +6,7 @@ function Profile() {
   const authContext = useContext(AuthContext);
 
   return (
-    <div>
+    <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
       <h1>Profile</h1>
 
       <p>AuthState : {authContext.status ? "Logged In" : "Logged Out"}</p>
@@ -15,19 +15,19 @@ function Profile() {
           <p>Email : {authContext.user.email}</p>
           <p>Name : {authContext.user.name}</p>
           <p>Id : {authContext.user.id}</p>
-          <p>Image : {authContext.user.image}</p>
         </div>
       ) : "No User Data"}</div>
 
-      <div className="card-container">
-        <Login />
-      </div>
-      <div className="card-container">
-        <Register />
-      </div>
-      <div className="card-container">
-        <Logout />
-      </div>
+      {authContext.status ? (
+        <div className="card-container">
+          <Logout />
+        </div>
+      ) : (
+        <div className="card-container">
+          <Login />
+        </div>
+      )}
+
     </div>
   );
 }

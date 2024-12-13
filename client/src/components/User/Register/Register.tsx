@@ -1,16 +1,15 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useContext, useState } from 'react';
-import { AuthService } from '../../../classes/AuthService';
-import { AuthContext } from '../../../context';
+import AuthService from '../../../classes/services/AuthService';
 import { IRegisterRequest, IRegisterResponse } from '@shared/types';
 import '../User.styles.css';
+import { AuthContext } from 'src/context/AuthContext';
 
 function Register() {
+  const { setAuthContext } = useContext(AuthContext); 
   const [registerError, setRegisterError] = useState<string | null>(null);
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
-  const authContext = useContext(AuthContext);
-  const service = new AuthService(authContext.setAuthContext);
   const initialValues = {
     name: "",
     email: "",
@@ -23,14 +22,14 @@ function Register() {
         <h2> Register</h2>
       <Formik
         initialValues={initialValues}
-        validationSchema={service.AuthRegistrationValidationSchema}
+        validationSchema={AuthService.AuthRegistrationValidationSchema}
         onSubmit={async (submissionValues)=>{
           const request : IRegisterRequest = {
             name: submissionValues.name,
             email: submissionValues.email,
             password: submissionValues.password,
           };
-          const response : IRegisterResponse = await service.Register(request);
+          const response : IRegisterResponse = await AuthService.Register(request, setAuthContext);
           if (response.success) {
             setRegisterSuccess(true);
             setRegisterError(null);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { AuthService } from "./classes/AuthService";
+import AuthService from "./classes/services/AuthService";
 import Navbar from "./components/Navbar";
 import { AuthContext, AuthContextValues } from "./context";
 import type NavLink from "./interfaces/NavLink";
@@ -15,16 +15,12 @@ const navLinks: NavLink[] = [
 
 function App() {
   // Define auth state and user state separately for better control
-  const [authContext, setAuthContext] = useState<AuthContextValues>({
-    status: false,
-    user: undefined,
-  });
+  const [authContext, setAuthContext] = useState<AuthContextValues>({ status: false, user: undefined });
   const [checkAuth, setCheckAuth] = useState<boolean>(false);
 
   useEffect(() => {
     if (!checkAuth) {
-      const authService = new AuthService(setAuthContext);
-      authService.CheckAuth();
+      AuthService.CheckAuth();
       setCheckAuth(true);
     }
   }, [checkAuth, authContext]);

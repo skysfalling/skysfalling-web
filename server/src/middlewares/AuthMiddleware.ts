@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { IUser } from '@shared/types';
+import { JWTService } from '../services/JWTService';
 
 // Extend Express Request type to include user
 declare global {
@@ -46,13 +46,19 @@ export const validateToken: ValidateHandler = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(
-            accessToken,
-            process.env.JWT_SECRET || "skysfalling_website_secret_key"
-        );
+        const user : IUser | null = JWTService.verifyUserAccessToken(accessToken);
         
+        if (!user) {
+            console.error(`${VALIDATE_TOKEN_PREFIX} Invalid token : `, accessToken);
+            return res.status(403).json({ 
+                error: "Invalid token",
+                message: "The provided token is invalid or has expired",
+                token: accessToken
+            });
+        }
+
         // Attach the decoded user to the request
-        req.user = decoded as IUser;
+        req.user = user;
         next();
 
         //console.log(`${VALIDATE_TOKEN_PREFIX} Decoded : `, req.user);

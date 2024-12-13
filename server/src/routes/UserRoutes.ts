@@ -40,17 +40,15 @@ const getUsers: RouteHandler = async (req, res) => {
 // #region ======== [[ GET SINGLE USER ]] ========
 const getUser: RouteHandler = async (req, res) => {
   const userRequest: IUserRequest = {
-    data: {
-      id: req.query.id ? Number(req.query.id) : undefined, // Convert query parameter to number if present
-      email: req.query.email as string | undefined, // Cast query parameter to string
-      name: req.query.name as string | undefined, // Cast query parameter to string
-    },
+    id: req.query.id ? Number(req.query.id) : undefined,
+    email: req.query.email as string | undefined,
+    name: req.query.name as string | undefined,
   };
 
   try {
     // (( Get User by ID )) ----------------
-    if (userRequest.data?.id) {
-      const user: IUser = await Users.findByPk(userRequest.data.id);
+    if (userRequest.id) {
+      const user: IUser = await Users.findByPk(userRequest.id);
       return res.json({
         success: true,
         message: "User Fetched Successfully",
@@ -59,9 +57,9 @@ const getUser: RouteHandler = async (req, res) => {
     }
 
     // (( Get User by Email )) ----------------
-    else if (userRequest.data?.email) {
+    else if (userRequest.email) {
       const user: IUser = await Users.findOne({
-        where: { email: userRequest.data.email },
+        where: { email: userRequest.email },
       });
       return res.json({
         success: true,
@@ -71,9 +69,9 @@ const getUser: RouteHandler = async (req, res) => {
     }
 
     // (( Get User by Name )) ----------------
-    else if (userRequest.data?.name) {
+    else if (userRequest.name) {
       const user: IUser = await Users.findOne({
-        where: { name: userRequest.data.name },
+        where: { name: userRequest.name },
       });
       return res.json({
         success: true,
@@ -130,18 +128,16 @@ const getAuthStatus: RouteHandler = async (req, res) => {
 // #region ======== [[ REGISTER NEW USER ]] ========
 const register: RouteHandler = async (req, res) => {
   const registerRequest: IRegisterRequest = {
-    data: {
-      email: req.body.email,
-      password: req.body.password,
-      name: req.body.name,
-    },
+    email: req.body.email,
+    password: req.body.password,
+    name: req.body.name,
   };
 
   try {
     // << CHECK IF EMAIL EXISTS >>
-    if (registerRequest.data?.email) {
+    if (registerRequest.email) {
       const existingUser = await Users.findOne({
-        where: { email: registerRequest.data.email },
+        where: { email: registerRequest.email },
       });
       if (existingUser) {
         return res.status(400).json({
@@ -153,15 +149,15 @@ const register: RouteHandler = async (req, res) => {
     } else {
       return res.status(400).json({
         success: false,
-        message: "Invalid email" + ` ${registerRequest.data?.email}`,
+        message: "Invalid email" + ` ${registerRequest.email}`,
         error: new Error("Invalid email"),
       } as IAuthResponse);
     }
 
     // << CHECK IF NAME EXISTS >>
-    if (registerRequest.data?.name) {
+    if (registerRequest.name) {
       const existingName = await Users.findOne({
-        where: { name: registerRequest.data.name },
+        where: { name: registerRequest.name },
       });
       if (existingName) {
         return res.status(400).json({
@@ -179,14 +175,14 @@ const register: RouteHandler = async (req, res) => {
     }
 
     // Hash password
-    if (registerRequest.data?.password) {
-      const hashedPassword = await hash(registerRequest.data.password, 10);
+    if (registerRequest.password) {
+      const hashedPassword = await hash(registerRequest.password, 10);
 
       // Create new user
       const newUser = await Users.create({
-        email: registerRequest.data.email,
+        email: registerRequest.email,
         password: hashedPassword,
-        name: registerRequest.data.name,
+        name: registerRequest.name,
       });
 
       return res.json({
@@ -247,11 +243,12 @@ const login: RouteHandler = async (req, res) => {
 
     // << LOGIN SUCCESS >>
     return res.json({
-      request: { email, password },
       success: true,
       message: "Login Successful",
-      data: { user, accessToken },
+      user: user,
+      accessToken: accessToken,
     } as IAuthResponse);
+
   } catch (error) {
     return res.status(500).json({
       success: false,

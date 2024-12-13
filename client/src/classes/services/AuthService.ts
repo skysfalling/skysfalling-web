@@ -1,40 +1,24 @@
 import axios from "axios";
 import * as Yup from "yup";
-import { NetworkSettings, UserSettings } from "../Settings";
+import { NetworkSettings, UserSettings } from "../../Settings";
 import { IAuthRequest, IAuthResponse, IRegisterRequest, IRegisterResponse, IUser } from "@shared/types";
-import { AuthContextValues } from "../context/AuthContext";
-import { UserService } from "./UserService";
+import UserService from "./UserService";
+import StorageService from "./StorageService";
+import { AuthContextValues } from "src/context";
 
-const USER_DATABASE_URL = `${NetworkSettings.serverUrl}`;
-const USER_CHECK_AUTH_URL = `${USER_DATABASE_URL}/users/auth`;
-const USER_LOGIN_URL = `${USER_DATABASE_URL}/users/login`;
-const USER_REGISTER_URL = `${USER_DATABASE_URL}/users/register`;
-const USER_ACCESS_TOKEN_KEY = `${UserSettings.accessTokenKey}`;
+const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/users`;
+const USER_CHECK_AUTH_URL = `${USER_DATABASE_URL}/auth`;
+const USER_LOGIN_URL = `${USER_DATABASE_URL}/login`;
+const USER_REGISTER_URL = `${USER_DATABASE_URL}/register`;
 
 const CHECK_AUTH_PREFIX = "CheckAuth - ";
 const LOGIN_PREFIX = "Login - ";
 const LOGOUT_PREFIX = "Logout - ";
 const REGISTER_PREFIX = "Register - ";
 
-interface AuthServiceInterface {
-  AuthLoginValidationSchema: Yup.ObjectSchema<any>;
-  AuthRegistrationValidationSchema: Yup.ObjectSchema<any>;
-  CheckAuth: () => Promise<void>;
-  Login: (values: IAuthRequest) => Promise<IAuthResponse>;
-  Logout: () => Promise<IAuthResponse>;
-  Register: (values: IRegisterRequest) => Promise<IRegisterResponse>;
-}
 
-export class AuthService implements AuthServiceInterface {
-  private userService: UserService;
-  private setAuthContext: (values: AuthContextValues) => void;
-
-  constructor(setAuthContext: (values: AuthContextValues) => void) {
-    this.setAuthContext = setAuthContext;
-    this.userService = new UserService();
-  }
-
-  AuthLoginValidationSchema = Yup.object().shape({
+class AuthService {
+  public static AuthLoginValidationSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
       .required('Email is required'),
@@ -44,7 +28,7 @@ export class AuthService implements AuthServiceInterface {
       .required('Password is required'),
   });
 
-  AuthRegistrationValidationSchema = Yup.object().shape({
+  public static AuthRegistrationValidationSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
       .required('Email is required'),
@@ -58,59 +42,60 @@ export class AuthService implements AuthServiceInterface {
   });
 
   // #region ( HANDLE ACCESS TOKEN ) ------------------------------
-  private getAccessToken(): string | undefined {
-    const accessToken = localStorage.getItem(USER_ACCESS_TOKEN_KEY);
-    if (accessToken) {
-      return accessToken;
-    }
-    return undefined;
-  }
 
-  private setAccessToken(accessToken: string | undefined): void {
-    if (accessToken) {
-      localStorage.setItem(USER_ACCESS_TOKEN_KEY, accessToken);
-    }
-    else {
-      console.error("Cannot set undefined access token");
-    }
-  }
-
-  private removeAccessToken(): void {
-    localStorage.removeItem(USER_ACCESS_TOKEN_KEY);
-  }
   // #endregion
 
-  async CheckAuth(): Promise<void> {
-    const token = this.getAccessToken();
+  /**
+   * Check if User is Authenticated
+   * @returns {Promise<IAuthResponse>} - Check Auth Response
+   */
+  static async CheckAuth(): Promise<IAuthResponse> {
+    let response: IAuthResponse = {
+      success: false,
+      message: "",
+      error: "",
+      user: undefined,
+      accessToken: "",
+    };
+
+
+    const token = StorageService.GetAccessToken();
     if (token) {
-      const serverResponse = await axios.get(USER_CHECK_AUTH_URL, {
+      const serverResponse : IAuthResponse = await axios.get(USER_CHECK_AUTH_URL, {
         headers: {
           accessToken: token
         },
       });
 
-      const serverResponseData = serverResponse.data;
-      if (!serverResponseData.error) {
-
-        // Find email property in serverResponseData
-        const userEmail = serverResponseData.data.email;
-        if (userEmail) {
-          const user : IUser | undefined = await this.userService.GetUserByEmail(userEmail);
-          if (user)
-          {
-            console.log(`${CHECK_AUTH_PREFIX} User : `, user);
-            this.setAuthContext({ status: true, user: user });
-          }
-        }
-
-        return;
+      if (!serverResponse.error && serverResponse.user) {
+        response = {
+          ...response,
+          success: true,
+          user: serverResponse.user,
+          message: serverResponse.message,
+        };
+        return response;
       }
     }
+    else
+    {
+      response = {
+        ...response,
+        message: "No access token found",
+        error: "No access token found",
+      };
+    }
 
-    this.setAuthContext({ status: false, user: undefined });
+    return response;
   }
 
-  async Login(request: IAuthRequest): Promise<IAuthResponse> {
+  /**
+   * Send Login Request to Server
+   * @param request {IAuthRequest} - Login Request
+   * @param setAuthContext {Function(values: AuthContextValues)} - Function to set Auth Context
+   * @returns {Promise<IAuthResponse>} - Login Response
+   */
+  static async Login(request: IAuthRequest, setAuthContext: (values: AuthContextValues) => void): Promise<IAuthResponse> {
     let response: IAuthResponse = {
       success: false,
       message: "",
@@ -121,11 +106,12 @@ export class AuthService implements AuthServiceInterface {
 
     try {
       const serverResponse = await axios.post(USER_LOGIN_URL, request);
-
       console.log(`${LOGIN_PREFIX} ServerResponse : `, serverResponse);
 
-      if (!serverResponse.data.error && serverResponse.data.email) {
-        const userData: IUser | undefined = await this.userService.GetUserByEmail(serverResponse.data.email);
+      response = serverResponse.data;
+
+      if (!response.error && response.user) {
+        const userData: IUser | undefined = await UserService.GetUserByEmail(response.user.email);
         if (userData) {
 
           response = {
@@ -135,8 +121,8 @@ export class AuthService implements AuthServiceInterface {
             message: serverResponse.data.message
           };
 
-          this.setAccessToken(response.accessToken);
-          this.setAuthContext({ status: true, user: userData });
+          StorageService.SetAccessToken(response.accessToken);
+          setAuthContext({ status: true, user: userData });
 
           console.log(`${LOGIN_PREFIX} Success : `, response);
           return response;
@@ -144,32 +130,32 @@ export class AuthService implements AuthServiceInterface {
       }
     }
     catch (error) {
-      let message = "Login failed. ";
       if (axios.isAxiosError(error)) {
-        // Handle different types of errors
-        if (error.response?.data.error) {
-          message += error.response?.data.error;
-        } else if (error.request) {
-          // Request was made but no response received
-          message += "\tNo response from server. Please try again.";
-        } else {
-          // Something else went wrong
-          message += "\tAn error occurred. Please try again.";
-        }
+        console.log(`${LOGIN_PREFIX} Axios Error : `, error.response);
+        response = {
+          ...response,
+          message: error.response?.data.message || "Login failed",
+          error: error instanceof Error ? error.message : "Unknown Error",
+        };
+      }
+      else if (error instanceof Error) {
+        console.log(`${LOGIN_PREFIX} Error : `, error);
+        response = {
+          ...response,
+          message: error.message,
+          error: error.message,
+        };
       }
       else {
-        message += "\tAn error occurred. Please try again.";
+        console.log(`${LOGIN_PREFIX} Unknown Error : `, error);
+        response = {
+          ...response,
+          message: "Login failed",
+          error: "Unknown Error",
+        };
       }
 
-      this.setAuthContext({ status: false, user: undefined });
-
-      response = {
-        ...response,
-        message: message,
-        error: error instanceof Error ? error.message : "Unknown Error",
-      };
-
-      console.log(`${LOGIN_PREFIX} Error : `, response);
+      console.log(`${LOGIN_PREFIX} Response : `, response);
       return response;
     }
 
@@ -177,9 +163,13 @@ export class AuthService implements AuthServiceInterface {
     return response;
   }
 
-  async Logout(): Promise<IAuthResponse> {
-    this.removeAccessToken();
-    this.setAuthContext({ status: false, user: undefined });
+  /**
+   * Logout User
+   * @returns {Promise<IAuthResponse>} - Logout Response
+   */
+  static async Logout(setAuthContext: (values: AuthContextValues) => void): Promise<IAuthResponse> {
+    StorageService.RemoveAccessToken();
+    setAuthContext({ status: false, user: undefined });
 
     const result: IAuthResponse = {
       success: true,
@@ -193,11 +183,16 @@ export class AuthService implements AuthServiceInterface {
     return result;
   }
 
-  async Register(request: IRegisterRequest): Promise<IRegisterResponse> {
+  /**
+   * Send Register Request to Server
+   * @param request {IRegisterRequest} - Register Request
+   * @param setAuthContext {Function(values: AuthContextValues)} - Function to set Auth Context
+   * @returns {Promise<IRegisterResponse>} - Register Response
+   */
+  static async Register(request: IRegisterRequest, setAuthContext: (values: AuthContextValues) => void): Promise<IRegisterResponse> {
     let response: IRegisterResponse = {
       success: false,
       user: undefined,
-      accessToken: "",
       message: "",
       error: "",
     };
@@ -205,7 +200,7 @@ export class AuthService implements AuthServiceInterface {
     try {
 
       // << CHECK IF USER EXISTS >> ------------------------------
-      const existingUser = await this.userService.GetUserByEmail(request.email);
+      const existingUser = await UserService.GetUserByEmail(request.email);
       if (existingUser) {
         return {
           ...response,
@@ -217,12 +212,11 @@ export class AuthService implements AuthServiceInterface {
       // << REGISTER USER >> ----------------------------------------
       const serverResponse = await axios.post(USER_REGISTER_URL, request);
       if (!serverResponse.data.error) {
-        const loginResponse: IAuthResponse = await this.Login(request);
+        const loginResponse: IAuthResponse = await AuthService.Login(request, setAuthContext);
         response = {
           ...response,
           success: loginResponse.success,
           user: loginResponse.user,
-          accessToken: loginResponse.accessToken,
           message: loginResponse.message,
           error: loginResponse.error,
         };
@@ -272,3 +266,5 @@ export class AuthService implements AuthServiceInterface {
     return response;
   }
 }
+
+export default AuthService;

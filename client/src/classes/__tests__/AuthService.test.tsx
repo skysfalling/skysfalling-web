@@ -1,4 +1,4 @@
-import { AuthService } from '../AuthService';
+import { AuthService } from '../services/AuthService';
 import axios from 'axios';
 import { AuthContextRequest, AuthContextResponse } from '../../context/AuthContext';  
 import { UserSettings } from '../../Settings';

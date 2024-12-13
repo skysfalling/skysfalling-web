@@ -2,7 +2,8 @@ import express, { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { sequelize } from "./models/db";
-import userRouter from "./routes/Users";
+
+import userRoutes from "./routes/UserRoutes";
 
 // ====================== << DOTENV VARIABLES >> ======================
 dotenv.config();
@@ -13,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // ====================== << ROUTES >> ======================
-app.use("/users", userRouter);
+app.use("/users", userRoutes);
 
 // ====================== << SERVER LISTENERS >> ======================
 sequelize.sync().then(() => {

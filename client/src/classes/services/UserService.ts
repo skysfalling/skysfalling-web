@@ -1,14 +1,14 @@
 import axios from "axios";
-import { IUser, IUserRequest, IUserResponse } from "@shared/types";
-import { NetworkSettings } from "../Settings";
+import { IUser, IUserRequest } from "@shared/types";
+import { NetworkSettings } from "../../Settings";
 
 const USER_DATABASE_URL = `${NetworkSettings.serverUrl}`;
 const GET_USER_URL = `${USER_DATABASE_URL}/users/get`;
 
 
-export class UserService {
+class UserService {
 
-    async GetUser(request: IUserRequest): Promise<IUser | undefined> {
+    static async GetUser(request: IUserRequest): Promise<IUser | undefined> {
         try {
             const response = await axios.get(GET_USER_URL,{
                 params: {id: request.id, email: request.email, name: request.name}
@@ -38,15 +38,17 @@ export class UserService {
         }
     }
 
-    async GetUserByEmail(email:string): Promise<IUser | undefined> {
+    static async GetUserByEmail(email:string): Promise<IUser | undefined> {
         return await this.GetUser({ email });
     }
 
-    async GetUserById(id:number): Promise<IUser | undefined> {
+    static async GetUserById(id:number): Promise<IUser | undefined> {
         return await this.GetUser({ id });
     }
 
-    async GetUserByName(name:string): Promise<IUser | undefined> {
+    static async GetUserByName(name:string): Promise<IUser | undefined> {
         return await this.GetUser({ name });
     }
 }
+
+export default UserService;
