@@ -18,8 +18,8 @@ const { Users } = db;
 /** Defines the RouteHandler type */
 type RouteHandler = (req: Request, res: Response) => Promise<any>;
 
-// #region ======== [[ GET USERS ]] ========
-const getUsers: RouteHandler = async (req, res) => {
+// #region ======== [[ GET ALL USERS ]] ========
+const getAllUsers: RouteHandler = async (req, res) => {
   try {
     const users = await Users.findAll();
     res.json({
@@ -259,12 +259,27 @@ const login: RouteHandler = async (req, res) => {
 };
 //#endregion
 
+// #region ======== [[ DELETE USER ]] ========
+const deleteUser: RouteHandler = async (req, res) => {
+  const userId = req.params.userId;
+  if (userId) {
+    await Users.destroy({ where: { id: userId } });
+    res.json({ success: true, message: "User deleted successfully" } as IUserResponse);
+  } else {
+    res.status(400).json({ success: false, message: "Invalid user ID" } as IUserResponse);
+  }
+};
+// #endregion
 
 // ============================================================================ 
-router.get("/", getUsers);
-router.get("/auth", validateToken as any, getAuthStatus);
+router.get("/", validateToken, getAuthStatus);
+router.get("/auth", validateToken, getAuthStatus);
+router.get("/getAll", getAllUsers);
 router.get("/get", getUser);
+
 router.post("/register", register);
 router.post("/login", login);
+
+router.delete("/:userId", validateToken, deleteUser);
 
 export default router;

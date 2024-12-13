@@ -6,11 +6,13 @@ import { AuthContext, AuthContextValues } from "./context";
 import type NavLink from "./interfaces/NavLink";
 import { Gallery, Home, Profile } from "./layouts";
 import "./styles/main.css";
+import { UserModeration } from "./layouts"; 
 
 const navLinks: NavLink[] = [
   { to: "/", label: "Home", component: Home },
   { to: "/gallery", label: "Gallery", component: Gallery },
   { to: "/profile", label: "Profile", component: Profile },
+  { to: "/admin", label: "Admin", component: UserModeration },
 ];
 
 function App() {

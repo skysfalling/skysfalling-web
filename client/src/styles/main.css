@@ -2,3 +2,7 @@
 @import './abstracts/_themes.css';
 @import './abstracts/_typography.css';
 @import './abstracts/_variables.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

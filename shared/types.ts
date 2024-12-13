@@ -8,7 +8,11 @@
 export interface IUser {
   id: number;
   email: string;
-  name: string;
+  name: string;  
+  role?: 'user' | 'admin' | 'moderator';
+  status?: 'active' | 'banned';
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // ============================== [[ API TYPES ]] ==============================

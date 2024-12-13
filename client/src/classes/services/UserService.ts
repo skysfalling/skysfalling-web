@@ -1,52 +1,106 @@
 import axios from "axios";
 import { IUser, IUserRequest } from "@shared/types";
 import { NetworkSettings } from "../../Settings";
+import StorageService from "./StorageService";
 
-const USER_DATABASE_URL = `${NetworkSettings.serverUrl}`;
-const GET_USER_URL = `${USER_DATABASE_URL}/users/get`;
-
+const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/users`;
+const GET_USER_URL = `${USER_DATABASE_URL}/get`;
+const GET_ALL_USERS_URL = `${USER_DATABASE_URL}/getAll`;
 
 class UserService {
+    private static getAuthHeaders() {
+        const token = StorageService.GetAccessToken();
+        if (!token) {
+            throw new Error('No access token found');
+        }
+        return {
+            accessToken: token
+        };
+    }
 
-    static async GetUser(request: IUserRequest): Promise<IUser | undefined> {
+    static async GetAllUsers(): Promise<IUser[] | undefined> {
         try {
-            const response = await axios.get(GET_USER_URL,{
-                params: {id: request.id, email: request.email, name: request.name}
+            const response = await axios.get(GET_ALL_USERS_URL, {
+                headers: this.getAuthHeaders()
             });
-            if (response){
-                const user : IUser = response.data.data;
-                return user;
+            
+            if (response?.data?.data) {
+                return response.data.data;
             }
+            throw new Error('Invalid response format');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                // Log the error message and additional details for better debugging.
-                console.error("Error fetching user by email:", error.message);
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.error("Response data:", error.response.data); // Log the response data
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.error("Request data:", error.request); // Log the request data
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.error("Error message:", error.message);
+                if (error.response?.status === 401) {
+                    throw new Error('Unauthorized: Please log in again');
                 }
+                throw new Error(error.response?.data?.message || 'Failed to fetch users');
             }
-            return undefined; // Return undefined in case of an error
+            throw error;
         }
     }
 
-    static async GetUserByEmail(email:string): Promise<IUser | undefined> {
+    static async GetUser(request: IUserRequest): Promise<IUser | undefined> {
+        try {
+            const response = await axios.get(GET_USER_URL, {
+                headers: this.getAuthHeaders(),
+                params: {id: request.id, email: request.email, name: request.name}
+            });
+            
+            if (response?.data?.data) {
+                return response.data.data;
+            }
+            throw new Error('Invalid response format');
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    throw new Error('Unauthorized: Please log in again');
+                }
+                throw new Error(error.response?.data?.message || 'Failed to fetch user');
+            }
+            throw error;
+        }
+    }
+
+    static async DeleteUser(request: IUserRequest): Promise<void> {
+        if (!request.id) {
+            throw new Error('User ID is required for deletion');
+        }
+
+        try {
+            const response = await axios.delete(`${USER_DATABASE_URL}/${request.id}`, {
+                headers: this.getAuthHeaders()
+            });
+
+            if (!response.data.success) {
+                throw new Error(response.data.message || 'Failed to delete user');
+            }
+            else {
+                console.log("Delete User - Success Response:", response.data);
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    console.log("Delete User - Error Response:", error.response);
+                    throw new Error('Unauthorized: Please log in again');
+                }
+                console.log("Delete User - Error Response:", error.response);
+                throw new Error(error.response?.data?.message || 'Failed to delete user');
+            }
+            throw error;
+        }
+    }
+
+    static async GetUserByEmail(email: string): Promise<IUser | undefined> {
         return await this.GetUser({ email });
     }
 
-    static async GetUserById(id:number): Promise<IUser | undefined> {
+    static async GetUserById(id: number): Promise<IUser | undefined> {
         return await this.GetUser({ id });
     }
 
-    static async GetUserByName(name:string): Promise<IUser | undefined> {
+    static async GetUserByName(name: string): Promise<IUser | undefined> {
         return await this.GetUser({ name });
     }
 }
