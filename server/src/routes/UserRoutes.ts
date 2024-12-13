@@ -8,7 +8,7 @@ import {
   IUserDataResponse,
   IUserDataRequest,
   NullApiResponse
-} from "../../../shared/interfaces";
+} from "shared/interfaces";
 import { validateToken } from "../middlewares/AuthMiddleware";
 import db from "../models";
 

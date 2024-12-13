@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { IUserData } from "@shared/interfaces";
+import { IUserData } from "shared/interfaces";
 
 /** Define the values of the AuthContext */
 export type AuthContextValues = {

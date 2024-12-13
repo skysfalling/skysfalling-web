@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { AuthContext } from "../../context";
 import UserService from "src/classes/services/UserService";
-import { IUserData, IUserDataRequest } from "@shared/interfaces";
+import { IUserData, IUserDataRequest } from "shared/interfaces";
 import "./UserModeration.css";
 
 // Type-safe column configuration

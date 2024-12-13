@@ -5,7 +5,7 @@ import {
   CredentialResponse,
 } from "@react-oauth/google";
 import "./AuthSignIn.css";
-import { IUserData } from "@shared/interfaces";
+import { IUserData } from "shared/interfaces";
 
 interface AuthSignInProps {
   onSignIn: (user: IUserData) => void;

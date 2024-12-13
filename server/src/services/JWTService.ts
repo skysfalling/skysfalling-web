@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { IUserData } from '@shared/interfaces';
+import { IUserData } from 'shared/interfaces';
 
 export class JWTService {
   private static readonly SECRET_KEY = process.env.JWT_SECRET || "skysfalling_website_secret_key";

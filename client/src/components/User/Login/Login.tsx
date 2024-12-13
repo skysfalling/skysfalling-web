@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import AuthService from "../../../classes/services/AuthService";
 import "../User.styles.css";
-import { IUserAuthRequest, IUserAuthResponse } from "@shared/interfaces";
+import { IUserAuthRequest, IUserAuthResponse } from "shared/interfaces";
 import { AuthContext } from "src/context/AuthContext";
 
 /**
