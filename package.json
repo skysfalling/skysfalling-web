@@ -1,11 +1,6 @@
 {
   "name": "skysfalling-website",
   "private": true,
-  "workspaces": [
-    "client/*",
-    "shared/*",
-    "server/*"
-  ],
   "scripts": {
     "start": "npm run start --workspace=client",
     "start:client": "npm run start --workspace=client",

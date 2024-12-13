@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IUserData } from '@shared/interfaces';
+import { IUserData } from 'shared/interfaces';
 import { JWTService } from '../services/JWTService';
 
 // Extend Express Request type to include user

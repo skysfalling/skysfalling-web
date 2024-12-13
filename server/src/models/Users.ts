@@ -1,6 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { sequelize } from './db';
-import { IUserData } from '@shared/interfaces';
+import { IUserData } from 'shared/interfaces';
 
 interface UserAttributes extends IUserData {
   password: string;
