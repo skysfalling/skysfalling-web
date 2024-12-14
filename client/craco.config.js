@@ -48,6 +48,18 @@ module.exports = {
         match.loader.include = include.concat(packages);
       }
 
+      // Add shared module to module resolution
+      webpackConfig.resolve.modules = [
+        path.resolve(__dirname, 'node_modules'),
+        path.resolve(__dirname, '../shared'),
+      ];
+      
+      // Allow importing from outside src directory
+      const scopePluginIndex = webpackConfig.resolve.plugins.findIndex(
+        ({ constructor }) => constructor && constructor.name === 'ModuleScopePlugin'
+      );
+      webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
+      
       // Return the modified webpack configuration
       return webpackConfig;
     }
