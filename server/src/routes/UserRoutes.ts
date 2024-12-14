@@ -7,7 +7,8 @@ import {
   IUser,
   IUserResponse,
   IUserRequest,
-  NullApiResponse
+  NullApiResponse,
+  IApiResponse
 } from "shared/interfaces";
 import { validateToken } from "../middlewares/AuthMiddleware";
 import dbConfig from "../models";
@@ -40,6 +41,17 @@ const validatePassword = (password: string): boolean => {
   return password.length > 0;
 };
 // #endregion
+
+
+const getWelcome: RouteHandler = async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "Welcome to the API",
+    data: req.body,
+    status: 200
+  } as IApiResponse);
+};
+
 
 // #region ======== [[ GET ALL UserModel ]] ========
 const getAllUsers: RouteHandler = async (req, res) => {
@@ -359,7 +371,7 @@ const editUser: RouteHandler = async (req, res) => {
 //#endregion
 
 // ============================================================================ 
-router.get("/", validateToken, getAuthStatus);
+router.get("/", getWelcome);
 router.get("/auth", validateToken, getAuthStatus);
 router.get("/getAll", getAllUsers);
 router.get("/get", getUser);

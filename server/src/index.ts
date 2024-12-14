@@ -4,7 +4,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/UserRoutes";
-import config from "./config/config";
+import config from "./config";
 import dbConfig from "./models";
 import path from "path";
 import { QueryTypes } from 'sequelize';
@@ -36,26 +36,32 @@ else {
 
 // ====================== << EXPRESS APP INSTANCE >> ======================
 const app: Express = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 app.use("/users", userRoutes);
 
 // ====================== << SERVER LISTENERS >> ======================
 // Database connection and server start
-dbConfig.sequelize.authenticate().then(async () => {
-  console.log("Database connection established successfully.");
-})
+dbConfig.sequelize.authenticate()
+  .then(() => {
+    console.log('Database connection established successfully.');
+    
+    // Start the server only after successful database connection
+    app.listen(config.port, '::', () => {
+      console.log(`Server listening at: http://${config.host}::${config.port}`);
+      printDatabase();
+    });
+  })
   .catch((error: any) => {
-    console.error("Unable to connect to the database:", error);
+    console.error('Unable to connect to the database:', error);
+    process.exit(1); // Exit the process on connection failure
   });
-
-dbConfig.sequelize.sync().then(async () => {
-  app.listen(config.port, '::', () => {
-    console.log(`Server listening at: http://${config.host}::${config.port}`);
-    printDatabase();
-  });
-});
 
 async function printDatabase() {
   try {
@@ -115,11 +121,11 @@ async function printDatabase() {
 
     // Print the formatted output
     console.log('\n---> Database Schemas:');
-    
+
     Object.entries(tableSchemas).forEach(([tableName, columns]: any) => {
       const rowCount = tableRowCounts.get(tableName) || 0;
       console.log(`\nTable: ${tableName} (${rowCount} rows)`);
-      
+
       columns.forEach((column: any) => {
         console.log(
           `    - ${column.columnName} (${column.dataType})` +

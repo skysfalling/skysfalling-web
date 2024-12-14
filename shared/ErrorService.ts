@@ -29,51 +29,17 @@ class ErrorService {
      * @param error - The error object to handle
      * @throws Various error types based on the scenario
      */
-    static HandleAPIRequestError(prefix: string, error: any): void {
+    static LogAPIRequestError(prefix: string, error: any): void {
         // Handle Axios specific errors
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError;
             const statusCode = axiosError.response?.status;
             const errorMessage = axiosError.message || 'An error occurred';
 
-            console.error(`${prefix} Axios Error [${statusCode}]: ${errorMessage}`, axiosError.response);
+            console.error(`${prefix} Axios Error [${statusCode}]: ${errorMessage}`);
         }
-    }
-
-    /**
-     * Handles validation errors for form submissions or data processing
-     * @param errors - Object containing validation errors
-     */
-    static HandleValidationError(errors: Record<string, string[]>): void {
-        const errorMessages = Object.entries(errors)
-            .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-            .join('; ');
-        throw new ValidationError(`Validation failed: ${errorMessages}`);
-    }
-
-    /**
-     * Handles rate limiting errors
-     * @param retryAfter - Optional time (in seconds) to wait before retrying
-     */
-    static HandleRateLimitError(retryAfter?: number): void {
-        const message = retryAfter 
-            ? `Rate limit exceeded. Please try again in ${retryAfter} seconds`
-            : 'Rate limit exceeded. Please try again later';
-        throw new Error(message);
-    }
-
-    /**
-     * Handles authentication-related errors
-     * @param type - Type of authentication error
-     */
-    static HandleAuthError(type: 'expired' | 'invalid' | 'missing'): void {
-        switch (type) {
-            case 'expired':
-                throw new AuthenticationError('Authentication token has expired');
-            case 'invalid':
-                throw new AuthenticationError('Invalid authentication token');
-            case 'missing':
-                throw new AuthenticationError('Authentication token is missing');
+        else if (error instanceof Error) {
+            ErrorService.LogError(prefix, error);
         }
     }
 
@@ -82,13 +48,11 @@ class ErrorService {
      * @param error - Error to log
      * @param context - Additional context information
      */
-    static LogError(error: Error, context?: Record<string, any>): void {
+    static LogError(prefix: string, error: Error, context?: Record<string, any>): void {
         // Implement error logging logic (e.g., to external service)
-        console.error('Error:', {
+        console.error(`${prefix} Error:`, {
             name: error.name,
             message: error.message,
-            stack: error.stack,
-            context,
             timestamp: new Date().toISOString()
         });
     }

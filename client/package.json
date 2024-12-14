@@ -12,9 +12,10 @@
   "dependencies": {
     "@craco/craco": "^7.0.0-alpha.3",
     "@react-oauth/google": "^0.12.1",
+    "@types/axios": "^0.14.4",
+    "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
-    "axios": "^1.7.9",
     "formik": "^2.4.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -24,7 +25,6 @@
     "typescript": "^4.9.5",
     "yup": "^1.5.0"
   },
-
   "devDependencies": {
     "@csstools/normalize.css": "^12.1.1",
     "@types/babel__generator": "^7.6.8",

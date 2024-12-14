@@ -1,15 +1,17 @@
 import axios, { AxiosResponse } from "axios";
-import { IUser, IUserRequest } from "shared/interfaces";
-import { NetworkSettings } from "../../Settings";
+import { IApiResponse, IUser, IUserRequest } from "shared/interfaces";
+import { NetworkConfig } from "../../config";
 import AuthService from "./AuthService";
 import ErrorService from "shared/ErrorService";
 
-const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/users`;
+const USER_DATABASE_URL = `${NetworkConfig.serverUrl}/users`;
+const GET_WELCOME_URL = `${USER_DATABASE_URL}/`;
 const GET_USER_URL = `${USER_DATABASE_URL}/get`;
 const GET_ALL_USERS_URL = `${USER_DATABASE_URL}/getAll`;
 const EDIT_USER_URL = `${USER_DATABASE_URL}/edit`;
 
 const USER_SERVICE_PREFIX = "[UserService] : ";
+const GET_WELCOME_PREFIX = `${USER_SERVICE_PREFIX} GetWelcome - `;
 const GET_ALL_USERS_PREFIX = `${USER_SERVICE_PREFIX} GetAllUsers - `;
 const GET_USER_PREFIX = `${USER_SERVICE_PREFIX} GetUser - `;
 const EDIT_USER_PREFIX = `${USER_SERVICE_PREFIX} EditUser - `;
@@ -18,6 +20,21 @@ const DELETE_USER_PREFIX = `${USER_SERVICE_PREFIX} DeleteUser - `;
 
 
 class UserService {
+
+    static async GetWelcome(): Promise<IApiResponse | undefined> {
+        try {
+            const axiosResponse : AxiosResponse = await axios.get(GET_WELCOME_URL);
+            if (axiosResponse?.data?.success) {
+                return axiosResponse.data;
+            }
+            throw new Error('Invalid response format');
+        }
+        catch (error) {
+            ErrorService.LogAPIRequestError(GET_WELCOME_PREFIX, error);
+        }
+    }
+
+
     static async GetAllUsers(): Promise<IUser[] | undefined> {
         console.log(`${GET_ALL_USERS_PREFIX} Request : `);
         try {
@@ -30,7 +47,7 @@ class UserService {
             throw new Error('Invalid response format');
         }
         catch (error) {
-            ErrorService.HandleAPIRequestError(GET_ALL_USERS_PREFIX, error);
+            ErrorService.LogAPIRequestError(GET_ALL_USERS_PREFIX, error);
         }
     }
 

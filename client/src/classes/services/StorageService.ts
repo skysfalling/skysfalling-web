@@ -1,6 +1,6 @@
-import { UserSettings } from "../../Settings";
+import { UserConfig } from "../../config";
 
-const USER_ACCESS_TOKEN_KEY = `${UserSettings.accessTokenKey}`;
+const USER_ACCESS_TOKEN_KEY = `${UserConfig.accessTokenKey}`;
 
 class StorageService {
     static GetAccessToken(): string | undefined {

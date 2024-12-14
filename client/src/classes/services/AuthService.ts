@@ -1,13 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import * as Yup from "yup";
-import { NetworkSettings, UserSettings } from "../../Settings";
+import { NetworkConfig, UserConfig } from "../../config";
 import { IApiResponse, IUserAuthRequest, IUserAuthResponse, IUser, NullApiResponse } from "shared/interfaces";
 import StorageService from "./StorageService";
 import { AuthContextValues } from "src/context";
 import ErrorService from "shared/ErrorService";
 import UserService from "./UserService";
 
-const USER_DATABASE_URL = `${NetworkSettings.serverUrl}/users`;
+const USER_DATABASE_URL = `${NetworkConfig.serverUrl}/users`;
 const USER_CHECK_AUTH_URL = `${USER_DATABASE_URL}/auth`;
 const USER_LOGIN_URL = `${USER_DATABASE_URL}/login`;
 const USER_REGISTER_URL = `${USER_DATABASE_URL}/register`;
@@ -38,8 +38,8 @@ class AuthService {
       .email('Invalid email address')
       .required('Email is required'),
     password: Yup.string()
-      .min(UserSettings.password.minLength, `Password must be at least ${UserSettings.password.minLength} characters long`)
-      .max(UserSettings.password.maxLength, `Password must be at most ${UserSettings.password.maxLength} characters long`)
+      .min(UserConfig.password.minLength, `Password must be at least ${UserConfig.password.minLength} characters long`)
+      .max(UserConfig.password.maxLength, `Password must be at most ${UserConfig.password.maxLength} characters long`)
       .required('Password is required'),
   });
 
@@ -48,8 +48,8 @@ class AuthService {
       .email('Invalid email address')
       .required('Email is required'),
     password: Yup.string()
-      .min(UserSettings.password.minLength, `Password must be at least ${UserSettings.password.minLength} characters long`)
-      .max(UserSettings.password.maxLength, `Password must be at most ${UserSettings.password.maxLength} characters long`)
+      .min(UserConfig.password.minLength, `Password must be at least ${UserConfig.password.minLength} characters long`)
+      .max(UserConfig.password.maxLength, `Password must be at most ${UserConfig.password.maxLength} characters long`)
       .required('Password is required'),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'),], 'Passwords must match')
@@ -117,7 +117,7 @@ public static GetAuthHeaders() : {Authorization: string} {
           status: 401
         };
       } else {
-        ErrorService.HandleAPIRequestError(CHECK_AUTH_PREFIX, error);
+        ErrorService.LogAPIRequestError(CHECK_AUTH_PREFIX, error);
       }
     }
 

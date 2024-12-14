@@ -120,6 +120,7 @@
 [color-theme="dark"] {
   /* (( Background Hierarchy )) -------- >> */
   --theme-background-base: var(--shark-950);
+  --theme-background-dark: rgba(20, 20, 20, 1);
   --theme-background-elevated: var(--shark-900);
   --theme-background-sunken: var(--shark-800);
   --theme-background-overlay: rgba(0, 0, 0, 0.75);

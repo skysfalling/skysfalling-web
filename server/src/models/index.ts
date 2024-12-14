@@ -3,34 +3,38 @@
 import fs from "fs";
 import path from "path";
 import { DataTypes, Sequelize } from "sequelize";
+import config from "../config";
 
 /**
- * Create new Sequelize instance
- * @link https://sequelize.org/docs/v6/getting-started/#connecting-to-a-database
+ * Create new Sequelize instance with explicit configuration
  */
-const sequelize = new Sequelize(
-  process.env.MYSQLDATABASE || "",
-  process.env.MYSQLUSER || "",
-  process.env.MYSQLPASSWORD || "",
-  {
-    host: process.env.MYSQLHOST || "",
-    port: parseInt(process.env.MYSQLPORT || "3306"),
-    dialect: "mysql",
-    logging: false,
-    /**
-     * Connection pool configuration
-     * @link https://sequelize.org/docs/v6/other-topics/connection-pool/
-     */
-    pool: {
-      max: 5, // Maximum number of connection in pool
-      min: 0, // Minimum number of connection in pool
-      acquire: 30000, // Maximum time (ms) that pool will try to get connection before throwing error
-      idle: 10000, // Maximum time (ms) that a connection can be idle before being released
-    },
-  }
-)
+const sequelize = new Sequelize({
+  database: config.database,
+  username: config.username,
+  password: config.password,
+  host: config.host,
+  port: config.port,
+  dialect: "mysql",
+  logging: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+});
 
-const dbConfig: any = { sequelize, Sequelize, DataTypes, models: []};
+// Log connection details (for debugging)
+console.log('Attempting database connection with:', {
+  host: config.host,
+  port: config.port,
+  database: config.database,
+  username: config.username,
+  // Don't log the full password
+  password: config.password ? '****' : 'not set'
+});
+
+const dbConfig: any = { sequelize, Sequelize, DataTypes, models: [] };
 
 // Get all model files in the current directory
 fs.readdirSync(__dirname)

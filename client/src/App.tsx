@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import axios from "axios";
 import AuthService from "./classes/services/AuthService";
 import Navbar from "./components/Navbar";
 import { AuthContext, AuthContextValues } from "./context";
@@ -7,6 +8,9 @@ import type NavLink from "./interfaces/NavLink";
 import { Gallery, Home, Profile, PageNotFound } from "./layouts";
 import "./styles/main.css";
 import { UserModeration } from "./layouts"; 
+import { NetworkConfig } from "./config";
+import ErrorService from "shared/ErrorService";
+import UserService from "./classes/services/UserService";
 
 const navLinks: NavLink[] = [
   { to: "/", label: "Home", component: Home },
@@ -18,6 +22,7 @@ function App() {
   // Define auth state and user state separately for better control
   const [authContext, setAuthContext] = useState<AuthContextValues>({ status: false, user: undefined });
   const [checkAuth, setCheckAuth] = useState<boolean>(false);
+  const [serverStatus, setServerStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
   useEffect(() => {
     if (!checkAuth) {
