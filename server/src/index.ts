@@ -15,35 +15,18 @@ import { QueryTypes } from 'sequelize';
  * @link https://www.npmjs.com/package/dotenv
  */
 dotenv.config({ path: "../.env" });
-if (!process.env.MYSQLDATABASE) {
+if (!config.database) {
   console.error('Environment variables not loaded! Current working directory:', process.cwd());
   console.error('Attempted to load from:', path.resolve("../.env"));
   throw new Error('Environment variables not loaded!');
-}
-else {
-  console.log('Environment variables loaded successfully!',
-    {
-      host: process.env.MYSQLHOST,
-      port: process.env.MYSQLPORT,
-      user: process.env.MYSQLUSER,
-      password: process.env.MYSQLPASSWORD?.substring(0, 3) + '********',
-      database: process.env.MYSQLDATABASE
-    }
-  );
 }
 
 // ====================== << TESTING CONNECTION >> ======================
 
 // ====================== << EXPRESS APP INSTANCE >> ======================
 const app: Express = express();
-app.use(cors({
-  origin: process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 app.use(express.json());
-
 app.use("/users", userRoutes);
 
 // ====================== << SERVER LISTENERS >> ======================
@@ -53,9 +36,9 @@ dbConfig.sequelize.authenticate()
     console.log('Database connection established successfully.');
     
     // Start the server only after successful database connection
-    app.listen(config.port, '::', () => {
-      console.log(`Server listening at: http://${config.host}::${config.port}`);
-      printDatabase();
+    app.listen(config.server.port, config.server.host, () => {
+      console.log(`Server running at http://${config.server.host}:${config.server.port}`);
+      console.log(`Database connected at ${config.database.host}:${config.database.port}`);
     });
   })
   .catch((error: any) => {

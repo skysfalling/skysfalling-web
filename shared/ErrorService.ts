@@ -33,10 +33,10 @@ class ErrorService {
         // Handle Axios specific errors
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError;
-            const statusCode = axiosError.response?.status;
+            const statusCode = axiosError.response?.status || 500;
             const errorMessage = axiosError.message || 'An error occurred';
 
-            console.error(`${prefix} Axios Error [${statusCode}]: ${errorMessage}`);
+            console.error(`${prefix} Axios Error : Status (${statusCode}): ${errorMessage}`, axiosError);
         }
         else if (error instanceof Error) {
             ErrorService.LogError(prefix, error);

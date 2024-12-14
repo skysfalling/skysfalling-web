@@ -4,31 +4,32 @@
         "scrollbar.shadow": "#00000000"
     },
     "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "skyweb-localhost",
-            "database": "skysfalling_website",
-            "username": "root"
+      {
+        "mysqlOptions": {
+          "authProtocol": "default",
+          "enableSsl": "Disabled"
         },
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "junction.proxy.rlwy.net",
-            "driver": "MySQL",
-            "name": "skyweb-server-railway",
-            "database": "railway",
-            "username": "root",
-            "connectString": "mysql://root:RzaWUUFmLMTXBpIsiIlLcokkWQwNfpwF@junction.proxy.rlwy.net:42891/railway"
-        }
+        "previewLimit": 50,
+        "server": "junction.proxy.rlwy.net",
+        "driver": "MySQL",
+        "name": "skyweb-server-railway",
+        "database": "railway",
+        "username": "root",
+        "connectString": "mysql://root:RzaWUUFmLMTXBpIsiIlLcokkWQwNfpwF@junction.proxy.rlwy.net:42891/railway"
+      },
+      {
+        "mysqlOptions": {
+          "authProtocol": "default",
+          "enableSsl": "Disabled"
+        },
+        "previewLimit": 50,
+        "server": "localhost",
+        "port": 3306,
+        "driver": "MySQL",
+        "name": "skyweb-localhost",
+        "database": "skyweb",
+        "username": "root",
+        "password": ""
+      }
     ]
 }

@@ -24,12 +24,14 @@ function App() {
   const [checkAuth, setCheckAuth] = useState<boolean>(false);
   const [serverStatus, setServerStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
+  /*
   useEffect(() => {
     if (!checkAuth) {
       AuthService.CheckAuthentication();
       setCheckAuth(true);
     }
   }, [checkAuth, authContext]);
+  */
 
   return (
     <AuthContext.Provider value={{ ...authContext, setAuthContext }}>

@@ -22,12 +22,18 @@ const DELETE_USER_PREFIX = `${USER_SERVICE_PREFIX} DeleteUser - `;
 class UserService {
 
     static async GetWelcome(): Promise<IApiResponse | undefined> {
+
+        console.log(`${GET_WELCOME_PREFIX} Request at ${GET_WELCOME_URL}`);
         try {
             const axiosResponse : AxiosResponse = await axios.get(GET_WELCOME_URL);
-            if (axiosResponse?.data?.success) {
-                return axiosResponse.data;
+
+            if (axiosResponse?.data?.data) {
+                return {
+                    success: axiosResponse.data.success,
+                    status: axiosResponse.status,
+                    message: axiosResponse.data.message,
+                } as IApiResponse;
             }
-            throw new Error('Invalid response format');
         }
         catch (error) {
             ErrorService.LogAPIRequestError(GET_WELCOME_PREFIX, error);

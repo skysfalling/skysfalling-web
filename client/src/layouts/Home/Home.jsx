@@ -10,11 +10,12 @@ const Home = () => {
   const [welcomeResponse, setWelcomeResponse] = useState(">:(");
 
   useEffect(() => {
-    UserService.GetWelcome().then((response) => {
+    const welcome = async () => {
+      const response = await UserService.GetWelcome();
+      console.log("GetWelcome response: ", response);
       setWelcomeResponse(response?.message || ">:(");
-    }).catch((error) => {
-      ErrorService.LogAPIRequestError(GET_WELCOME_PREFIX, error);
-    });
+    };
+    welcome();
   }, []);
 
   return (

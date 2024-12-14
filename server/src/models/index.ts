@@ -9,11 +9,11 @@ import config from "../config";
  * Create new Sequelize instance with explicit configuration
  */
 const sequelize = new Sequelize({
-  database: config.database,
-  username: config.username,
-  password: config.password,
-  host: config.host,
-  port: config.port,
+  database: config.database.database,
+  username: config.database.username,
+  password: config.database.password,
+  host: config.database.host,
+  port: config.database.port,
   dialect: "mysql",
   logging: false,
   pool: {
@@ -26,12 +26,12 @@ const sequelize = new Sequelize({
 
 // Log connection details (for debugging)
 console.log('Attempting database connection with:', {
-  host: config.host,
-  port: config.port,
-  database: config.database,
-  username: config.username,
+  host: config.database.host,
+  port: config.database.port,
+  database: config.database.database,
+  username: config.database.username,
   // Don't log the full password
-  password: config.password ? '****' : 'not set'
+  password: config.database.password ? '****' : 'not set'
 });
 
 const dbConfig: any = { sequelize, Sequelize, DataTypes, models: [] };

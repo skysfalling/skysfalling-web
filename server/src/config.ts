@@ -2,35 +2,48 @@ import dotenv from "dotenv";
 dotenv.config();
 
 interface Config {
-  username: string;
-  password: string;
-  database: string;
-  host: string;
-  port: number;
-}
-
-// Validate required environment variables
-const requiredEnvVars = ['MYSQLUSER', 'MYSQLPASSWORD', 'MYSQLDATABASE', 'MYSQLHOST', 'MYSQLPORT'];
-const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
-
-if (missingEnvVars.length > 0) {
-  console.error('Missing required environment variables:', missingEnvVars);
-  throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}`);
+  server: {
+    port: number;
+    host: string;
+  };
+  database: {
+    username: string;
+    password: string;
+    database: string;
+    host: string;
+    port: number;
+  };
 }
 
 const config: Config = {
-  username: process.env.MYSQLUSER!,
-  password: process.env.MYSQLPASSWORD!,
-  database: process.env.MYSQLDATABASE!,
-  host: process.env.MYSQLHOST!,
-  port: parseInt(process.env.MYSQLPORT!, 10)
+  server: {
+    port: parseInt(process.env.SERVER_PORT || '8080', 10),
+    host: process.env.SERVER_HOST || 'localhost'
+  },
+  database: {
+    username: process.env.MYSQLUSER!,
+    password: process.env.MYSQLPASSWORD!,
+    database: process.env.MYSQLDATABASE!,
+    host: process.env.MYSQLHOST!,
+    port: parseInt(process.env.MYSQLPORT || '3306', 10)
+  }
 };
 
 // Validate configuration
-Object.entries(config).forEach(([key, value]) => {
-  if (!value && value !== 0) {
-    throw new Error(`Invalid configuration: ${key} is ${value}`);
-  }
-});
+if (!config.database.username) {
+  console.error('Missing required mysql user');
+}
+
+if (!config.database.database) {
+  console.error('Missing required mysql database');
+}
+
+if (!config.database.host) {
+  console.error('Missing required mysql host');
+}
+
+if (!config.database.port) {
+  console.error('Missing required mysql port');
+}
 
 export default config;
