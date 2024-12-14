@@ -5,20 +5,21 @@ import {
   IUserAuthRequest,
   IUserAuthResponse,
   IUser,
-  IUserDataResponse,
-  IUserDataRequest,
+  IUserResponse,
+  IUserRequest,
   NullApiResponse
 } from "shared/interfaces";
 import { validateToken } from "../middlewares/AuthMiddleware";
-import db from "../models";
+import dbConfig from "../models";
+import User from "../models/UserModel";
 
 const router: Router = express.Router();
 
 // Get UserModel from db
-const { UserModel } = db.models;
+const UserModel : typeof User = dbConfig.models.User;
 
 if (!UserModel) {
-  console.error('Available models:', Object.keys(db));
+  console.error('Available models:', Object.keys(dbConfig));
   throw new Error('UserModel not found in database connection');
 }
 
@@ -42,7 +43,7 @@ const validatePassword = (password: string): boolean => {
 
 // #region ======== [[ GET ALL UserModel ]] ========
 const getAllUsers: RouteHandler = async (req, res) => {
-  let response : IUserDataResponse = NullApiResponse;
+  let response : IUserResponse = NullApiResponse;
 
   try {
     const users = await UserModel.findAll();
@@ -52,7 +53,7 @@ const getAllUsers: RouteHandler = async (req, res) => {
       message: "Users Fetched Successfully",
       data: users,
       status: 200
-    } as IUserDataResponse;
+    } as IUserResponse;
       
   } catch (error) {
     response = {
@@ -60,7 +61,7 @@ const getAllUsers: RouteHandler = async (req, res) => {
       message: "Failed to Fetch Users",
       error: (error as Error).message,
       status: 500
-    } as IUserDataResponse;
+    } as IUserResponse;
   }
   return res.status(response.status).json(response);
 };
@@ -68,12 +69,12 @@ const getAllUsers: RouteHandler = async (req, res) => {
 
 // #region ======== [[ GET SINGLE USER ]] ========  
 const getUser: RouteHandler = async (req, res) => {
-  const request: IUserDataRequest = {
+  const request: IUserRequest = {
     id: req.query.id ? Number(req.query.id) : -1,
     email: req.query.email as string | undefined,
     name: req.query.name as string | undefined,
   };
-  let response : IUserDataResponse = NullApiResponse;
+  let response : IUserResponse = NullApiResponse;
   let user : IUser | null = null;
 
   try {
@@ -94,7 +95,7 @@ const getUser: RouteHandler = async (req, res) => {
         status: 200,
         message: "User Fetched Successfully",
         data: user,
-      } as IUserDataResponse;
+      } as IUserResponse;
     }
     // >> ---- NOT FOUND ---- <<
     else
@@ -104,7 +105,7 @@ const getUser: RouteHandler = async (req, res) => {
         status: 404,
         message: "User Not Found",
         error: new Error("User Not Found"),
-      } as IUserDataResponse;
+      } as IUserResponse;
     }
 
   } catch (error) {
@@ -115,7 +116,7 @@ const getUser: RouteHandler = async (req, res) => {
       status: 500,
       message: "Failed to Fetch User",
       error: (error as Error).message,
-    } as IUserDataResponse;
+    } as IUserResponse;
   }
   return res.status(response.status).json(response);
 };
@@ -195,7 +196,7 @@ const register: RouteHandler = async (req, res) => {
           status: 201,
           message: "User Created & Registered Successfully",
           data: newUser,
-        } as IUserDataResponse;
+        } as IUserResponse;
       }
       // >> ---- ERROR : EMAIL NOT VALID ---- <<
       else if (!emailValid) {
@@ -295,6 +296,7 @@ const login: RouteHandler = async (req, res) => {
     // << LOGIN SUCCESS >>
     return res.json({
       success: true,
+      status: 200,
       message: "Login Successful",
       user: user,
       accessToken: accessToken,
@@ -319,7 +321,7 @@ const deleteUser: RouteHandler = async (req, res) => {
         success: false, 
         message: "Invalid user ID",
         error: new Error("Invalid user ID")
-      } as IUserDataResponse);
+      } as IUserResponse);
     }
 
     const user = await UserModel.findByPk(userId);
@@ -328,21 +330,21 @@ const deleteUser: RouteHandler = async (req, res) => {
         success: false, 
         message: "User not found",
         error: new Error("User not found")
-      } as IUserDataResponse);
+      } as IUserResponse);
     }
 
     await UserModel.destroy({ where: { id: userId } });
     return res.json({ 
       success: true, 
       message: "User deleted successfully" 
-    } as IUserDataResponse);
+    } as IUserResponse);
   } catch (error) {
     console.error("Error deleting user:", error);
     return res.status(500).json({ 
       success: false, 
       message: "Failed to delete user",
       error: (error as Error).message
-    } as IUserDataResponse);
+    } as IUserResponse);
   }
 };
 // #endregion
@@ -352,7 +354,7 @@ const editUser: RouteHandler = async (req, res) => {
   const userId = req.params.userId;
   const updatedData = req.body;
   await UserModel.update(updatedData, { where: { id: userId } });
-  res.json({ success: true, message: "User updated successfully" } as IUserDataResponse);
+  res.json({ success: true, message: "User updated successfully" } as IUserResponse);
 };
 //#endregion
 

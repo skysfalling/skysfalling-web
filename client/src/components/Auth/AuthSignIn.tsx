@@ -5,10 +5,10 @@ import {
   CredentialResponse,
 } from "@react-oauth/google";
 import "./AuthSignIn.css";
-import { IUserData } from "shared/interfaces";
+import { IUser } from "shared/interfaces";
 
 interface AuthSignInProps {
-  onSignIn: (user: IUserData) => void;
+  onSignIn: (user: IUser) => void;
 }
 
 const GOOGLE_CLIENT_ID: string = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
@@ -21,7 +21,7 @@ function AuthSignIn({ onSignIn }: AuthSignInProps) {
   const hideEmailForm = () => setEmailFormVisible(false);
 
   // ----- Email Sign In Method -----
-  const handleEmailSignIn = (user: IUserData) => {
+  const handleEmailSignIn = (user: IUser) => {
     hideEmailForm();
     onSignIn(user);
     //AlertSignIn(user);

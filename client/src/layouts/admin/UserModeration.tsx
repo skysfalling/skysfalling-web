@@ -1,22 +1,22 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { AuthContext } from "../../context";
 import UserService from "src/classes/services/UserService";
-import { IUserData, IUserDataRequest } from "shared/interfaces";
+import { IUser, IUserRequest } from "shared/interfaces";
 import "./UserModeration.css";
 
 // Type-safe column configuration
-const COLUMN_HEADERS: Array<keyof IUserData> = ['id', 'name', 'email'];
+const COLUMN_HEADERS: Array<keyof IUser> = ['id', 'name', 'email'];
 
 type SortDirection = 'asc' | 'desc' | null;
 type SortConfig = {
-  key: keyof IUserData | null;
+  key: keyof IUser | null;
   direction: SortDirection;
 };
 
 function UserModeration(): JSX.Element {
   const authContext = useContext(AuthContext);
-  const [users, setUsers] = useState<IUserData[]>([]);
-  const [selectedUser, setSelectedUser] = useState<IUserData | null>(null);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: null });
@@ -48,7 +48,7 @@ function UserModeration(): JSX.Element {
     void fetchUsers();
   }, [fetchUsers]);
 
-  const handleUserClick = useCallback((user: IUserData) => {
+  const handleUserClick = useCallback((user: IUser) => {
     setSelectedUser(user);
     setEditName(user.name);
   }, []);
@@ -72,7 +72,7 @@ function UserModeration(): JSX.Element {
       return;
     }
 
-    const request: IUserDataRequest = { id: selectedUser.id };
+    const request: IUserRequest = { id: selectedUser.id };
     const response = await UserService.EditUser(request, { name: editName.trim() });
     console.log(response);
 
@@ -95,7 +95,7 @@ function UserModeration(): JSX.Element {
 
     try {
       setIsDeleting(true);
-      const request: IUserDataRequest = { id: selectedUser.id };
+      const request: IUserRequest = { id: selectedUser.id };
       await UserService.DeleteUser(request);
       
       // Remove user from local state
@@ -109,7 +109,7 @@ function UserModeration(): JSX.Element {
     }
   }, [selectedUser, handleAuthError]);
 
-  const handleSort = useCallback((key: keyof IUserData) => {
+  const handleSort = useCallback((key: keyof IUser) => {
     setSortConfig(prevConfig => {
       let direction: SortDirection = 'asc';
       
@@ -141,7 +141,7 @@ function UserModeration(): JSX.Element {
     });
   }, [users, sortConfig]);
 
-  const getSortIcon = useCallback((key: keyof IUserData): string => {
+  const getSortIcon = useCallback((key: keyof IUser): string => {
     if (sortConfig.key !== key) return '↕';
     if (sortConfig.direction === 'asc') return '↑';
     if (sortConfig.direction === 'desc') return '↓';

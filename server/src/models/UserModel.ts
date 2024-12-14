@@ -1,5 +1,5 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
-import db, { sequelize } from '../models';
+import dbConfig, { sequelize } from '../models';
 import { IUser } from 'shared/interfaces';
 
 /**
@@ -7,24 +7,31 @@ import { IUser } from 'shared/interfaces';
  * Inherits from {@linkcode IUser}
  * @link https://sequelize.org/docs/v6/other-topics/typescript/#usage
  */
-class UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>>
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>>
   implements IUser
 {
-  declare id: number; // The 'declare' keyword ensures this field will not be emitted by TypeScript.
-  declare name: string;
+
+  static Name: string = "User";
+
+  // The 'declare' keyword ensures this field will not be emitted by TypeScript.
+  
+  // ( REQUIRED FIELDS ) ---------------- )
   declare email: string;
   declare password: string;
-  declare createdAt: CreationOptional<Date>;  // Can be undefined at creation
+
+  // ( OPTIONAL FIELDS ) ---------------- )
+  declare id: CreationOptional<number>;
+  declare name: CreationOptional<string>;
+  declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  static Name: string = "UserModel"
 }
 
 /**
  * Initialize the UserModel.
  * @link https://sequelize.org/docs/v6/core-concepts/model-basics/#model-definition
  */
-UserModel.init(
+User.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -54,9 +61,9 @@ UserModel.init(
   },
   {
     sequelize: sequelize,
-    modelName: UserModel.Name,
+    modelName: User.Name,
     tableName: 'users',
   }
 );
 
-export default UserModel;
+export default User;

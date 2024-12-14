@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { IUserData, IUserDataRequest } from "shared/interfaces";
+import { IUser, IUserRequest } from "shared/interfaces";
 import { NetworkSettings } from "../../Settings";
 import AuthService from "./AuthService";
 import ErrorService from "shared/ErrorService";
@@ -18,7 +18,7 @@ const DELETE_USER_PREFIX = `${USER_SERVICE_PREFIX} DeleteUser - `;
 
 
 class UserService {
-    static async GetAllUsers(): Promise<IUserData[] | undefined> {
+    static async GetAllUsers(): Promise<IUser[] | undefined> {
         console.log(`${GET_ALL_USERS_PREFIX} Request : `);
         try {
             const axiosResponse : AxiosResponse = await axios.get(GET_ALL_USERS_URL);
@@ -34,7 +34,7 @@ class UserService {
         }
     }
 
-    static async GetUser(request: IUserDataRequest): Promise<IUserData | undefined> {
+    static async GetUser(request: IUserRequest): Promise<IUser | undefined> {
         console.log(`${GET_USER_PREFIX} Request : `, request);
         try {
             const axiosResponse : AxiosResponse = await axios.get(GET_USER_URL, {
@@ -61,7 +61,7 @@ class UserService {
         }
     }
 
-    static async EditUser(request: IUserDataRequest , updatedData: Partial<IUserData>): Promise<void> {
+    static async EditUser(request: IUserRequest , updatedData: Partial<IUser>): Promise<void> {
         console.log(`${EDIT_USER_PREFIX} Request : `, request);
         try {
             const axiosResponse : AxiosResponse = await axios.put(`${USER_DATABASE_URL}/edit`, {
@@ -85,7 +85,7 @@ class UserService {
         }
     }
 
-    static async DeleteUser(request: IUserDataRequest): Promise<void> {
+    static async DeleteUser(request: IUserRequest): Promise<void> {
         console.log(`${DELETE_USER_PREFIX} Request : `, request);
         if (!request.id) {
             throw new Error('User ID is required for deletion');

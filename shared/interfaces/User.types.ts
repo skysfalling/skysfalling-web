@@ -23,7 +23,7 @@ export interface IUser {
  * @property {string} email - The email of the user
  * @property {string} name - The name of the user
  */
-export interface IUserDataRequest {
+export interface IUserRequest {
   id?: number;
   email?: string;
   name?: string;
@@ -32,9 +32,9 @@ export interface IUserDataRequest {
 /**
  * UserData Response.
  * Inherits from {@linkcode IApiResponse}
- * @property {IUserData} user - The user that was fetched
+ * @property {IUser} user - The user that was fetched
  */
-export interface IUserDataResponse extends IApiResponse {
+export interface IUserResponse extends IApiResponse {
   user?: IUser;
 }
 
@@ -44,17 +44,17 @@ export interface IUserDataResponse extends IApiResponse {
  * 
  * Needed for both Login and Register requests.
  * 
- * Inherits from {@linkcode IUserDataRequest}
+ * Inherits from {@linkcode IUserRequest}
  * @prop {string} password - The password of the user
  */
-export interface IUserAuthRequest extends IUserDataRequest {
+export interface IUserAuthRequest extends IUserRequest {
   password: string;
 }
 
 /**
  * Response from the API for an auth request
  * Inherits from {@linkcode IApiResponse}
- * @property {IUserData} user - The user that was fetched
+ * @property {IUser} user - The user that was fetched
  * @property {string} accessToken - The access token for the user
  */
 export interface IUserAuthResponse extends IApiResponse {

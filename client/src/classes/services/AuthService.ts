@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import * as Yup from "yup";
 import { NetworkSettings, UserSettings } from "../../Settings";
-import { IApiResponse, IUserAuthRequest, IUserAuthResponse, IUserData, NullApiResponse } from "shared/interfaces";
+import { IApiResponse, IUserAuthRequest, IUserAuthResponse, IUser, NullApiResponse } from "shared/interfaces";
 import StorageService from "./StorageService";
 import { AuthContextValues } from "src/context";
 import ErrorService from "shared/ErrorService";
@@ -143,7 +143,7 @@ public static GetAuthHeaders() : {Authorization: string} {
 
       response = serverResponse.data;
       if (!response.error && response.user) {
-        const userData: IUserData | undefined = await UserService.GetUser({ id: response.user.id });
+        const userData: IUser | undefined = await UserService.GetUser({ id: response.user.id });
         if (userData) {
           response = {
             ...response,

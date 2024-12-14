@@ -30,7 +30,7 @@ const sequelize = new Sequelize(
   }
 )
 
-const db: any = { sequelize, Sequelize, DataTypes, models: []};
+const dbConfig: any = { sequelize, Sequelize, DataTypes, models: []};
 
 // Get all model files in the current directory
 fs.readdirSync(__dirname)
@@ -49,23 +49,23 @@ fs.readdirSync(__dirname)
       // Handle ES module exports (export default)
       const ModelClass = model.default;
       if (typeof ModelClass === "function") {
-        db.models[ModelClass.name] = ModelClass;
+        dbConfig.models[ModelClass.name] = ModelClass;
       }
     } else {
       // Handle CommonJS exports (module.exports)
       if (typeof model === "function") {
         const ModelClass = model(sequelize, DataTypes);
-        db.models[ModelClass.name] = ModelClass;
+        dbConfig.models[ModelClass.name] = ModelClass;
       }
     }
   });
 
 // Set up associations
-Object.keys(db.models).forEach((modelName) => {
-  if (db.models[modelName].associate) {
-    db.models[modelName].associate(db.models);
+Object.keys(dbConfig.models).forEach((modelName) => {
+  if (dbConfig.models[modelName].associate) {
+    dbConfig.models[modelName].associate(dbConfig.models);
   }
 });
 
 export { sequelize };
-export default db;
+export default dbConfig;

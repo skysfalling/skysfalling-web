@@ -1,6 +1,6 @@
 export const NetworkSettings = {
   clientUrl: "http://localhost:3000",
-  serverUrl: "http://junction.proxy.rlwy.net:42891",
+  serverUrl: "skysfalling-web-server-production.up.railway.app",
   googleClientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
 };
 
