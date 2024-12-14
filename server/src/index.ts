@@ -20,6 +20,17 @@ if (!process.env.MYSQLDATABASE) {
   console.error('Attempted to load from:', path.resolve("../.env"));
   throw new Error('Environment variables not loaded!');
 }
+else {
+  console.log('Environment variables loaded successfully!',
+    {
+      host: process.env.MYSQLHOST,
+      port: process.env.MYSQLPORT,
+      user: process.env.MYSQLUSER,
+      password: process.env.MYSQLPASSWORD?.substring(0, 3) + '********',
+      database: process.env.MYSQLDATABASE
+    }
+  );
+}
 
 // ====================== << TESTING CONNECTION >> ======================
 
@@ -35,26 +46,25 @@ app.use("/users", userRoutes);
 dbConfig.sequelize.authenticate().then(async () => {
   console.log("Database connection established successfully.");
 })
-.catch((error: any) => {
-  console.error("Unable to connect to the database:", error);
-});
+  .catch((error: any) => {
+    console.error("Unable to connect to the database:", error);
+  });
 
 dbConfig.sequelize.sync().then(async () => {
-  app.listen(config.port, () => {
-    console.log(`Server running at: http://${config.host}:${config.port}`);
+  app.listen(config.port, '::', () => {
+    console.log(`Server listening at: http://${config.host}::${config.port}`);
+    printDatabase();
   });
 });
 
 async function printDatabase() {
   dbConfig.sequelize.sync().then(async () => {
     // Query to get all tables and their schemas
-    const [schemas] = await dbConfig.sequelize.query(
+    const schemas: Array<any> = await dbConfig.sequelize.query(
       `SELECT 
           TABLE_NAME as tableName,
           COLUMN_NAME as columnName,
           DATA_TYPE as dataType,
-          IS_NULLABLE as isNullable,
-          COLUMN_DEFAULT as defaultValue,
           COLUMN_KEY as columnKey
         FROM INFORMATION_SCHEMA.COLUMNS 
         WHERE TABLE_SCHEMA = ?
@@ -69,13 +79,26 @@ async function printDatabase() {
     console.log('\n---> Database Schemas:');
     let currentTable = '';
 
-    schemas.forEach((column: any) => {
-      if (currentTable !== column.tableName) {
-        currentTable = column.tableName;
+    for (const schema of schemas) {
+      if (currentTable !== schema.tableName) 
+      {
+        if (currentTable !== '') {
+          //Print row count
+          const rowCount = await dbConfig.sequelize.query(
+            `SELECT COUNT(*) FROM ${currentTable}`,
+            { type: QueryTypes.SELECT }
+          );
+          console.log(`  >> Row count: `, rowCount);
+        }
+
+        currentTable = schema.tableName;
         console.log(`\n  Table: ${currentTable}`);
       }
-      console.log(`    - ${column.columnName} (${column.dataType})${column.columnKey === 'PRI' ? ' PRIMARY KEY' : ''}`);
-    });
+      console.log(`    - ${schema.columnName} (${schema.dataType})${schema.columnKey === 'PRI' ? ' PRIMARY KEY' : ''}`);
+    }
+
+
+
 
   }).catch((error: any) => {
     console.error('Error fetching schema information:', error);
