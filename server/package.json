@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "prebuild": "cd ../shared && npm install && npm run build",
-    "start": "nodemon --exec ts-node src/index.ts",
+    "start": "nodemon -r dotenv/config --exec ts-node src/index.ts",
     "build": "tsc --build"
   },
   "keywords": [],

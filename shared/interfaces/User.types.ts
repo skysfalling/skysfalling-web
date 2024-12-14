@@ -6,13 +6,14 @@ import { IApiResponse } from "./API.types";
  * @property {string} email - The email of the user
  * @property {string} name - The name of the user
  */
-export interface IUserData {
+export interface IUser {
   id: number;
   email: string;
   name: string;
+  password?: string;
   role?: "user" | "admin" | "moderator";
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 /**
@@ -34,7 +35,7 @@ export interface IUserDataRequest {
  * @property {IUserData} user - The user that was fetched
  */
 export interface IUserDataResponse extends IApiResponse {
-  user?: IUserData;
+  user?: IUser;
 }
 
 // (( Authentication )) --------------------------------
@@ -57,7 +58,7 @@ export interface IUserAuthRequest extends IUserDataRequest {
  * @property {string} accessToken - The access token for the user
  */
 export interface IUserAuthResponse extends IApiResponse {
-  user?: IUserData;
+  user?: IUser;
   accessToken?: string;
 }
 

@@ -1,6 +1,6 @@
 export const NetworkSettings = {
-  clientUrl: process.env.REACT_APP_CLIENT_URL,
-  serverUrl: process.env.REACT_APP_SERVER_URL,
+  clientUrl: "http://localhost:3000",
+  serverUrl: "http://junction.proxy.rlwy.net:42891",
   googleClientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
 };
 

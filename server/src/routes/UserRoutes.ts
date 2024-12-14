@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import {
   IUserAuthRequest,
   IUserAuthResponse,
-  IUserData,
+  IUser,
   IUserDataResponse,
   IUserDataRequest,
   NullApiResponse
@@ -13,7 +13,14 @@ import { validateToken } from "../middlewares/AuthMiddleware";
 import db from "../models";
 
 const router: Router = express.Router();
-const { Users } = db;
+
+// Get UserModel from db
+const { UserModel } = db.models;
+
+if (!UserModel) {
+  console.error('Available models:', Object.keys(db));
+  throw new Error('UserModel not found in database connection');
+}
 
 /** Defines the RouteHandler type */
 type RouteHandler = (req: Request, res: Response) => Promise<any>;
@@ -33,12 +40,12 @@ const validatePassword = (password: string): boolean => {
 };
 // #endregion
 
-// #region ======== [[ GET ALL USERS ]] ========
+// #region ======== [[ GET ALL UserModel ]] ========
 const getAllUsers: RouteHandler = async (req, res) => {
   let response : IUserDataResponse = NullApiResponse;
 
   try {
-    const users = await Users.findAll();
+    const users = await UserModel.findAll();
     response = {
       ...response,
       success: true,
@@ -67,17 +74,17 @@ const getUser: RouteHandler = async (req, res) => {
     name: req.query.name as string | undefined,
   };
   let response : IUserDataResponse = NullApiResponse;
-  let user : IUserData | null = null;
+  let user : IUser | null = null;
 
   try {
     if (!user && request.id) {
-      user = await Users.findByPk(request.id);
+      user = await UserModel.findByPk(request.id);
     }
     if (!user && request.email) {
-      user = await Users.findOne({ where: { email: request.email } });
+      user = await UserModel.findOne({ where: { email: request.email } });
     }
     if (!user && request.name) {
-      user = await Users.findOne({ where: { name: request.name } });
+      user = await UserModel.findOne({ where: { name: request.name } });
     }
 
     // >> ---- SUCCESS ---- <<
@@ -119,7 +126,7 @@ const getAuthStatus: RouteHandler = async (req, res) => {
   let response : IUserAuthResponse = NullApiResponse;
   try {
     if (req.user) {
-      const user: IUserData = {
+      const user: IUser = {
         id: req.user.id,
         email: req.user.email,
         name: req.user.name,
@@ -168,15 +175,15 @@ const register: RouteHandler = async (req, res) => {
     {
       let emailValid, emailExists, nameValid, nameExists, passwordValid : boolean = false;
       emailValid = validateEmail(request.email);
-      emailExists = await Users.findOne({ where: { email: request.email } });
+      emailExists = await UserModel.findOne({ where: { email: request.email } });
       nameValid = validateName(request.name);
-      nameExists = await Users.findOne({ where: { name: request.name } });
+      nameExists = await UserModel.findOne({ where: { name: request.name } });
       passwordValid = validatePassword(request.password);
 
       // >> ---- SUCCESS : ALL VALID ---- <<
       if (emailValid && !emailExists && nameValid && !nameExists && passwordValid) {
         const hashedPassword = await hash(request.password, 10);
-        const newUser = await Users.create({
+        const newUser = await UserModel.create({
           email: request.email,
           password: hashedPassword,
           name: request.name,
@@ -259,7 +266,7 @@ const login: RouteHandler = async (req, res) => {
     const { email, password } = req.body;
 
     // Find user
-    const user = await Users.findOne({ where: { email } });
+    const user = await UserModel.findOne({ where: { email } });
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -315,7 +322,7 @@ const deleteUser: RouteHandler = async (req, res) => {
       } as IUserDataResponse);
     }
 
-    const user = await Users.findByPk(userId);
+    const user = await UserModel.findByPk(userId);
     if (!user) {
       return res.status(404).json({ 
         success: false, 
@@ -324,7 +331,7 @@ const deleteUser: RouteHandler = async (req, res) => {
       } as IUserDataResponse);
     }
 
-    await Users.destroy({ where: { id: userId } });
+    await UserModel.destroy({ where: { id: userId } });
     return res.json({ 
       success: true, 
       message: "User deleted successfully" 
@@ -344,7 +351,7 @@ const deleteUser: RouteHandler = async (req, res) => {
 const editUser: RouteHandler = async (req, res) => {
   const userId = req.params.userId;
   const updatedData = req.body;
-  await Users.update(updatedData, { where: { id: userId } });
+  await UserModel.update(updatedData, { where: { id: userId } });
   res.json({ success: true, message: "User updated successfully" } as IUserDataResponse);
 };
 //#endregion
