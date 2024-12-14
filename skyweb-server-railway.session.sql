@@ -1,11 +1,11 @@
 -- @block Create database
-CREATE DATABASE IF NOT EXISTS `skyweb`;
+DROP
 
 -- @block Use database (execute this separately)
-USE `skyweb`;
+USE `railway`;
 
 -- @block Drop Users Table
-DROP TABLE IF EXISTS `users`; 
+DROP TABLE IF EXISTS `test`; 
 
 -- @block Create Users Table
 CREATE TABLE `users` (

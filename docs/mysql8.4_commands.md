@@ -1,75 +1,7 @@
 # MySQL 8.4 Commands
 
-<span style="font-size: 0.75em">
-Reference: Oracle Corporation. (2024). MySQL 8.4 Reference Manual. MySQL. <br> 
-<a href="https://dev.mysql.com/doc/refman/8.4/en/">https://dev.mysql.com/doc/refman/8.4/en/</a></span>
-
-[//]: # ( ============= USER  =============================================== )
-
-
-<h2 style="margin-bottom: -10px;">User</h2>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/user-account-management.html">
-    https://dev.mysql.com/doc/refman/8.4/en/user-account-management.html
-    </a>
-</span>
-
-<details style="margin-left: 25px;">
-<summary>Connection</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/connecting-disconnecting.html">
-    https://dev.mysql.com/doc/refman/8.4/en/connecting-disconnecting.html
-    </a>
-</span>
-
-```sql
--- Connect to MySQL with password prompt
--- >>>> mysql -u root -p
-mysql -u [username] -p
-
--- Connect to specific database
--- >>>> mysql -u root -p mydatabase
-mysql -u [username] -p [database]
-```
-
-</details>
-
-
-<details style="margin-left: 25px;">
-<summary>Management</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/user-account-management.html">
-    https://dev.mysql.com/doc/refman/8.4/en/user-account-management.html
-    </a>
-</span>
-
-```sql
--- Create new user
--- >>>> CREATE USER 'john'@'localhost' IDENTIFIED BY 'password123';
-CREATE USER '[username]'@'[hostname]' IDENTIFIED BY '[password]';
-
--- Grant privileges
--- >>>> GRANT ALL PRIVILEGES ON mydb.* TO 'john'@'localhost';
-GRANT [privilege_type] ON [database].[table] TO '[username]'@'[hostname]';
-
--- Show user privileges
--- >>>> SHOW GRANTS FOR 'john'@'localhost';
-SHOW GRANTS FOR '[username]'@'[hostname]';
-```
-
-</details>
-
-[//]: # ( ============= DATABASE =============================================== )
-
-<h2 style="margin-top: 25px; margin-bottom: -10px;">Database</h2>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/database-administration.html">
-    https://dev.mysql.com/doc/refman/8.4/en/database-administration.html
-    </a>
-</span>
-
-<details style="margin-left: 25px;">
-<summary>Management</summary>
+Reference: Oracle Corporation. (2024). MySQL 8.4 Reference Manual. MySQL. 
+https://dev.mysql.com/doc/refman/8.4/en/
 
 ```sql
 -- Show all databases
@@ -88,27 +20,61 @@ USE [database_name];
 DROP DATABASE [IF EXISTS] [database_name];
 ```
 
+[//]: # ( ============= USER  =============================================== )
+
+## User
+<details>
+<summary>
+    <a href="https://dev.mysql.com/doc/refman/8.4/en/connecting-disconnecting.html">
+        Connection
+    </a>
+</summary>
+
+```sql
+-- Connect to MySQL with password prompt
+-- >>>> mysql -u root -p
+mysql -u [username] -p
+
+-- Connect to specific database
+-- >>>> mysql -u root -p mydatabase
+mysql -u [username] -p [database]
+```
+
 </details>
 
-[//]: # ( ============= TABLE =============================================== )
-
-<h2 style="margin-top: 25px; margin-bottom: -10px;">Table</h2>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/table-maintenance-statements.html">
-    https://dev.mysql.com/doc/refman/8.4/en/table-maintenance-statements.html
-    </a>
-</span>
-
-[//]: # ( SHOW  -------------------------------- )
-
-<div style="margin: 0 0 0 25px;">
 <details>
-<summary>Show</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/show.html">
-    https://dev.mysql.com/doc/refman/8.4/en/show.html
+<summary>
+    <a href="https://dev.mysql.com/doc/refman/8.4/en/user-account-management.html">
+        Management
     </a>
-</span>
+</summary>
+
+```sql
+-- Create new user
+-- >>>> CREATE USER 'john'@'localhost' IDENTIFIED BY 'password123';
+CREATE USER '[username]'@'[hostname]' IDENTIFIED BY '[password]';
+
+-- Grant privileges
+-- >>>> GRANT ALL PRIVILEGES ON mydb.* TO 'john'@'localhost';
+GRANT [privilege_type] ON [database].[table] TO '[username]'@'[hostname]';
+
+-- Show user privileges
+-- >>>> SHOW GRANTS FOR 'john'@'localhost';
+SHOW GRANTS FOR '[username]'@'[hostname]';
+```
+
+</details>
+
+## Table Operations
+
+https://dev.mysql.com/doc/refman/8.4/en/table-maintenance-statements.html
+
+<details>
+<summary>
+    <a href="https://dev.mysql.com/doc/refman/8.4/en/show.html">
+        Show
+    </a>
+</summary>
 
 ```sql
 -- Show all tables
@@ -131,12 +97,11 @@ SHOW CREATE TABLE [table_name];
 </details>
 
 <details>
-<summary>Create</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/create-table.html">
-    https://dev.mysql.com/doc/refman/8.4/en/create-table.html
+        Create
     </a>
-</span>
+</summary>
 
 ```sql
 -- Create new table
@@ -154,12 +119,11 @@ CREATE TABLE [IF NOT EXISTS] [table_name] (
 
 [//]: # ( ALTER  -------------------------------- )
 <details>
-<summary>Alter</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/alter-table.html">
-    https://dev.mysql.com/doc/refman/8.4/en/alter-table.html
+        Alter
     </a>
-</span>
+</summary>
 
 ```sql
 -- Add column to table
@@ -187,12 +151,11 @@ RENAME TABLE [old_name] TO [new_name];
 [//]: # ( SELECT  -------------------------------- )
 
 <details>
-<summary>Select</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+    <summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/select.html">
-    https://dev.mysql.com/doc/refman/8.4/en/select.html
+        Select
     </a>
-</span>
+</summary>
 
 ```sql
 -- Select all records
@@ -217,6 +180,43 @@ LIMIT [limit_number] OFFSET [offset_number];
 -- Select distinct values
 -- >>>> SELECT DISTINCT status FROM users;
 SELECT DISTINCT [column_name] FROM [table_name];
+
+-- Select with multiple JOINs
+SELECT c.name, o.order_id, p.product_name
+FROM customers c
+INNER JOIN orders o ON c.id = o.customer_id
+INNER JOIN products p ON o.product_id = p.id
+WHERE o.order_date >= '2024-01-01';
+
+-- Select with subqueries
+SELECT username, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) as order_count
+FROM users;
+
+-- Select with GROUP BY and HAVING
+SELECT category, COUNT(*) as count, AVG(price) as avg_price
+FROM products
+GROUP BY category
+HAVING count > 10;
+
+-- Basic CTE example
+WITH user_orders AS (
+    SELECT user_id, COUNT(*) as order_count
+    FROM orders
+    GROUP BY user_id
+)
+SELECT u.username, COALESCE(uo.order_count, 0) as orders
+FROM users u
+LEFT JOIN user_orders uo ON u.id = uo.user_id;
+
+-- Row number example
+SELECT product_name, category, price,
+       ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) as price_rank
+FROM products;
+
+-- Moving average example
+SELECT date, amount,
+       AVG(amount) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) as moving_avg
+FROM daily_sales;
 ```
 
 </details>
@@ -224,12 +224,11 @@ SELECT DISTINCT [column_name] FROM [table_name];
 [//]: # ( INSERT  -------------------------------- )
 
 <details>
-<summary>Insert</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/insert.html">
-    https://dev.mysql.com/doc/refman/8.4/en/insert.html
+        Insert
     </a>
-</span>
+</summary>
 
 ```sql
 -- Insert single row
@@ -256,12 +255,11 @@ SELECT [columns] FROM [source_table] WHERE [condition];
 [//]: # ( UPDATE  -------------------------------- )
 
 <details>
-<summary>Update</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/update.html">
-    https://dev.mysql.com/doc/refman/8.4/en/update.html
+        Update
     </a>
-</span>
+</summary>
 
 ```sql
 -- Update records
@@ -276,12 +274,11 @@ WHERE [condition];
 [//]: # ( DELETE  -------------------------------- )
 
 <details>
-<summary>Delete</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/delete.html">
-    https://dev.mysql.com/doc/refman/8.4/en/delete.html
+        Delete
     </a>
-</span>
+</summary>
 
 ```sql
 -- Delete records
@@ -304,33 +301,17 @@ WHERE [condition];
 
 </details>
 
-[//]: # ( TRUNCATE  -------------------------------- )
+[//]: # ( ============= AGGREGATE FUNCTIONS =============================================== )
+
+<h4><a href="https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html">Aggregate Functions</a></h4>
 
 <details>
-<summary>Truncate</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/truncate-table.html">
-    https://dev.mysql.com/doc/refman/8.4/en/truncate-table.html
-    </a>
-</span>
-
-```sql
--- Truncate table (delete all records)
--- >>>> TRUNCATE TABLE temp_users;
-TRUNCATE TABLE [table_name];
-```
-
-</details>
-
-[//]: # ( JOIN  -------------------------------- )
-
-<details>
-<summary>Join</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/join.html">
-    https://dev.mysql.com/doc/refman/8.4/en/join.html
+        Join
     </a>
-</span>
+</summary>
+</summary>
 
 ```sql
 -- Inner Join
@@ -353,26 +334,14 @@ ON [table1.column] = [table2.column];
 ```
 
 </details>
-</div>
 
-[//]: # ( ============= AGGREGATE FUNCTIONS =============================================== )
-
-<h2 style="margin-top: 25px; margin-bottom: -10px;">Aggregate Functions</h2>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html">
-    https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html
-    </a>
-</span>
-
-<div style="margin: 0 0 0 25px;">
 
 <details>
-<summary>Count</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/counting-rows.html">
-    https://dev.mysql.com/doc/refman/8.4/en/counting-rows.html
+        Count
     </a>
-</span>
+</summary>
 
 ```sql
 -- Count rows
@@ -382,14 +351,12 @@ SELECT COUNT(*) FROM [table_name];
 
 </details>
 
-
 <details>
-<summary>Sum</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html#function_sum">
-    https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html#function_sum
+        Sum
     </a>
-</span>
+</summary>
 
 ```sql
 -- Sum values
@@ -400,12 +367,11 @@ SELECT SUM([column_name]) FROM [table_name];
 </details>
 
 <details>
-<summary>Average</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html#function_avg">
-    https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html#function_avg
+        Average
     </a>
-</span>
+</summary>
 
 ```sql
 -- Average values
@@ -416,12 +382,11 @@ SELECT AVG([column_name]) FROM [table_name];
 </details>
 
 <details>
-<summary>Group By</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/group-by-modifiers.html">
-    https://dev.mysql.com/doc/refman/8.4/en/group-by-modifiers.html
+        Group By
     </a>
-</span>
+</summary>
 
 ```sql
 -- Group by with having
@@ -437,46 +402,20 @@ HAVING COUNT(*) > [value];
 
 </details>
 
-</div>
+<h4><a href="https://dev.mysql.com/doc/refman/8.4/en/mysqlimport.html">Advanced Features</a></h4>
 
-[//]: # ( ============= ADVANCED =============================================== )
-
-<h2 style="margin-top: 25px; margin-bottom: -10px;">Advanced</h2>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/functions.html">
-    https://dev.mysql.com/doc/refman/8.4/en/functions.html
-    </a>
-</span>
-
-<div style="margin: 0 0 0 25px;">
-
-[//]: # ( Import  -------------------------------- )
 <details>
-<summary>Import</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/mysqlimport.html">
-    https://dev.mysql.com/doc/refman/8.4/en/mysqlimport.html
+        Import/Export
     </a>
-</span>
+</summary>
 
 ```sql
 -- Import database
 -- >>>> mysql -u root -p mydb < backup_2024.sql
 mysql -u [username] -p [database] < [filename].sql
-```
 
-</details>
-
-[//]: # ( Export  -------------------------------- )
-<details>
-<summary>Export</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
-    <a href="https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html">
-    https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html
-    </a>
-</span>
-
-```sql
 -- Export database backup
 -- >>>> mysqldump -u root -p mydb > backup_2024.sql
 mysqldump -u [username] -p [database] > [filename].sql
@@ -487,12 +426,11 @@ mysqldump -u [username] -p [database] > [filename].sql
 [//]: # ( Indexes  -------------------------------- )
 
 <details>
-<summary>Indexes</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/optimization-indexes.html">
-    https://dev.mysql.com/doc/refman/8.4/en/optimization-indexes.html
+        Indexes
     </a>
-</span>
+</summary>
 
 ```sql
 -- Create index
@@ -508,6 +446,15 @@ ON [table_name] ([column_name]);
 -- Show indexes
 -- >>>> SHOW INDEX FROM users;
 SHOW INDEX FROM [table_name];
+
+-- Create composite index
+CREATE INDEX idx_name_email ON users(name, email);
+
+-- Create fulltext index
+CREATE FULLTEXT INDEX idx_description ON products(description);
+
+-- Create spatial index
+CREATE SPATIAL INDEX idx_location ON stores(location);
 ```
 
 </details>
@@ -515,12 +462,11 @@ SHOW INDEX FROM [table_name];
 [//]: # ( Views  -------------------------------- )
 
 <details>
-<summary>Views</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/views.html">
-    https://dev.mysql.com/doc/refman/8.4/en/views.html
+        Views
     </a>
-</span>
+</summary>
 
 ```sql
 -- Create view
@@ -541,12 +487,11 @@ DROP VIEW [IF EXISTS] [view_name];
 </details>
 
 <details>
-<summary>Triggers</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/triggers.html">
-    https://dev.mysql.com/doc/refman/8.4/en/triggers.html
+        Triggers
     </a>
-</span>
+</summary>
 
 ```sql
 -- Create new trigger
@@ -574,12 +519,11 @@ SHOW TRIGGERS
 </details>
 
 <details>
-<summary>Stored Procedures</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/stored-routines.html">
-    https://dev.mysql.com/doc/refman/8.4/en/stored-routines.html
+        Stored Procedures
     </a>
-</span>
+</summary>
 
 ```sql
 -- Create stored procedure
@@ -608,12 +552,11 @@ DROP PROCEDURE [IF EXISTS] [procedure_name];
 </details>
 
 <details>
-<summary>Functions</summary>
-<span style="font-size: 0.75em; margin-left: 10px;">
+<summary>
     <a href="https://dev.mysql.com/doc/refman/8.4/en/functions.html">
-    https://dev.mysql.com/doc/refman/8.4/en/functions.html
+        Functions
     </a>
-</span>
+</summary>
 
 ```sql
 -- Create function
@@ -641,4 +584,24 @@ DELIMITER ;
 ```
 
 </details>
-</div>
+
+<details>
+<summary>
+    <a href="https://dev.mysql.com/doc/refman/8.4/en/explain-output.html">
+        Explain
+    </a>
+</summary>
+
+```sql
+-- Basic EXPLAIN
+EXPLAIN SELECT * FROM users WHERE email = 'test@example.com';
+
+-- EXPLAIN with FORMAT=JSON
+EXPLAIN FORMAT=JSON
+SELECT u.*, COUNT(o.id) as order_count
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+GROUP BY u.id;
+```
+
+</details>

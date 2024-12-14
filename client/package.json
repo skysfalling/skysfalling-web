@@ -37,7 +37,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "CI=false craco build",
+    "build": "craco build",
     "test": "craco test",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
