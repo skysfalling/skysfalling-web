@@ -2,6 +2,7 @@
   "name": "skysfalling-website",
   "private": true,
   "scripts": {
+    "start": "cd shared && npm run start && cd ../client && npm run start",
     "build": "cd shared && npm run build && cd ../client && npm run build"
   },
   "devDependencies": {

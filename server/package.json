@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon -r dotenv/config --exec ts-node src/index.ts",
-    "build": "tsc --build"
+    "start": "tsc --exec ts-node src/index.ts",
+    "build": "tsc --build",
+    "dev": "nodemon -r dotenv/config --exec ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
