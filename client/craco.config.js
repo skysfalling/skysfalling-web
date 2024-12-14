@@ -18,6 +18,9 @@ packages.push(path.join(__dirname, "../shared"));
 
 module.exports = {
   webpack: {
+    alias: {
+      'shared': path.resolve(__dirname, '../shared')
+    },
     // Configure webpack with custom settings
     configure: (webpackConfig) => {
       // Add file extensions that webpack should resolve

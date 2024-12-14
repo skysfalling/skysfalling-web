@@ -13,7 +13,7 @@ type SortConfig = {
   direction: SortDirection;
 };
 
-function UserModeration(): JSX.Element {
+function UserModeration() {
   const authContext = useContext(AuthContext);
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
