@@ -19,9 +19,9 @@
 -- Current Database: `skysfalling_website`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `sky-web` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `skyweb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-USE `sky-web`;
+USE `skyweb`;
 
 --
 -- Table structure for table `users`

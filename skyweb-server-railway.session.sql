@@ -1,8 +1,8 @@
 -- @block Create database
-CREATE DATABASE IF NOT EXISTS `sky-web`;
+CREATE DATABASE IF NOT EXISTS `skyweb`;
 
 -- @block Use database (execute this separately)
-USE `sky-web`;
+USE `skyweb`;
 
 -- @block Drop Users Table
 DROP TABLE IF EXISTS `users`; 
