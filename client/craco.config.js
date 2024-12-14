@@ -48,5 +48,11 @@ module.exports = {
       // Return the modified webpack configuration
       return webpackConfig;
     }
+  },
+  // Add performance hints
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
   }
 };
