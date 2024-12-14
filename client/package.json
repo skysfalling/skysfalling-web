@@ -2,6 +2,13 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "npm install && craco build",
+    "test": "npm install && craco test",
+    "test:watch": "npm install && jest --watch",
+    "test:coverage": "npm install && jest --coverage"
+  },
   "dependencies": {
     "@craco/craco": "^7.0.0-alpha.3",
     "@react-oauth/google": "^0.12.1",
@@ -17,17 +24,9 @@
     "typescript": "^4.9.5",
     "yup": "^1.5.0"
   },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "preinstall": "cd ../shared && npm install && npm run build"
-  },
+
   "devDependencies": {
     "@csstools/normalize.css": "^12.1.1",
-    "@types/axios": "^0.14.4",
     "@types/babel__generator": "^7.6.8",
     "@types/babel__template": "^7.4.4",
     "@types/body-parser": "^1.19.5",

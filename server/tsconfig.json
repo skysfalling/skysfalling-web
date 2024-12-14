@@ -12,15 +12,17 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "shared/*": ["../shared/*"]
+      "shared": ["../shared/src"],
+      "shared/*": ["../shared/src/*"]
     },
     "typeRoots": [
       "./node_modules/@types",
-      "../shared/dist"
+      "../shared/node_modules/@types"
     ],
     "moduleResolution": "node",
     "types": ["node"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "composite": true
   },
   "include": [
     "src/**/*"

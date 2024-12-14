@@ -2,8 +2,10 @@
   "name": "skysfalling-website",
   "private": true,
   "scripts": {
-    "start": "cd shared && npm run start && cd ../client && npm run start",
-    "build": "cd shared && npm run build && cd ../client && npm run build"
+    "start:server": "cd server && npm run start",
+    "start:client": "cd client && npm run start",
+    "build:server": "cd shared && npm run install-deps && npm run build && cd ../server && npm run build",
+    "build:client": "cd shared && npm run install-deps && npm run build && cd ../client && npm run build"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
