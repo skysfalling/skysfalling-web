@@ -87,6 +87,20 @@ module.exports = {
       };
       */
 
+      // Add progress plugin
+      const webpack = require('webpack');
+      webpackConfig.plugins.push(
+        new webpack.ProgressPlugin((percentage, message) => {
+          console.log(`${(percentage * 100).toFixed(2)}%`, message);
+          
+          // Log memory usage at each progress step
+          const usage = process.memoryUsage();
+          console.log('Memory Usage:');
+          console.log(`Heap Used: ${Math.round(usage.heapUsed / 1024 / 1024)}MB`);
+          console.log(`RSS: ${Math.round(usage.rss / 1024 / 1024)}MB`);
+        })
+      );
+
       // Return the modified webpack configuration
       return webpackConfig;
     }

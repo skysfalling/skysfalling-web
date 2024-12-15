@@ -11,9 +11,19 @@ const Home = () => {
 
   useEffect(() => {
     const welcome = async () => {
-      const response = await UserService.GetWelcome();
-      console.log("GetWelcome response: ", response);
-      setWelcomeResponse(response?.message || ">:(");
+
+      try {
+        const response = await UserService.GetWelcome();
+        if (response?.message) {
+          console.log("GetWelcome response: ", response);
+          setWelcomeResponse(response?.message || ">:(");
+        } else {
+          setWelcomeResponse("Error getting welcome message");
+        }
+      } catch (error) {
+        console.error("Error getting welcome message: ", error);
+        setWelcomeResponse("Error getting welcome message");
+      }
     };
     welcome();
   }, []);

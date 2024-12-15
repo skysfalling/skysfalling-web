@@ -12,6 +12,7 @@
         "axios": "^1.7.9"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@babel/preset-typescript": "^7.26.0",
         "@types/react": "^19.0.1",
         "@types/react-dom": "^19.0.2",

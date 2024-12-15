@@ -1,7 +1,6 @@
 export const NetworkConfig = {
-  clientUrl: process.env.REACT_APP_CLIENT_URL,
-  serverUrl: process.env.REACT_APP_SERVER_URL,
-  googleClientId: ""
+  clientUrl: `http://${process.env.REACT_APP_CLIENT_URL}`,
+  serverUrl: `http://${process.env.REACT_APP_SERVER_URL}`,
 };
 
 export const UserConfig = {
