@@ -24,16 +24,6 @@ const sequelize = new Sequelize({
   },
 });
 
-// Log connection details (for debugging)
-console.log('Attempting database connection with:', {
-  host: config.database.host,
-  port: config.database.port,
-  database: config.database.database,
-  username: config.database.username,
-  // Don't log the full password
-  password: config.database.password ? '****' : 'not set'
-});
-
 const dbConfig: any = { sequelize, Sequelize, DataTypes, models: [] };
 
 // Get all model files in the current directory

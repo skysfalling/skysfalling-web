@@ -21,30 +21,60 @@ if (!config.database) {
   throw new Error('Environment variables not loaded!');
 }
 
-// ====================== << TESTING CONNECTION >> ======================
 
-// ====================== << EXPRESS APP INSTANCE >> ======================
-const app: Express = express();
-app.use(cors());
-app.use(express.json());
-app.use("/users", userRoutes);
 
-// ====================== << SERVER LISTENERS >> ======================
+
+// ====================== << TESTING MySQL DATABASE CONNECTION >> ======================
+// Log connection details (for debugging)
+console.log('Attempting MySQL Database connection with:', {
+  host: config.database.host,
+  port: config.database.port,
+  database: config.database.database,
+  username: config.database.username,
+  password: config.database.password ? '****' : 'not set'
+});
+
 // Database connection and server start
 dbConfig.sequelize.authenticate()
   .then(() => {
-    console.log('Database connection established successfully.');
-    
-    // Start the server only after successful database connection
-    app.listen(config.server.port, config.server.host, () => {
-      console.log(`Server running at http://${config.server.host}:${config.server.port}`);
-      console.log(`Database connected at ${config.database.host}:${config.database.port}`);
-    });
+    console.log(`Database connection established successfully at ${config.database.host}:${config.database.port}`);
+
   })
   .catch((error: any) => {
     console.error('Unable to connect to the database:', error);
     process.exit(1); // Exit the process on connection failure
   });
+
+
+
+// ====================== << EXPRESS APP SERVER INSTANCE >> ======================
+const app: Express = express();
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://skysfalling-web.netlify.app', /\.netlify\.app$/]
+    : ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use("/users", userRoutes);
+
+
+console.log('Attempting Server connection with:', {
+  host: config.server.host,
+  port: config.server.port
+});
+
+// Start the server only after successful database connection
+app.listen(config.server.port, config.server.host, () => {
+  console.log(`Server running at http://${config.server.host}:${config.server.port}`);
+});
+
+
+
 
 async function printDatabase() {
   try {

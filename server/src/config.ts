@@ -5,6 +5,7 @@ interface Config {
   server: {
     port: number;
     host: string;
+    protocol: string;
   };
   database: {
     username: string;
@@ -17,15 +18,16 @@ interface Config {
 
 const config: Config = {
   server: {
-    port: parseInt(process.env.SERVER_PORT || '8080', 10),
-    host: process.env.SERVER_HOST || 'localhost'
+    port: parseInt(process.env.PORT || process.env.SERVER_PORT || '8080'),
+    host: process.env.SERVER_HOST || '0.0.0.0',
+    protocol: process.env.NODE_ENV === 'production' ? 'https' : 'http'
   },
   database: {
-    username: process.env.MYSQLUSER!,
-    password: process.env.MYSQLPASSWORD!,
-    database: process.env.MYSQLDATABASE!,
-    host: process.env.MYSQLHOST!,
-    port: parseInt(process.env.MYSQLPORT || '3306', 10)
+    username: process.env.MYSQLUSER || 'root',
+    password: process.env.MYSQLPASSWORD || '',
+    database: process.env.MYSQLDATABASE || 'railway',
+    host: process.env.MYSQLHOST || 'mysql.railway.internal',
+    port: parseInt(process.env.MYSQLPORT || '3306')
   }
 };
 

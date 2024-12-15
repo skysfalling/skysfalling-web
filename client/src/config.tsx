@@ -1,6 +1,6 @@
 export const NetworkConfig = {
-  clientUrl: `http://${process.env.REACT_APP_CLIENT_URL}`,
-  serverUrl: `http://${process.env.REACT_APP_SERVER_URL}`,
+  clientUrl: `https://${process.env.REACT_APP_CLIENT_URL}`,
+  serverUrl: `https://${process.env.REACT_APP_SERVER_URL}`,
 };
 
 export const UserConfig = {
