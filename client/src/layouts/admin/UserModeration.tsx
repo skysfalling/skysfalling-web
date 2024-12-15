@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { AuthContext } from "../../context";
-import UserService from "src/classes/services/UserService";
+import UserService from "../../classes/services/UserService";
 import { IUser, IUserRequest } from "shared/interfaces";
 import "./UserModeration.css";
 
