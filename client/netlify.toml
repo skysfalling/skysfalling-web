@@ -1,8 +1,9 @@
 [build]
-  command = "npm install && npm run build"
+  command = "npm ci && npm run build"
   publish = "build"
   timeout = "30m"
 
 [build.environment]
   NODE_VERSION = "16"
+  NPM_VERSION = "8"
   NODE_OPTIONS = "--max_old_space_size=4096"

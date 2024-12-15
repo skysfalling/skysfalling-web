@@ -152,6 +152,7 @@ module.exports = {
 
       // Add shared module to module resolution
       webpackConfig.resolve.modules = [
+        'node_modules',
         path.resolve(__dirname, 'node_modules'),
         path.resolve(__dirname, '../shared'),
       ];
